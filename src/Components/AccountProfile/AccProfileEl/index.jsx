@@ -24,7 +24,7 @@ const AccProfileEl = () => {
     // Handle delete logic here
     setDeleteModalVisible(false);
   };
-  
+
   const handleEditClick = () => {
     setIsEditable(true)
   }
@@ -47,8 +47,8 @@ const AccProfileEl = () => {
       {
         isEditable ?
 
-        <ProfileEditEl profile={profileData} setprofile={setProfileData} setEditable={setIsEditable} />
-        :
+          <ProfileEditEl profile={profileData} setprofile={setProfileData} setEditable={setIsEditable} />
+          :
           <div className="p-6 bg-white shadow-lg rounded-lg mx-auto mb-4" style={{ userSelect: "none" }}>
             <div className='flex items-center justify-between mb-6'>
               <h2 className="sm:text-3xl text-xl font-bold text-gray-800 ">Profile Information</h2>

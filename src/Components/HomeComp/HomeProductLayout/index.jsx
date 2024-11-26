@@ -1,53 +1,96 @@
-import React from "react";
-import { Card, Row, Col } from "antd";
-import { ShoppingCartOutlined, HeartOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Spin, Alert, Button } from "antd";
+import { updateProduct } from "../../../redux/features/homeProductSlice/homeProductSlice";
+import ProductCardEl from "../../../Shared/ProductCardEl";
+import { useRequestApi } from "../../../hooks/useRequestApi";
 
-const HomeProductsLayoutEl =(() => {
+const HomeProductsLayoutEl = () => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [page, setPage] = useState(1); // Initialize page state
+  const [hasMore, setHasMore] = useState(true); // Track if there are more products to load
 
-  const homeData= useSelector((state) => state.homeProductsData.value)
+  const Products = useSelector((state) => state.homeProductsData.value);
+
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const response = await useRequestApi(`api/product/getFilterProduct?page=${page}`, "POST", { page: page });
+      console.log(response);
+
+      if (response.products.length === 0) {
+        setHasMore(false); // No more products to load
+      } else {
+        dispatch(updateProduct([...Products, ...response.products])); // Append new products
+      }
+    } catch (error) {
+      console.log(error);
+
+      setError(error.message || "An error occurred, please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  const handleLoadMore = () => {
+    if (hasMore) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  if (loading && page === 1) {
+    return (
+      <div className="flex justify-center items-center h-60">
+        <Spin size="large" tip="Loading products..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4">
+        <Alert message="Error" description={error} type="error" showIcon />
+      </div>
+    );
+  }
+
   return (
-    <Row gutter={[24, 24]}  className="p-4">
-      {homeData.map((product) => (
-        <Col key={product.id} xs={24} sm={12} md={8} lg={6} xl={4}>
-          <Card
-            hoverable
-            className="rounded-lg overflow-hidden shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105"
-            cover={
-              <div className="relative w-full h-fit overflow-hidden rounded-t-lg">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  layout="fill"
-                  objectFit="cover"
-                  className="transition-transform duration-500 ease-in-out hover:scale-110"
-                />
-              </div>
-            }
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex justify-center">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+          Shop Products
+        </h1>
+      </div>
+
+      <div className="grid sm:gap-6 gap-1 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
+        {Products &&
+          Products.length > 0 &&
+          Products.map((product) => (
+            <ProductCardEl key={product._id} product={product} />
+          ))}
+      </div>
+
+      {hasMore && (
+        <div className="flex justify-center mt-6">
+          <Button
+            type="primary"
+            size="large"
+            loading={loading}
+            onClick={handleLoadMore}
           >
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-lg font-semibold text-gray-800 truncate">{product.name}</h3>
-              <HeartOutlined className="text-gray-400 hover:text-red-500 cursor-pointer transition duration-300 ease-in-out" />
-            </div>
-
-            <div className="mt-2 flex items-center justify-between">
-              {product.discountPrice && (
-                <p className="text-gray-500 line-through text-sm">₹{product.discountPrice}</p>
-              )}
-              <p className="text-xl font-bold text-green-600">₹{product.price}</p>
-            </div>
-
-            <button
-              className="mt-4 w-full bg-gradient-to-r from-green-400 to-blue-500 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 ease-in-out hover:from-green-500 hover:to-blue-600 transform hover:scale-105"
-            >
-              <ShoppingCartOutlined />
-              Add to Cart
-            </button>
-          </Card>
-        </Col>
-      ))}
-    </Row>
+            Load More
+          </Button>
+        </div>
+      )}
+    </div>
   );
-});
+};
 
 export default HomeProductsLayoutEl;

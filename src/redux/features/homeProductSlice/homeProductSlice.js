@@ -1,19 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { HomeProductData } from "../../../Components/HomeComp/HomeProductLayout/HomeProductData"
 
-export const initialState= {
-    value: HomeProductData
-}
 
-const HomeProductSlice= createSlice({
-    name: 'homeProductsData',
+const initialState = {
+    value: [],
+};
+
+const homeProductSlice = createSlice({
+    name: "homeProductsData",
     initialState,
     reducers: {
+        updateProduct: (state, action) => {
+            state.value = action.payload
+        },
         addProducts: (state, action) => {
-            state.value= action.payload
-        }
-    }
-})
+            state.value = action.payload;
+        },
+    },
+});
 
-export const { addProducts } = HomeProductSlice.actions;
-export default HomeProductSlice.reducer;
+export const { addProducts, updateProduct } = homeProductSlice.actions;
+export default homeProductSlice.reducer;
