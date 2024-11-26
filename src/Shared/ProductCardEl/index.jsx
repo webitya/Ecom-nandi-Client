@@ -5,7 +5,7 @@ const ProductCardEl = ({ product }) => {
     return (
         <Card
             hoverable
-            className="relative min-w-[185px]  rounded-xl overflow-hidden shadow-lg border border-gray-100 transition-transform transform sm:hover:scale-105"
+            className="relative min-w-[185px]  rounded-xl overflow-hidden shadow-lg border border-gray-100 transition-transform transform "
             cover={
                 <div className="relative w-full h-[160px] md:h-[250px] bg-gray-100 overflow-hidden">
                     <img
@@ -43,7 +43,7 @@ const ProductCardEl = ({ product }) => {
             {/* Buy Now Button */}
             <div className="flex justify-center mt-2">
                 <button
-                    className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-2 px-4 rounded-md hover:bg-gradient-to-r hover:from-green-600 hover:to-blue-600 transition-all duration-300"
+                    className="w-full bg bg-yellow-400 text-black font-semibold text-xl py-2 px-4 rounded-md hover:bg-gradient-to-r hover:from-green-600 hover:to-blue-600 transition-all duration-300"
                 >
                     <DollarOutlined className="mr-2 text-lg" />
                     Buy Now

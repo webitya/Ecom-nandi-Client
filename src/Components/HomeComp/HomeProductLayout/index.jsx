@@ -18,12 +18,16 @@ const HomeProductsLayoutEl = () => {
     setLoading(true);
     try {
       const response = await useRequestApi(`api/product/getFilterProduct?page=${page}`, "POST", { page: page });
+      console.log(response);
+
       if (response.products.length === 0) {
         setHasMore(false); // No more products to load
       } else {
         dispatch(updateProduct([...Products, ...response.products])); // Append new products
       }
     } catch (error) {
+      console.log(error);
+
       setError(error.message || "An error occurred, please try again later.");
     } finally {
       setLoading(false);
@@ -37,7 +41,7 @@ const HomeProductsLayoutEl = () => {
 
   const handleLoadMore = () => {
     if (hasMore) {
-      setPage((prevPage) => prevPage + 1); // Increment page number
+      setPage((prevPage) => prevPage + 1);
     }
   };
 
@@ -69,7 +73,7 @@ const HomeProductsLayoutEl = () => {
         {Products &&
           Products.length > 0 &&
           Products.map((product) => (
-            <ProductCardEl key={product.id} product={product} />
+            <ProductCardEl key={product._id} product={product} />
           ))}
       </div>
 
