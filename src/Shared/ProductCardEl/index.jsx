@@ -1,13 +1,22 @@
 import { DollarOutlined, HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Card } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const ProductCardEl = ({ product }) => {
+
+    const navigate = useNavigate()
+
+    const handleProductClick = (id) => {
+        navigate(`/productdetails?s=${id}`)
+    }
+
+
     return (
         <Card
             hoverable
             className="relative rounded-lg overflow-hidden shadow-md border border-gray-300 transition-transform duration-300 max-w-[300px] transform hover:scale-105"
             cover={
-                <div className="relative  w-full h-[140px] md:h-[200px] bg-gray-200 overflow-hidden">
+                <div onClick={() => handleProductClick(product._id)} className="relative  w-full h-[140px] md:h-[200px] bg-gray-200 overflow-hidden">
                     <img
                         src={product.image[0]}
                         alt={product.name}
