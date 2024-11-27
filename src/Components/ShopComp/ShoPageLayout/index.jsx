@@ -154,7 +154,7 @@ const ShopPageLayoutEl = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-1 md:p-6">
         <Button
           type="primary"
           icon={<FilterOutlined />}
@@ -163,20 +163,20 @@ const ShopPageLayoutEl = () => {
         >
           Filter
         </Button>
-
         {loading ? (
           <div className="flex justify-center items-center h-96">
             <Spin indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />} />
           </div>
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] grid-cols-2 gap-2 md:gap-6 px-0">
             {products.map((product) => (
-              <ProductCardEl product={product} />
+              <ProductCardEl key={product.id} product={product} />
             ))}
           </div>
         ) : (
           <p className="text-gray-500 text-center mt-16">No products found.</p>
         )}
+
       </div>
     </div>
   );
