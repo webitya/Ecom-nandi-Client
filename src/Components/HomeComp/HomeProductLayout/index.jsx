@@ -7,45 +7,47 @@ import { useRequestApi } from "../../../hooks/useRequestApi";
 
 const HomeProductsLayoutEl = () => {
   const dispatch = useDispatch();
+  const { products, currentPage, hasMore } = useSelector((state) => state.homeProductsData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [page, setPage] = useState(1); // Initialize page state
-  const [hasMore, setHasMore] = useState(true); // Track if there are more products to load
 
-  const Products = useSelector((state) => state.homeProductsData.value);
-
-  const fetchProducts = async () => {
+  const fetchProducts = async (page) => {
     setLoading(true);
     try {
-      const response = await useRequestApi(`api/product/getFilterProduct?page=${page}`, "POST", { page: page });
+      const response = await useRequestApi(`api/product/getFilterProduct?page=${page}`, "POST", {
+        page,
+        limit: 5,
+      });
       console.log(response);
-
-      if (response.products.length === 0) {
-        setHasMore(false); // No more products to load
-      } else {
-        dispatch(updateProduct([...Products, ...response.products])); // Append new products
-      }
-    } catch (error) {
-      console.log(error);
-
-      setError(error.message || "An error occurred, please try again later.");
+      dispatch(
+        updateProduct({
+          products: response.products,
+          currentPage: page,
+          hasMore: response.products.length > 0,
+        })
+      );
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "An error occurred while fetching products.");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
-
-  const handleLoadMore = () => {
-    if (hasMore) {
-      setPage((prevPage) => prevPage + 1);
+  const loadMore = () => {
+    if (hasMore && !loading) {
+      fetchProducts(currentPage + 1);
     }
   };
 
-  if (loading && page === 1) {
+
+  useEffect(() => {
+    if (products.length === 0) {
+      fetchProducts(1); // Fetch only if no data exists
+    }
+  }, [products]);
+
+  if (loading && products.length === 0) {
     return (
       <div className="flex justify-center items-center h-60">
         <Spin size="large" tip="Loading products..." />
@@ -69,26 +71,30 @@ const HomeProductsLayoutEl = () => {
         </h1>
       </div>
 
-      <div className="grid sm:gap-6 gap-1 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
-        {Products &&
-          Products.length > 0 &&
-          Products.map((product) => (
+      <div className="grid sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] grid-cols-2 gap-2 md:gap-6 px-0">
+        {products &&
+          products.map((product) => (
             <ProductCardEl key={product._id} product={product} />
           ))}
       </div>
-
+      {
+        loading && <div className="flex justify-center items-center h-60">
+          <Spin size="large" tip="Loading products..." />
+        </div>
+      }
       {hasMore && (
         <div className="flex justify-center mt-6">
           <Button
             type="primary"
             size="large"
             loading={loading}
-            onClick={handleLoadMore}
+            onClick={loadMore}
           >
             Load More
           </Button>
         </div>
       )}
+
     </div>
   );
 };

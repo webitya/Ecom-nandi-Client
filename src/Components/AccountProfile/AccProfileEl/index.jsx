@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Input, Tooltip, Modal } from 'antd';
+import { useSelector } from 'react-redux';
+import { Button, Tooltip, Modal } from 'antd';
 import {
   HomeOutlined,
   CreditCardOutlined,
@@ -11,12 +12,9 @@ import { Link } from 'react-router-dom';
 import ProfileEditEl from './ProfileEditEl';
 
 const AccProfileEl = () => {
-  const [profileData, setProfileData] = useState({
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-  });
 
+  const userState = useSelector((state) => state.user.value)
+  console.log(userState);
   const [isEditable, setIsEditable] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
@@ -36,7 +34,7 @@ const AccProfileEl = () => {
         <p
           className="w-full sm:w-64 text-ellipsis overflow-hidden whitespace-nowrap"
         >
-          {profileData[field]}
+          {userState[field]}
         </p>
       </div>
     </div>
@@ -47,7 +45,7 @@ const AccProfileEl = () => {
       {
         isEditable ?
 
-          <ProfileEditEl profile={profileData} setprofile={setProfileData} setEditable={setIsEditable} />
+          <ProfileEditEl setEditable={setIsEditable} />
           :
           <div className="p-6 bg-white shadow-lg rounded-lg mx-auto mb-4" style={{ userSelect: "none" }}>
             <div className='flex items-center justify-between mb-6'>
@@ -62,9 +60,10 @@ const AccProfileEl = () => {
             </div>
 
             {/* Editable Fields */}
-            {renderEditableField('First Name', 'firstName')}
-            {renderEditableField('Last Name', 'lastName')}
+            {renderEditableField('First Name', 'fname')}
+            {renderEditableField('Last Name', 'lname')}
             {renderEditableField('Email', 'email')}
+            {(userState.role !== 'user' && userState.role !== null) && renderEditableField('Role', 'role')}
 
             {/* Navigation Buttons */}
             <div className="sm:mt-8 sm:flex sm:flex-wrap gap-4">
