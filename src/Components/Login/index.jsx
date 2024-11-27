@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import { Spin } from "antd";
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux";
-import { setUser } from "../../redux/features/userSlice/userSlice"; 
+import { setUser } from "../../redux/features/userSlice/userSlice";
 import toast from "react-hot-toast";
 import { useRequestApi } from "../../hooks/useRequestApi";
 
@@ -33,7 +33,8 @@ const LoginEl = () => {
             const response = await useRequestApi('api/auth/login', 'POST', formData);
             console.log(response.user);
             dispatch(setUser({
-                name: response.user.name,
+                fname: response.user.name.split(' ')[0] || null,
+                lname: response.user.name.split(' ')[1] || null,
                 email: response.user.email,
                 role: response.user.role,
             }));
@@ -83,15 +84,15 @@ const LoginEl = () => {
                     <button type="button" className="p-1 rounded-md active:scale-95 border shadow-sm font-semibold" onClick={handleClick}>Google</button>
                     <button className="p-1 rounded-md active:scale-95 border shadow-sm font-semibold" type="button">Facebook</button>
 
-                    <p className="text-sm flex justify-between">  
-                        <Link 
-                            to={"/register"} 
+                    <p className="text-sm flex justify-between">
+                        <Link
+                            to={"/register"}
                             className="text-blue-600 cursor-pointer font-semibold"
                         >
                             Register
                         </Link>
 
-                         <Link 
+                        <Link
                             to={'/Forget'}
                             className="text-blue-600 cursor-pointer font-semibold"
                         >
