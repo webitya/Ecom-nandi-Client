@@ -1,5 +1,3 @@
-
-
 import { Link } from "react-router-dom";
 import { Carousel } from "antd";
 import {
@@ -28,19 +26,12 @@ const products = [
 
 const TopProductCarEl = () => {
   return (
-    <div
-      className="bg-white p-1 rounded-lg shadow-xl"
-      style={{
-        order: 1,
-        height: "calc(100% - 16px)",
-        zIndex: 10,
-      }}
-    >
+    <div className="bg-white p-2 rounded-md shadow-md">
       <Carousel
         autoplay
         dots={false}
         infinite
-        speed={400}
+        speed={300}
         slidesToShow={5}
         responsive={[
           {
@@ -64,18 +55,13 @@ const TopProductCarEl = () => {
         ]}
       >
         {products.map((product, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-center p-4 hover:scale-105 transition-transform duration-300 ease-in-out"
-          >
+          <div key={index} className="flex items-center p-1 transition-transform duration-200 ease-in-out">
             <Link to={product.href}>
               <div
-                className={`flex flex-col items-center bg-gradient-to-r ${product.gradient} p-4 rounded-lg shadow-lg hover:scale-105 transform transition duration-300 ease-in-out`}
+                className={`flex flex-col md:flex-row justify-center items-center bg-gradient-to-r ${product.gradient} p-2 rounded-md shadow-sm hover:shadow-md`}
               >
-                <div className="text-3xl text-white mb-3">
-                  {product.icon}
-                </div>
-                <span className="font-semibold text-white text-lg">
+                <div className="text-lg md:text-2xl flex items-center text-white">{product.icon}</div>
+                <span className="text-sm md:text-base font-medium text-white mt-1 md:mt-0 md:ml-2">
                   {product.title}
                 </span>
               </div>

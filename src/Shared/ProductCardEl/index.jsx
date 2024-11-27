@@ -10,7 +10,6 @@ const ProductCardEl = ({ product }) => {
         navigate(`/productdetails?s=${id}`)
     }
 
-
     return (
         <Card
             hoverable
@@ -30,7 +29,7 @@ const ProductCardEl = ({ product }) => {
             }
         >
             {/* Product Name */}
-            <div className="mb-2">
+            <div className="mb-1">
                 <h3 className="text-sm md:text-base font-medium text-gray-800 truncate">
                     {product.name}
                 </h3>
