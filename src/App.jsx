@@ -61,9 +61,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
           <Route path="/add-product" element={<AddProduct />} />
           <Route path="/redirecting" element={<Redirecting />} />
-
-          <Route path="/owner" element={<Owner />} />
-
+          <Route path="/owner/*" element={<Owner />} />
           <Route path="/productDetails" element={<ProductDetailsPage />} />
 
         </Routes>

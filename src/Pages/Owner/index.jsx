@@ -1,4 +1,11 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import OwnerLayoutEl from "../../Components/OwnerComponent/OwnerLayoutEl"
 import LayoutEl from "../../Shared/LayoutEl"
+import OwnerDashBoardEl from "../../Components/OwnerComponent/OwnerDashboardEl"
+import OwnerPanditChain from "../../Components/OwnerComponent/PanditChain"
+import OwnerSellerChain from "../../Components/OwnerComponent/SellerChain"
+import OwnerPanditAll from "../../Components/OwnerComponent/OwnerPanditAll"
+import OwnerSellerAll from "../../Components/OwnerComponent/OwnerSellerAll"
 
 
 
@@ -6,7 +13,20 @@ const Owner=()=>{
     return(
         <>
           <LayoutEl>
-            <h1>Aditya</h1>
+
+            <div className="relative">
+            <OwnerLayoutEl>
+              
+              <Routes>
+                  <Route path="/" element={<OwnerDashBoardEl/>} />
+                  <Route path="/panditRequest" element={<OwnerPanditChain/>} />
+                  <Route path="/sellerRequest" element={<OwnerSellerChain/>} />
+                  <Route path="/pandits" element={<OwnerPanditAll/>} />
+                  <Route path="/sellers" element={<OwnerSellerAll/>} />
+              </Routes>
+            
+          </OwnerLayoutEl>
+            </div>
           </LayoutEl>
         
         </>
