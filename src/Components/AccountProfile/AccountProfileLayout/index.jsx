@@ -18,17 +18,15 @@ import AccAddressEl from '../AccAddressEl';
 import AccPanditEl from '../AccPanditEl';
 import AccSellerEl from '../AccSellerEl';
 import AccSettingEl from '../AccSettingEl';
-import AccRegisterPanditEl  from '../AccRegisterPanditEl';
+import AccRegisterPanditEl from '../AccRegisterPanditEl';
 import AccRegisterSellerEl from '../AccRegisterSellerEl';
 
 const AccountProfileLayout = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [drawerVisible, setDrawerVisible] = useState(false);
   const navigate = useNavigate();
-  // Example user object. Replace with actual user data.
-  const user = { role: 'user' }; // Example: User has both roles.
+  const user = { role: 'user' };
 
-  // Dynamically create menu items based on user roles
   const menuItems = [
     { key: 'profile', label: 'Profile', icon: <UserOutlined /> },
     { key: 'cart', label: 'Cart', icon: <ShoppingCartOutlined /> },
