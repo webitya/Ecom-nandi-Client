@@ -16,7 +16,7 @@ const CustomDrawer = ({ toggleDrawer, isDrawerOpen, handleSearchResultClick, han
     { label: 'Shop', href: '/shop' },
     { label: 'Book Pandit', href: '/book-pandit' },
     { label: 'Offers', href: '/offers' },
-    { label: 'Cart', href: '/cart' },
+    { label: 'Cart', href: 'account/cart' },
     ...(user?.role
       ? [
         { label: 'Account', href: '/account' },
