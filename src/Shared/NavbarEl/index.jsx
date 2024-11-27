@@ -18,7 +18,6 @@ const NavbarEl = () => {
 
   const user = useSelector(state => state.user.value)
 
-
   useEffect(() => {
     const handleScroll = () => setIsSticky(window.scrollY > 150);
     window.addEventListener('scroll', handleScroll);
@@ -130,7 +129,6 @@ const NavbarEl = () => {
               </div>
             )}
           </div>
-
 
           {navigationLinks.map((link, index) => (
             <Link key={index} to={link.href} className="navlink">

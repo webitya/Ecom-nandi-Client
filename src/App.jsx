@@ -26,10 +26,10 @@ const App = () => {
       const response = await useGetCurrUser();
 
       const userObj = {
-        fname: response?.user.name.split(' ')[0] || '',
-        lname: response?.user.name.split(' ')[1] || '',
-        email: response?.user.email || '',
-        role: response?.user.role || null
+        fname: response?.user?.name.split(' ')[0] || '',
+        lname: response?.user?.name.split(' ')[1] || '',
+        email: response?.user?.email || '',
+        role: response?.user?.role || null
       }
 
       if (response) {
