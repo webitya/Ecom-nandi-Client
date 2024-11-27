@@ -18,7 +18,6 @@ const NavbarEl = () => {
 
   const user = useSelector(state => state.user.value)
 
-
   useEffect(() => {
     const handleScroll = () => setIsSticky(window.scrollY > 150);
     window.addEventListener('scroll', handleScroll);
@@ -93,7 +92,7 @@ const NavbarEl = () => {
     { label: 'Shop', href: '/shop' },
     { label: 'Book Pandit', href: '/book-pandit' },
     { label: 'Offers', href: '/offers' },
-    { label: <ShoppingCartOutlined className="cart-icon" />, href: '/cart' },
+    { label: <ShoppingCartOutlined className="cart-icon" />, href: 'account/cart' },
   ];
 
   return (
@@ -130,7 +129,6 @@ const NavbarEl = () => {
               </div>
             )}
           </div>
-
 
           {navigationLinks.map((link, index) => (
             <Link key={index} to={link.href} className="navlink">

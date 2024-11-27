@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRequestApi } from "../../../../hooks/useRequestApi";
 import { setName } from "../../../../redux/features/userSlice/userSlice";
+import { LoadingOutlined } from "@ant-design/icons";
+
 
 const ProfileEditEl = ({ setEditable }) => {
 
@@ -10,6 +12,7 @@ const ProfileEditEl = ({ setEditable }) => {
 
     const dispatch = useDispatch();
 
+    const [loading, setLoading]= useState(false);
     const [inputValue, setInputValue] = useState({
         fname: ProfileState.fname,
         lname: ProfileState.lname
@@ -22,6 +25,7 @@ const ProfileEditEl = ({ setEditable }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const result =
                 await useRequestApi('api/user/updateProfile', 'PATCH', { name: inputValue.fname + " " + inputValue.lname });
@@ -36,6 +40,8 @@ const ProfileEditEl = ({ setEditable }) => {
         } catch (error) {
             console.log(error);
             setEditable(false);
+        }finally{
+            setLoading(false)
         }
 
     }
@@ -82,15 +88,6 @@ const ProfileEditEl = ({ setEditable }) => {
                 </div>
                 <div className="flex gap-4">
                     <label className="font-semibold sm:block mb-1 w-[5.65rem] hidden">Role:</label>
-                    {/* <input
-                        type="text"
-                        name='role'
-                        placeholder='Role'
-                        value={ProfileState.role}
-                        className={`mb-2 px-3 py-1 text-sm w-full sm:w-[65%] rounded-sm outline outline-1
-                        outline-[#878787cc] opacity-50`}
-                        readOnly
-                    /> */}
                     <p
                         className={`mb-2 px-3 py-1 text-sm w-full sm:w-[65%] rounded-sm outline outline-1
                         outline-[#878787cc] opacity-50`}
@@ -102,9 +99,10 @@ const ProfileEditEl = ({ setEditable }) => {
                 <div className="flex gap-6">
                     <button
                         type="submit"
-                        className="bg-blue-500 text-white px-3 py-1 rounded-md font-bold"
+                        className={` bg-blue-500 text-white px-3 py-1 rounded-md font-bold w-[60px]`}
+                        disabled={loading}
                     >
-                        Save
+                        {loading? <LoadingOutlined />: 'Save'}
                     </button>
                     <button
                         type="button"

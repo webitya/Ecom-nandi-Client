@@ -14,21 +14,21 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   }
-);
+  );
 
-const registractionSellerSchema= z.object({
+const registractionSellerSchema = z.object({
   imageUrl: z.string().min(1, 'Select a shop photo'),
   shop_name: z.string().min(1, 'Shop name is required').regex(/^[1-9]\d*$/, "Enter Shop name"),
   shop_address: z.string('Enter vail value').min(1, 'Enter shop address'),
   shop_contact: z.string()
-  .min(10, 'Contact must be at least 10 digits long')
-  .max(10, 'Contact must be at least 10 digits long')
-  .regex(/^[1-9]\d*$/, "Enter a valid Contact"),
+    .min(10, 'Contact must be at least 10 digits long')
+    .max(10, 'Contact must be at least 10 digits long')
+    .regex(/^[1-9]\d*$/, "Enter a valid Contact"),
 })
 
 
 
-const AccRegisterSellerEl=  () => {
+const AccRegisterSellerEl = () => {
   const [formdata, setFormdata] = useState({
     imageUrl: "",
     shop_name: "",
@@ -93,10 +93,10 @@ const AccRegisterSellerEl=  () => {
     e.preventDefault();
     const result = registractionSellerSchema.safeParse(formdata);
     console.log(result)
-    if(result.success) {
+    if (result.success) {
       const serverData = { ...formdata };
       console.log("Submitting data to server:", serverData);
-    }else{
+    } else {
       const errorMap = result.error.errors.reduce((acc, curr) => {
         acc[curr.path[0]] = curr.message; // Field name and error message
         return acc;
@@ -106,37 +106,37 @@ const AccRegisterSellerEl=  () => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-full flex-col gap-4">
       <div className="p-6 bg-white shadow-lg rounded-lg">
         <h2 className="sm:text-3xl text-xl font-bold mb-6 text-gray-800">Register as Seller</h2>
 
         <form className="mt-8 flex flex-col gap-6" onSubmit={handleSubmit}>
 
           <div className="flex sm:flex-row items-center sm:gap-4 flex-col gap-1 ">
-              <span className="font-semibold w-32 hidden sm:block">Shop Image<span className="text-red-600 font-bold">*</span> :</span>
-              <Upload
+            <span className="font-semibold w-32 hidden sm:block">Shop Image<span className="text-red-600 font-bold">*</span> :</span>
+            <Upload
               listType="picture-circle"
               fileList={fileList}
               onPreview={handlePreview}
               beforeUpload={beforeUpload}
               onRemove={handleRemove}
               showUploadList={{ showRemoveIcon: true }}
-              >
-              {fileList.length >= 1 ? null : <UplaodBtnEl name={'Shop Image'}/>}
-              </Upload>
+            >
+              {fileList.length >= 1 ? null : <UplaodBtnEl name={'Shop Image'} />}
+            </Upload>
 
-              {previewImage && (
+            {previewImage && (
               <Image
-                  wrapperStyle={{ display: "none" }}
-                  preview={{
+                wrapperStyle={{ display: "none" }}
+                preview={{
                   visible: previewOpen,
                   onVisibleChange: (visible) => setPreviewOpen(visible),
                   afterOpenChange: (visible) => !visible && setPreviewImage(""),
-                  }}
-                  src={previewImage}
+                }}
+                src={previewImage}
               />
-              )}
-              {schemaError.imageUrl && <p style={{ color: "red" }}>{schemaError.imageUrl}</p>}
+            )}
+            {schemaError.imageUrl && <p style={{ color: "red" }}>{schemaError.imageUrl}</p>}
           </div>
 
           <div className="flex sm:flex-row sm:items-center sm:gap-4 flex-col items-start gap-1">

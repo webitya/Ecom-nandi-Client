@@ -47,7 +47,7 @@ const AccProfileEl = () => {
 
           <ProfileEditEl setEditable={setIsEditable} />
           :
-          <div className="p-6 bg-white shadow-lg rounded-lg mx-auto mb-4" style={{ userSelect: "none" }}>
+          <div className="p-6 bg-white shadow-lg rounded-lg w-full mb-4" style={{ userSelect: "none" }}>
             <div className='flex items-center justify-between mb-6'>
               <h2 className="sm:text-3xl text-xl font-bold text-gray-800 ">Profile Information</h2>
               <button

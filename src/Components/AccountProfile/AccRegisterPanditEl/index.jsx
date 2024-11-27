@@ -15,16 +15,16 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   }
-);
+  );
 
-const registractionPanditSchema= z.object({
+const registractionPanditSchema = z.object({
   imageUrl: z.string().min(1, 'Select a profile photo'),
   expertise: z.enum(['Marriage', 'Puja in Temples', 'Puja in Domestics']),
   experience: z.string().min(1, 'Experience is required').regex(/^[1-9]\d*$/, "Enter a valid value"),
   contact: z.string()
-  .min(10, 'Contact must be at least 10 digits long')
-  .max(10, 'Contact must be at least 10 digits long')
-  .regex(/^[1-9]\d*$/, "Enter a valid Contact"),
+    .min(10, 'Contact must be at least 10 digits long')
+    .max(10, 'Contact must be at least 10 digits long')
+    .regex(/^[1-9]\d*$/, "Enter a valid Contact"),
   age: z.string().min(2, 'Age must be in double digits').regex(/^[1-9]\d*$/, "Enter a valid age"),
 })
 
@@ -108,10 +108,10 @@ const AccRegisterPanditEl = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = registractionPanditSchema.safeParse(formdata);
-    if(result.success) {
+    if (result.success) {
       const serverData = { ...formdata };
       console.log("Submitting data to server:", serverData);
-    }else{
+    } else {
       const errorMap = result.error.errors.reduce((acc, curr) => {
         acc[curr.path[0]] = curr.message; // Field name and error message
         return acc;
@@ -121,7 +121,7 @@ const AccRegisterPanditEl = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col w-full gap-4">
       <div className="p-6 bg-white shadow-lg rounded-lg">
         <h2 className="sm:text-3xl text-xl font-bold mb-6 text-gray-800">Register as Pandit</h2>
 
@@ -137,7 +137,7 @@ const AccRegisterPanditEl = () => {
               onRemove={handleRemove}
               showUploadList={{ showRemoveIcon: true }}
             >
-              {fileList.length >= 1 ? null : <UplaodBtnEl name={'Profile'}/>}
+              {fileList.length >= 1 ? null : <UplaodBtnEl name={'Profile'} />}
             </Upload>
 
             {previewImage && (
@@ -152,7 +152,7 @@ const AccRegisterPanditEl = () => {
               />
             )}
 
-          {schemaError.imageUrl && <p style={{ color: "red" }}>{schemaError.imageUrl}</p>}
+            {schemaError.imageUrl && <p style={{ color: "red" }}>{schemaError.imageUrl}</p>}
           </div>
 
           <div className="flex sm:flex-row sm:items-center sm:gap-4 flex-col items-start gap-1">
