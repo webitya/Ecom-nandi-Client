@@ -16,6 +16,7 @@ import { useEffect } from "react"
 import { useGetCurrUser } from "./hooks/useGetCurrUser"
 import { setUser } from "./redux/features/userSlice/userSlice"
 import Redirecting from "./Pages/Redirect"
+import Owner from "./Pages/Owner"
 
 const App = () => {
 
@@ -56,6 +57,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
           <Route path="/add-product" element={<AddProduct />} />
           <Route path="/redirecting" element={<Redirecting />} />
+          <Route path="/owner" element={<Owner />} />
         </Routes>
         <Toaster />
       </BrowserRouter>
