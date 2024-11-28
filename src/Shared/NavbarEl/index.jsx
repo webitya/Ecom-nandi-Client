@@ -5,8 +5,9 @@ import { MenuOutlined, CloseOutlined, SearchOutlined, UserOutlined, ShoppingCart
 import CustomDrawer from '../DrawerEl'; // Adjust path based on your project structure
 import './NavbarEl.css';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRequestApi } from '../../hooks/useRequestApi';
+import { setDefault } from '../../redux/features/userSlice/userSlice';
 
 const NavbarEl = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -17,6 +18,7 @@ const NavbarEl = () => {
   const mobileSearchRef = useRef(null)
 
   const user = useSelector(state => state.user.value)
+  const dispatch= useDispatch();
 
   useEffect(() => {
     const handleScroll = () => setIsSticky(window.scrollY > 150);
@@ -30,12 +32,26 @@ const NavbarEl = () => {
     setSearchQuery(e.target.value);
   }
 
+  const handleLogOutClick= async() => {
+    try{
+      localStorage.removeItem('token')
+      await useRequestApi('api/auth/logout', 'POST');
+      setTimeout(() => {
+        dispatch(setDefault());
+      },500)
+      window.location.reload();
+      
+    }catch(error) {
+      console.log(error);
+    }
+  }
+
   const profileMenu = [
     user.role
       ? { key: 'account', label: <Link to="/account">Account</Link> }
-      : { key: 'login', label: <Link to="/login">Login</Link> },
+      : null,
     user.role
-      ? { key: 'logout', label: <Link to="/logout">Logout</Link> }
+      ? { key: 'logout', label: <button on onClick={handleLogOutClick}>Logout</button> }
       : null,
   ].filter(Boolean);
 
