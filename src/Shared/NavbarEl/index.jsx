@@ -120,10 +120,12 @@ const NavbarEl = () => {
     <>
       <nav className={`navbar ${isSticky ? 'sticky-navbar' : ''}`} style={{ top: "-3px", userSelect: "none" }}>
         {/* Logo */}
-        <div className="navbar-brand">
+        <div>
+          <div className='relative'>
           <Link to="/">
-            <img src="/logo.webp" alt="brand-logo" width="50px" />
+            <img src="/Logo-nandi.png" alt="brand-logo" className='!w-[90px]' />
           </Link>
+          </div>
         </div>
 
         <div className="navbar-menu hidden lg:flex items-center">
