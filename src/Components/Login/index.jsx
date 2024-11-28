@@ -39,6 +39,10 @@ const LoginEl = () => {
                 role: response.user.role,
             }));
             localStorage.setItem('token', response?.token)
+            setFormData({
+                email: '',
+                password: ''
+            })
             navigation('/');
         } catch (error) {
             toast.error(error?.response?.data?.message || "Login failed");

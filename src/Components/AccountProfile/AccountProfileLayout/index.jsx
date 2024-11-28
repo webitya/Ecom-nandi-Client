@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { GiftOutlined, MenuOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -20,12 +18,15 @@ import AccSellerEl from '../AccSellerEl';
 import AccSettingEl from '../AccSettingEl';
 import AccRegisterPanditEl from '../AccRegisterPanditEl';
 import AccRegisterSellerEl from '../AccRegisterSellerEl';
+import { useSelector,useDispatch } from 'react-redux';
+import { changeTab } from '../../../redux/features/ActiveTabSlice/activeTabSlice';
 
 const AccountProfileLayout = () => {
-  const [activeTab, setActiveTab] = useState('profile');
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const navigate = useNavigate();
-  const user = { role: 'user' };
+
+  const activeTab= useSelector((state) => state.activeTab.value);
+  const user = { role: 'user' }; 
+  const dispatch= useDispatch();
 
   const menuItems = [
     { key: 'profile', label: 'Profile', icon: <UserOutlined /> },
@@ -71,7 +72,7 @@ const AccountProfileLayout = () => {
           onClick={
             (e) => {
               const { key } = e;
-              setActiveTab(key);
+              dispatch(changeTab(e.key))
             }
           }
           items={menuItems}
@@ -91,8 +92,8 @@ const AccountProfileLayout = () => {
           mode="inline"
           defaultSelectedKeys={['profile']}
           onClick={(e) => {
-            setActiveTab(e.key);
-            setDrawerVisible(false); // Close drawer after selecting a menu item
+            dispatch(changeTab(e.key))
+            setDrawerVisible(false); 
           }}
           items={menuItems}
           className="h-full"
