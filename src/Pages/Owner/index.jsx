@@ -23,12 +23,12 @@ const Owner=()=>{
                   <Route path="/sellerRequest" element={<OwnerSellerChain/>} />
                   <Route path="/pandits" element={<OwnerPanditAll/>} />
                   <Route path="/sellers" element={<OwnerSellerAll/>} />
+                  <Route path="/pandits/:id" element={<div>aditya chutiya hai <span className="text-red-500">*</span></div>}/>
               </Routes>
             
           </OwnerLayoutEl>
             </div>
           </LayoutEl>
-        
         </>
     )
 }

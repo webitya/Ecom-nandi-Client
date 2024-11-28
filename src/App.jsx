@@ -11,13 +11,13 @@ import { useDispatch } from "react-redux"
 import Verify from "./Pages/Verify"
 import NotFound from "./Pages/Notfound"
 import Accounts from "./Pages/Accounts"
-import AddProduct from "./Pages/AddProduct"
 import { useEffect } from "react"
 import { useGetCurrUser } from "./hooks/useGetCurrUser"
 import { setUser } from "./redux/features/userSlice/userSlice"
 import Redirecting from "./Pages/Redirect"
 
 import Owner from "./Pages/Owner"
+import Seller from "./Pages/Seller"
 
 import ProductDetailsPage from "./Pages/ProductDetails"
 
@@ -58,13 +58,13 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/verify/:token" element={<Verify />} />
           <Route path="/account/*" element={<Accounts />} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/add-product" element={<AddProduct />} />
           <Route path="/redirecting" element={<Redirecting />} />
-
           <Route path="/owner/*" element={<Owner />} />
-
+          <Route path="/seller/*" element={<Seller />} />
+          {/* <Route path="/pandit/*" element={<Pandit />} /> */}
           <Route path="/productDetails" element={<ProductDetailsPage />} />
+          <Route path='/seller' element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />
       </BrowserRouter>

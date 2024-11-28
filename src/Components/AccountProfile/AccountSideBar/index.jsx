@@ -46,7 +46,7 @@ export const AccountSidebar = () => {
         },
         {
             path: "panditRegistrations",
-            name: "Book you pandit",
+            name: "Pandit Registration",
             icon: <BookOutlined />,
         },
         {
