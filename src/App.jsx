@@ -20,6 +20,9 @@ import Owner from "./Pages/Owner"
 import Seller from "./Pages/Seller"
 
 import ProductDetailsPage from "./Pages/ProductDetails"
+import { useRequestApi } from "./hooks/useRequestApi"
+import { setCartItem } from "./redux/features/CartItemSlice/CartItemSlice"
+import { useGetCartItems } from "./hooks/useGetCartItems"
 
 
 const App = () => {
@@ -28,23 +31,32 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await useGetCurrUser();
+      try {
+        const [userResponse, cartResponse] = await Promise.all([
+          useGetCurrUser(),
+          useGetCartItems()
+        ]);
+        if (cartResponse.length) {
+          dispatch(setCartItem(cartResponse));
+        }
+        const userObj = {
+          fname: userResponse?.user?.name.split(' ')[0] || '',
+          lname: userResponse?.user?.name.split(' ')[1] || '',
+          email: userResponse?.user?.email || '',
+          role: userResponse?.user?.role || null,
+        };
 
-      const userObj = {
-        fname: response?.user?.name.split(' ')[0] || '',
-        lname: response?.user?.name.split(' ')[1] || '',
-        email: response?.user?.email || '',
-        role: response?.user?.role || null
+        if (userResponse) {
+          dispatch(setUser(userObj));
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
+    };
 
-      if (response) {
-        dispatch(
-          setUser(userObj)
-        )
-      }
-    }
-    fetchData()
-  }, []);
+    fetchData();
+  }, [dispatch]);
+
 
   const display = (
     <>

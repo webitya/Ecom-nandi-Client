@@ -18,12 +18,11 @@ export const BookPanditFormEl = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form Data:', formData);
         // Handle form submission here (e.g., send data to backend)
     };
 
-    const display=(
-      
+    const display = (
+
         <form onSubmit={handleSubmit} className="w-full max-w-lg bg-white p-8 rounded-sm shadow-lg">
             <h2 className="text-2xl font-semibold text-center mb-6">Booking Pandit Now</h2>
 
@@ -117,7 +116,7 @@ export const BookPanditFormEl = () => {
                 Book Now
             </button>
         </form>
- 
+
     )
     return display
 };

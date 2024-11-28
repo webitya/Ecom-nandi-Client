@@ -14,7 +14,6 @@ import ProfileEditEl from './ProfileEditEl';
 const AccProfileEl = () => {
 
   const userState = useSelector((state) => state.user.value)
-  console.log(userState);
   const [isEditable, setIsEditable] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 

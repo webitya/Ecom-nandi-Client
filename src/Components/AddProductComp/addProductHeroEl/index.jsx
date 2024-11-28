@@ -70,14 +70,12 @@ export const AddProductHero = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         try {
-            console.log('Submitting product data:', productData);  // Debugging log
 
             const validatedData = productSchema.parse({
                 ...productData,
                 // quantity: parseInt(productData.quantity),  // Uncomment if you want to parse quantity as a number
             });
 
-            console.log("Validated Data:", validatedData); // This will log the validated data
 
             setErrors({});
 

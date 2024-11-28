@@ -92,10 +92,8 @@ const AccRegisterSellerEl = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = registractionSellerSchema.safeParse(formdata);
-    console.log(result)
     if (result.success) {
       const serverData = { ...formdata };
-      console.log("Submitting data to server:", serverData);
     } else {
       const errorMap = result.error.errors.reduce((acc, curr) => {
         acc[curr.path[0]] = curr.message; // Field name and error message
