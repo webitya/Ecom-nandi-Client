@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Dropdown, Menu } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button, Dropdown, Menu, Spin } from 'antd';
 import { MenuOutlined, CloseOutlined, SearchOutlined, UserOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import CustomDrawer from '../DrawerEl'; // Adjust path based on your project structure
+import CustomDrawer from '../DrawerEl';
 import './NavbarEl.css';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,8 @@ const NavbarEl = () => {
   const [searchResult, setSearchResult] = useState([])
   const searchDivRef = useRef(null)
   const mobileSearchRef = useRef(null)
+  const navigate = useNavigate()
+  const [loader, setLoader] = useState(false)
 
   const user = useSelector(state => state.user.value)
   const dispatch= useDispatch();
@@ -57,6 +59,7 @@ const NavbarEl = () => {
 
   useEffect(() => {
     const getSearchData = async () => {
+      setLoader(true)
       try {
         const response = await useRequestApi(`api/product/getSearchProduct?s=${searchQuery}`, 'POST')
         console.log(response);
@@ -64,6 +67,8 @@ const NavbarEl = () => {
       } catch (error) {
         setSearchResult([])
         console.log(error);
+      } finally {
+        setLoader(false)
       }
     }
     if (searchQuery !== '') {
@@ -108,7 +113,7 @@ const NavbarEl = () => {
     { label: 'Shop', href: '/shop' },
     { label: 'Book Pandit', href: '/book-pandit' },
     { label: 'Offers', href: '/offers' },
-    { label: <ShoppingCartOutlined className="cart-icon" />, href: '/cart' },
+    { label: <ShoppingCartOutlined className="cart-icon" />, href: 'account/cart' },
   ];
 
   return (
@@ -131,19 +136,34 @@ const NavbarEl = () => {
               onChange={handleSearchChange}
               className="search-input w-full border-none focus:outline-none focus:ring-0 text-sm text-gray-700 placeholder-gray-400"
             />
-            {searchResult && searchResult.length > 0 && (
-              <div className="absolute left-0 top-full mt-2 w-full bg-white shadow-lg rounded-lg border border-gray-200 z-10">
-                {searchResult.map((data) => (
-                  <div
-                    key={data._id}
-                    className="hover:bg-gray-100 p-2 cursor-pointer transition-colors duration-200"
-                    onClick={() => handleSearchResultClick(data._id)}
-                  >
-                    <p className="text-sm text-gray-700 truncate">{data.name}</p>
-                  </div>
-                ))}
+            {searchResult && searchResult.length > 0 &&
+              <div className="absolute left-0 top-full max-h-[200px] scrollbar-hide overflow-auto mt-2 w-full bg-white shadow-lg rounded-[20px] border border-gray-200 z-10">
+                {
+                  searchResult.map((data) => (
+                    <div
+                      key={data._id}
+                      className="hover:bg-gray-100 p-3 cursor-pointer transition-colors duration-200 flex items-center gap-3"
+                      onClick={() => navigate(`/productDetails?s=${data._id}`)}
+                    >
+                      {/* Optional: Add a thumbnail if available */}
+                      <img
+                        src={data.image || "https://via.placeholder.com/40"}
+                        alt={data.name}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <p className="text-sm text-gray-700 truncate">{data.name}</p>
+                    </div>
+                  ))
+                }
               </div>
-            )}
+
+            }
+            {
+              loader && <div className=' absolute top-1 right-3'>
+                <Spin size='small' />
+              </div>
+            }
+
           </div>
 
           {navigationLinks.map((link, index) => (

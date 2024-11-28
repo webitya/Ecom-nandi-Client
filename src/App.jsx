@@ -57,15 +57,14 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verify/:token" element={<Verify />} />
-          <Route path="/account" element={<Accounts />} />
+          <Route path="/account/*" element={<Accounts />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/add-product" element={<AddProduct />} />
           <Route path="/redirecting" element={<Redirecting />} />
 
-          <Route path="/owner" element={<Owner />} />
+          <Route path="/owner/*" element={<Owner />} />
 
           <Route path="/productDetails" element={<ProductDetailsPage />} />
-
         </Routes>
         <Toaster />
       </BrowserRouter>

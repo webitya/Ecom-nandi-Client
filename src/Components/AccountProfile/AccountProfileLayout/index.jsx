@@ -16,7 +16,7 @@ import AccAddressEl from '../AccAddressEl';
 import AccPanditEl from '../AccPanditEl';
 import AccSellerEl from '../AccSellerEl';
 import AccSettingEl from '../AccSettingEl';
-import AccRegisterPanditEl  from '../AccRegisterPanditEl';
+import AccRegisterPanditEl from '../AccRegisterPanditEl';
 import AccRegisterSellerEl from '../AccRegisterSellerEl';
 import { useSelector,useDispatch } from 'react-redux';
 import { changeTab } from '../../../redux/features/ActiveTabSlice/activeTabSlice';
