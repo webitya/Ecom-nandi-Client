@@ -1,16 +1,32 @@
 import React, { useState } from "react";
+import { useAddToCart } from "../../../hooks/useAddToCart";
 
 const ShowDetailsEl = ({ product }) => {
     const { name, price, discountPrice, category, image } = product;
     const [selectedImage, setSelectedImage] = useState(image[0]);
 
-    const handleBuyNow = () => {
-        alert("Proceeding to Buy Now!");
-        // Add your logic for the Buy Now button, e.g., navigation to checkout
+    const handleBuyNow = async () => {
+
     };
 
-    const handleAddToCart = () => {
-        alert("Product added to cart!");
+    const handleAddToCart = async () => {
+        const response = await useAddToCart(product._id)
+
+        if (response) {
+            toast.success("Product added to cart")
+            dispatch(addProductToCart({
+                product: {
+                    _id: product?._id,
+                    name: product?.name,
+                    image: product?.image,
+                    price: Number(product?.price),
+                    category: product?.category,
+                    description: product?.description,
+                    discountPrice: Number(product?.discountPrice),
+                },
+                quantity: 1
+            }))
+        }
         // Add your logic for adding the product to the cart
     };
 

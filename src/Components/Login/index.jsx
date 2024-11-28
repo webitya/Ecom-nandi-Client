@@ -27,11 +27,9 @@ const LoginEl = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
         try {
             setIsLoading(true);
             const response = await useRequestApi('api/auth/login', 'POST', formData);
-            console.log(response.user);
             dispatch(setUser({
                 fname: response.user.name.split(' ')[0] || null,
                 lname: response.user.name.split(' ')[1] || null,
@@ -53,7 +51,7 @@ const LoginEl = () => {
 
     const handleClick = async () => {
         try {
-            window.location.href = import.meta.env.VITE_BASE_URL+'/api/auth/google';
+            window.location.href = import.meta.env.VITE_BASE_URL + '/api/auth/google';
         } catch (error) {
             console.log(error);
         }
