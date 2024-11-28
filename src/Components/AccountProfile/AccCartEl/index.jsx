@@ -1,212 +1,166 @@
-
-
 import { useEffect, useState } from "react";
-import { Card, Col, Row, InputNumber } from "antd";
-import { DeleteOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { Card, Col, Row, InputNumber, Button, Spin } from "antd";
+import { DeleteOutlined, LoadingOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { removeCartItem, updateCartItemQuantity } from "../../../redux/features/CartItemSlice/CartItemSlice";
+import { useRemoveFromCart } from "../../../hooks/useRemovefromCart";
 import toast from "react-hot-toast";
+import { useUpdateCartQuantity } from "../../../hooks/useUpdateCartQuantity";
 
 const AccCartEl = () => {
-  const dummyData = [
-    {
-      id: 1,
-      name: "Wireless Headphones with Extra Long Name for Testing",
-      description:
-        "Noise-cancelling wireless headphones with superior sound quality, long-lasting battery, and comfortable design.",
-      price: '₹7499',
-      quantity: 1,
-      category: "electronics",
-      images: ["https://via.placeholder.com/150"],
-    },
-    {
-      id: 2,
-      name: "Smartphone Case",
-      description: "Durable and stylish case for smartphones.",
-      price: 599,
-      quantity: 2,
-      category: "accessories",
-      images: ["https://via.placeholder.com/150"],
-    },
-  ];
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalDiscount, setTotalDiscount] = useState(0);
+  const [loadingState, setLoadingState] = useState({}); // Track loading state for each button
+  const dispatch = useDispatch();
+  const cartItem = useSelector((state) => state.cartItems.values);
+
+  useEffect(() => {
+    let amount = 0;
+    let discount = 0;
+
+    cartItem.forEach((items) => {
+      const productPrice = Number(items.product.price);
+      const discountPrice = Number(items.product.discountPrice);
+      const quantity = Number(items.quantity);
+
+      amount += productPrice * quantity;
+      discount += discountPrice * quantity;
+    });
+
+    setTotalAmount(amount);
+    setTotalDiscount(discount);
+  }, [cartItem]);
+
+  const handleRemove = async (id) => {
+    setLoadingState((prev) => ({ ...prev, [id]: true }));
+    const response = await useRemoveFromCart(id);
+    if (response) {
+      dispatch(removeCartItem(id));
+      toast.success("Product removed successfully");
+    }
+    setLoadingState((prev) => ({ ...prev, [id]: false }));
+  };
+
+  const handleIncreaseQuantity = async (id, currentQuantity) => {
+    const response = await useUpdateCartQuantity(id, currentQuantity + 1)
+    if (response) {
+      dispatch(updateCartItemQuantity({ id, quantity: currentQuantity + 1 }));
+    }
+  };
+
+  const handleDecreaseQuantity = (id, currentQuantity) => {
+    if (currentQuantity > 1) {
+      dispatch(updateCartItemQuantity({ id, quantity: currentQuantity - 1 }));
+    }
+  };
 
   return (
-    <div className="md:px-12 px-6 md:py-6 py-3">
-  <h2 className="md:text-3xl text-xl font-bold mb-6 text-gray-800">Your Cart</h2>
-  <div className="flex flex-col gap-4">
-    {dummyData.map((items) => {
-      return (
-        <div
-          className="md:p-6 p-3 bg-white md:shadow-lg shadow-sm rounded-lg flex flex-col lg:flex-row gap-4 sm:max-w-[840px] w-full mx-auto"
-          key={items.id}
-        >
-          <div className="flex gap-2.5 items-center">
-            <img
-              src={items.images}
-              alt="product image"
-              className="sm:h-28 sm:w-28 h-20 w-20 object-cover rounded"
-            />
-            <h3 className="md:text-xl sm:text-lg text-base font-semibold lg:hidden block">{items.name}</h3>
-          </div>
-          <div className="flex flex-col gap-2 flex-grow">
-            <h3 className="sm:text-xl text-sm font-semibold lg:block hidden">{items.name}</h3>
-            <p className="sm:text-sm text-xs font-light text-[#878787] whitespace-nowrap text-ellipsis overflow-hidden w-[270px] lg:w-full">
-              {items.description}
-            </p>
-            <span className="text-sm font-semibold text-[#878787] capitalize">{items.category}</span>
+    <div className="md:px-12 w-full px-6 md:py-6 py-3">
+      <h2 className="md:text-3xl text-xl font-bold mb-6 text-gray-800">Your Cart</h2>
+      <div className="flex w-full flex-col gap-4">
+        {cartItem && cartItem.length ? (
+          cartItem.map((items) => {
+            const isLoading = loadingState[items.product._id] || false; // Check individual button loading state
+            return (
+              <div
+                className="md:p-6 p-3 bg-white md:shadow-lg shadow-sm rounded-lg flex flex-col lg:flex-row gap-4 sm:max-w-[840px] w-full mx-auto"
+                key={items?.product?._id}
+              >
+                <div className="flex gap-2.5 items-center">
+                  <img
+                    src={items?.product?.image?.[0]}
+                    alt="product image"
+                    className="sm:h-28 sm:w-28 h-20 w-20 object-cover rounded"
+                  />
+                  <h3 className="md:text-xl sm:text-lg text-base font-semibold lg:hidden block">
+                    {items?.product?.name}
+                  </h3>
+                </div>
+                <div className="flex flex-col gap-2 flex-grow">
+                  <h3 className="sm:text-xl text-sm font-semibold lg:block hidden">
+                    {items?.product?.name}
+                  </h3>
+                  <p className="sm:text-sm text-xs font-light text-[#878787] whitespace-nowrap text-ellipsis overflow-hidden w-[270px] lg:w-full">
+                    {items?.product?.descriptions}
+                  </p>
+                  <span className="text-sm font-semibold text-[#878787] capitalize">
+                    {items?.product?.category}
+                  </span>
 
-            <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start">
-              <div className="flex gap-4 items-center">
-                <p className="flex gap-3 items-center">
-                  <span className="text-sm text-[#878787] line-through">{items.price}</span>
-                  <span className="text-lg text-black">{'₹5499'}</span>
-                </p>
+                  <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start">
+                    <div className="flex gap-4 items-center">
+                      <p className="flex gap-3 items-center">
+                        <span className="text-sm text-[#878787] line-through">{items?.product?.price}</span>
+                        <span className="text-lg text-black">{items?.product?.discountPrice}</span>
+                      </p>
 
-                <p className="flex gap-3 items-center">
-                  <PlusOutlined className="border border-[#878787] rounded-full p-2" />
-                  <span className="w-10 h-6 border border-black text-center">{items.quantity}</span>
-                  <MinusOutlined className="border border-[#878787] rounded-full p-2" />
-                </p>
+                      <p className="flex gap-3 items-center">
+                        <PlusOutlined
+                          onClick={() => handleIncreaseQuantity(items.product._id, items.quantity)}
+                          className="cursor-pointer border border-[#878787] rounded-full p-2"
+                        />
+                        <span className="w-10 h-6 border border-black text-center">{items.quantity}</span>
+                        <MinusOutlined
+                          onClick={() => handleDecreaseQuantity(items.product._id, items.quantity)}
+                          className="cursor-pointer border border-[#878787] rounded-full p-2"
+                        />
+                      </p>
+                    </div>
+
+                    <Button
+                      disabled={isLoading}
+                      onClick={() => handleRemove(items?.product?._id)}
+                      className="ml-2 active:scale-[.95]"
+                      type="primary"
+                      danger
+                    >
+                      {isLoading ? (
+                        <>
+                          <Spin indicator={<LoadingOutlined spin />} className="mr-2" /> Remove
+                        </>
+                      ) : (
+                        "Remove"
+                      )}
+                    </Button>
+                  </div>
+                </div>
               </div>
+            );
+          })
+        ) : (
+          <div className="w-full flex justify-center items-center text-xl text-black opacity-65">
+            Empty Cart
+          </div>
+        )}
+      </div>
 
-              <button 
-              className=" lg:bg-white lg:p-0 lg:rounded-none lg:text-black bg-red-500 text-white py-1 px-4 rounded-lg hover:bg-red-600 transition-colors font-medium mt-2 sm:mt-0 md:w-fit w-full">
-                Remove
-              </button>
-            </div>
+      {cartItem && cartItem.length ? (
+        <div className="p-6 mt-10 bg-white shadow-lg rounded-lg flex flex-col gap-4 min-w-[450px] sm:max-w-[840px] w-full mx-auto">
+          <div className="flex justify-between items-center">
+            <h2 className="font-semibold">Total Price:</h2>
+            <span> ₹{totalAmount} </span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <h2 className="font-semibold">Discount:</h2>
+            <span>-₹{totalAmount - totalDiscount} </span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <h2 className="font-semibold">Delivery Charges:</h2>
+            <span>Free</span>
+          </div>
+
+          <div className="h-px w-full bg-[#87878738]"></div>
+
+          <div className="flex justify-between items-center">
+            <h2 className="font-semibold">Total Amount:</h2>
+            <span> {totalDiscount} </span>
           </div>
         </div>
-      );
-    })}
-  </div>
-
-  <div className="p-6 mt-10 bg-white shadow-lg rounded-lg flex flex-col gap-4 sm:max-w-[840px] w-full mx-auto">
-    <div className="flex justify-between items-center">
-      <h2 className="font-semibold">Total Price:</h2>
-      <span>₹8099</span>
+      ) : null}
     </div>
-
-    <div className="flex justify-between items-center">
-      <h2 className="font-semibold">Discount:</h2>
-      <span>-₹3019</span>
-    </div>
-
-    <div className="flex justify-between items-center">
-      <h2 className="font-semibold">Delivery Charges:</h2>
-      <span>Free</span>
-    </div>
-
-    <div className="h-px w-full bg-[#87878738]"></div>
-
-    <div className="flex justify-between items-center">
-      <h2 className="font-semibold">Total Amount:</h2>
-      <span>₹5080</span>
-    </div>
-  </div>
-</div>
   );
-}
+};
 
 export default AccCartEl;
-
-// const AccCartEl = () => {
-//   const dummyData = [
-//     {
-//       id: 1,
-//       name: "Wireless Headphones with Extra Long Name for Testing",
-//       description:
-//         "Noise-cancelling wireless headphones with superior sound quality, long-lasting battery, and comfortable design.",
-//       price: "₹7499",
-//       quantity: 1,
-//       category: "electronics",
-//       images: ["https://via.placeholder.com/150"],
-//     },
-//     {
-//       id: 2,
-//       name: "Smartphone Case",
-//       description: "Durable and stylish case for smartphones.",
-//       price: 599,
-//       quantity: 2,
-//       category: "accessories",
-//       images: ["https://via.placeholder.com/150"],
-//     },
-//   ];
-
-//   return (
-//     <div className="md:px-12 px-6 md:py-6 py-3">
-//       <h2 className="md:text-3xl text-xl font-bold mb-6 text-gray-800">
-//         Your Cart
-//       </h2>
-//       <div className="flex flex-col gap-4">
-//         {dummyData.map((items) => (
-//           <div
-//             className="md:p-6 p-3 bg-white md:shadow-lg shadow-sm rounded-lg md:grid md:grid-cols-2 items-center gap-4 sm:max-w-[840px] w-full mx-auto"
-//             key={items.id}
-//           >
-//             <div className="flex gap-2.5 items-center md:col-span-1">
-//               <img
-//                 src={items.images}
-//                 alt="product image"
-//                 className="sm:h-28 sm:w-28 h-20 w-20 object-cover rounded"
-//               />
-//               <h3 className="md:text-xl sm:text-lg text-base font-semibold md:hidden block">
-//                 {items.name}
-//               </h3>
-//             </div>
-//             <div className="flex flex-col gap-2 flex-grow md:col-span-1">
-//               <h3 className="sm:text-xl text-sm font-semibold md:block hidden">
-//                 {items.name}
-//               </h3>
-//               <p className="sm:text-sm text-xs font-light text-[#878787] text-ellipsis overflow-hidden sm:w-auto w-full">
-//                 {items.description}
-//               </p>
-//               <span className="text-sm font-semibold text-[#878787] capitalize">
-//                 {items.category}
-//               </span>
-//               <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start">
-//                 <div className="flex gap-4 items-center lg:flex-row flex-col">
-//                   <p className="flex gap-3 items-center">
-//                     <span className="text-sm text-[#878787] line-through">
-//                       {items.price}
-//                     </span>
-//                     <span className="text-lg text-black">₹5499</span>
-//                   </p>
-//                   <p className="flex gap-3 items-center">
-//                     <PlusOutlined className="border border-[#878787] rounded-full p-2" />
-//                     <span className="w-10 h-6 border border-black text-center">
-//                       {items.quantity}
-//                     </span>
-//                     <MinusOutlined className="border border-[#878787] rounded-full p-2" />
-//                   </p>
-//                 </div>
-//                 <button className="md:bg-white md:p-0 md:rounded-none bg-red-500 text-white py-1 rounded-lg hover:bg-red-600 transition-colors font-medium mt-2 sm:mt-0 md:w-fit w-full">
-//                   Remove
-//                 </button>
-//               </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//       <div className="p-6 mt-10 bg-white shadow-lg rounded-lg flex flex-col gap-4 sm:max-w-[840px] w-full mx-auto">
-//         <div className="flex justify-between items-center">
-//           <h2 className="font-semibold">Total Price:</h2>
-//           <span>₹8099</span>
-//         </div>
-//         <div className="flex justify-between items-center">
-//           <h2 className="font-semibold">Discount:</h2>
-//           <span>-₹3019</span>
-//         </div>
-//         <div className="flex justify-between items-center">
-//           <h2 className="font-semibold">Delivery Charges:</h2>
-//           <span>Free</span>
-//         </div>
-//         <div className="h-px w-full bg-[#87878738]"></div>
-//         <div className="flex justify-between items-center">
-//           <h2 className="font-semibold">Total Amount:</h2>
-//           <span>₹5080</span>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AccCartEl;

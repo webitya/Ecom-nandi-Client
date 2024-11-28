@@ -12,7 +12,7 @@ const ProfileEditEl = ({ setEditable }) => {
 
     const dispatch = useDispatch();
 
-    const [loading, setLoading]= useState(false);
+    const [loading, setLoading] = useState(false);
     const [inputValue, setInputValue] = useState({
         fname: ProfileState.fname,
         lname: ProfileState.lname
@@ -38,9 +38,8 @@ const ProfileEditEl = ({ setEditable }) => {
             setEditable(false);
 
         } catch (error) {
-            console.log(error);
             setEditable(false);
-        }finally{
+        } finally {
             setLoading(false)
         }
 
@@ -102,7 +101,7 @@ const ProfileEditEl = ({ setEditable }) => {
                         className={` bg-blue-500 text-white px-3 py-1 rounded-md font-bold w-[60px]`}
                         disabled={loading}
                     >
-                        {loading? <LoadingOutlined />: 'Save'}
+                        {loading ? <LoadingOutlined /> : 'Save'}
                     </button>
                     <button
                         type="button"

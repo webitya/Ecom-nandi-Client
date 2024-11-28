@@ -17,7 +17,6 @@ export const useRequestApi = async (
             },
             withCredentials: true
         });
-        console.log('useapirequest', response);
         return response.data;
     } catch (error) {
         throw error

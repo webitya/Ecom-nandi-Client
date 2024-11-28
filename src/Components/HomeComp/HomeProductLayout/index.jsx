@@ -18,7 +18,6 @@ const HomeProductsLayoutEl = () => {
         page,
         limit: 5,
       });
-      console.log(response);
       dispatch(
         updateProduct({
           products: response.products,

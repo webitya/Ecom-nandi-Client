@@ -1,13 +1,39 @@
 import { DollarOutlined, HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Card } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useAddToCart } from "../../hooks/useAddToCart";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { addProductToCart } from "../../redux/features/CartItemSlice/CartItemSlice";
 
 const ProductCardEl = ({ product }) => {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const cccc = useSelector((state) => state.cartItems.values)
+    console.log(cccc);
 
     const handleProductClick = (id) => {
         navigate(`/productdetails?s=${id}`)
+    }
+    const handleAddToClick = async (id) => {
+        const response = await useAddToCart(id)
+
+        if (response) {
+            toast.success("Product added to cart")
+            dispatch(addProductToCart({
+                product: {
+                    _id: product?._id,
+                    name: product?.name,
+                    image: product?.image,
+                    price: Number(product?.price),
+                    category: product?.category,
+                    description: product?.description,
+                    discountPrice: Number(product?.discountPrice),
+                },
+                quantity: 1
+            }))
+        }
     }
 
     return (
@@ -15,14 +41,15 @@ const ProductCardEl = ({ product }) => {
             hoverable
             className="relative rounded-lg overflow-hidden shadow-md border border-gray-300 transition-transform duration-300 max-w-[300px] transform hover:scale-105"
             cover={
-                <div onClick={() => handleProductClick(product._id)} className="relative  w-full h-[140px] md:h-[200px] bg-gray-200 overflow-hidden">
+                <div className="relative  w-full h-[140px] md:h-[200px] bg-gray-200 overflow-hidden">
                     <img
+                        onClick={() => handleProductClick(product._id)}
                         src={product.image[0]}
                         alt={product.name}
                         className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
                     />
                     {/* Add to Cart Icon */}
-                    <div className="absolute top-2 right-2 bg-blue-600 text-white p-1 md:p-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-700 transition duration-300">
+                    <div onClick={() => handleAddToClick(product._id)} className="absolute top-2 right-2 bg-blue-600 text-white p-1 md:p-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-700 transition duration-300">
                         <ShoppingCartOutlined className="text-sm md:text-lg" />
                     </div>
                 </div>
