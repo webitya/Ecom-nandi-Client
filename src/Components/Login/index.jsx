@@ -60,9 +60,9 @@ const LoginEl = () => {
     return (
         <div className="px-4 py-12 flex justify-center items-center bg-[#f2f2f2]">
             <div className="flex flex-col gap-4 justify-center bg-white shadow-lg p-8 rounded-xl">
-                <div className="flex flex-col">
-                    <h2 className="text-3xl font-bold text-black text-center">Login to Continue</h2>
-                    <p className="text-sm text-[#71717a] text-center">
+                <div className="flex flex-col items-center">
+                    <h2 className="md:text-3xl text-2xl font-bold text-black">Login to Continue</h2>
+                    <p className="text-sm lg:w-full w-[70%] text-[#71717a] text-center">
                         Enter your details below to log into your account
                     </p>
                 </div>

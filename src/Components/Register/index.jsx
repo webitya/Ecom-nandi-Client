@@ -60,9 +60,9 @@ const RegisterEl = () => {
     return (
         <div className="px-4 py-12 flex justify-center items-center bg-[#f2f2f2]">
             <div className="flex flex-col gap-4 justify-center bg-white shadow-lg p-8 rounded-xl">
-                <div className="flex flex-col">
-                    <h2 className="text-3xl font-bold text-black text-center">Create an Account</h2>
-                    <p className="text-base text-[#71717a] text-center">
+                <div className="flex flex-col items-center">
+                    <h2 className="md:text-3xl text-2xl font-bold text-black text-center">Create an Account</h2>
+                    <p className="text-base lg:w-full w-[90%] text-[#71717a] text-center">
                         Enter your detail below to create new account
                     </p>
                 </div>
@@ -85,9 +85,9 @@ const RegisterEl = () => {
                 </form>
 
                 <div className="flex items-center justify-center gap-2">
-                    <div className="w-[30%] h-px bg-[#71717ab9]"></div>
+                    <div className="w-[20%] h-px bg-[#71717ab9]"></div>
                     <span className="text-xs text-[#71717a] capitalize">or continue with socials</span>
-                    <div className="w-[30%] h-px bg-[#71717a]"></div>
+                    <div className="w-[20%] h-px bg-[#71717a]"></div>
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -107,7 +107,7 @@ const RegisterEl = () => {
                     </button>
                     <p className="text-sm self-center">
                         Already have an account?
-                        <Link to={'/login'} className="text-blue-600 cursor-pointer font-semibold">log In</Link>
+                        <Link to={'/login'} className="text-blue-600 cursor-pointer font-semibold"> log In</Link>
                     </p>
                 </div>
             </div>'
