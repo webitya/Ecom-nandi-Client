@@ -18,7 +18,7 @@ import Redirecting from "./Pages/Redirect"
 
 import Owner from "./Pages/Owner"
 import Seller from "./Pages/Seller"
-
+import Pandit from "./Pages/Pandit"
 import ProductDetailsPage from "./Pages/ProductDetails"
 import { useRequestApi } from "./hooks/useRequestApi"
 import { setCartItem } from "./redux/features/CartItemSlice/CartItemSlice"
@@ -73,6 +73,7 @@ const App = () => {
           <Route path="/redirecting" element={<Redirecting />} />
           <Route path="/owner/*" element={<Owner />} />
           <Route path="/seller/*" element={<Seller />} />
+          <Route path="/pandit/*" element={<Pandit />} />
           {/* <Route path="/pandit/*" element={<Pandit />} /> */}
           <Route path="/productDetails" element={<ProductDetailsPage />} />
           <Route path='/seller' element={<NotFound />} />
