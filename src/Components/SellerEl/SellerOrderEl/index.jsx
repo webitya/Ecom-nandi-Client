@@ -12,7 +12,7 @@ const SellerOrderEl = () => {
         { id: 543231, name: "Rahul Kumar", email: "rahul@gmail.com", phone: "rahul234567", address: "Rahulpur", status: "Delivered" },
         { id: 345678, name: "Sneha Sharma", email: "sneha@gmail.com", phone: "sneha999", address: "Sharmapur", status: "Not Delivered" },
         { id: 123456, name: "Aryan Singh", email: "aryan@gmail.com", phone: "aryan333", address: "Aryanpur", status: "Delivered" },
-        { id: 987654, name: "Priya Verma", email: "priya@gmail.com", phone: "priya222", address: "Verma Nagar", status: "Delivered" },
+        { id: 987654, name: "Raj CEO of Webitya.com", email: "priya@gmail.com", phone: "priya222", address: "Verma Nagar", status: "Delivered" },
         { id: 567890, name: "Rohan Gupta", email: "rohan@gmail.com", phone: "rohan444", address: "Guptapur", status: "Not Delivered" },
     ];
 
