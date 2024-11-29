@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 const CustomDrawer = ({ toggleDrawer, isDrawerOpen, handleSearchResultClick, handleSearchChange, searchQuery, searchResult, mobileSearchRef }) => {
 
   const user = useSelector((state) => state.user.value)
-  console.log(user)
 
   const navigationLinks = [
     { label: 'Home', href: '/' },

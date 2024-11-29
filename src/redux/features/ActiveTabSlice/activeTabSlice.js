@@ -1,18 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState= {
+const initialState = {
     value: 'profile',
 }
 
-const activeTabSlice= createSlice({
+const activeTabSlice = createSlice({
     name: 'activeTab',
     initialState,
     reducers: {
         changeTab: (state, action) => {
-            state.value= action.payload
-        }
+            state.value = action.payload
+        },
+
     }
 });
 
-export const { changeTab }= activeTabSlice.actions;
+export const { changeTab } = activeTabSlice.actions;
 export default activeTabSlice.reducer;
