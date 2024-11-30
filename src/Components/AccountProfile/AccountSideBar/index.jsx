@@ -22,7 +22,8 @@ export const AccountSidebar = () => {
         { path: "orders", name: "My Orders", icon: <ShoppingCartOutlined /> },
         { path: "cart", name: "Shopping Cart", icon: <ShoppingCartOutlined /> },
         { path: "notifications", name: "Notifications", icon: <BellOutlined /> },
-        { path: "panditRegistrations", name: "Book Your Pandit", icon: <BookOutlined /> },
+        { path: "bookPandit", name: "Book your Pandit", icon: <ShopOutlined /> },
+        { path: "panditRegistrations", name: "Pandit Registration", icon: <BookOutlined /> },
         { path: "sellerRegistrations", name: "Seller Registration", icon: <ShopOutlined /> },
         { path: "support", name: "Support & Help", icon: <QuestionCircleOutlined /> },
     ];
@@ -76,8 +77,8 @@ export const AccountSidebar = () => {
                         <Link key={index} to={`${item.path}`}>
                             <li
                                 className={`flex items-center gap-4 px-4 py-3 mx-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-100 transition-all ${location.pathname === `${item.path}`
-                                        ? "bg-blue-50 border-l-4 border-blue-600 text-blue-700 font-semibold"
-                                        : ""
+                                    ? "bg-blue-50 border-l-4 border-blue-600 text-blue-700 font-semibold"
+                                    : ""
                                     }`}
                             >
                                 <span className="text-xl">{item.icon}</span>
