@@ -25,7 +25,6 @@ const addressSchema = z.object({
 });
 
 const AccAddressEl = ({ userId }) => {
-    // const [addresses, setAddresses] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [formState, setFormState] = useState(null);
     const [schemaErrors, setSchemaErrors] = useState({});
@@ -86,6 +85,7 @@ const AccAddressEl = ({ userId }) => {
                 acc[err.path[0]] = err.message;
                 return acc;
             }, {});
+            setLoading(false);
             setSchemaErrors(errors);
             return;
         }
@@ -124,6 +124,7 @@ const AccAddressEl = ({ userId }) => {
     };
 
     const handleFormChange = (e) => {
+        setSchemaErrors({})
         const { name, value } = e.target;
         setFormState({ ...formState, [name]: value });
     };
@@ -182,10 +183,17 @@ const AccAddressEl = ({ userId }) => {
     return (
         <div className="container mx-auto p-6">
             <h2 className="text-2xl font-semibold mb-6">Your Addresses</h2>
+            {
+                pageLoader &&
+                <div className="flex justify-center items-center ">
+                    <Spin size="large" />
+                </div>
+
+            }
 
             <div className="space-y-4">
 
-                {addresses && addresses.length ? addresses.map((address) => (
+                {!pageLoader && (addresses && addresses.length ? addresses.map((address) => (
                     <div key={address._id} className="border-b pb-4 mb-4">
                         <Radio.Group
                             onChange={() => handleSelectAddress(address._id)}
@@ -231,8 +239,8 @@ const AccAddressEl = ({ userId }) => {
                         </div>
                     </div>
                 )) : <div className=' w-full flex justify-center items-center min-w-[20vh]'>
-                    <Spin />
-                </div>}
+                    NO any address saved
+                </div>)}
             </div>
 
             <div className="mt-6">
@@ -250,6 +258,7 @@ const AccAddressEl = ({ userId }) => {
                     <AccAddressFormEl formState={formState} handleSaveAddress={handleSaveAddress} schemaErrors={schemaErrors} handleCancel={handleFormClose} setFormState={setFormState} loading={loading} />
                 )
             }
+
 
             <Modal
                 title="Delete Address"

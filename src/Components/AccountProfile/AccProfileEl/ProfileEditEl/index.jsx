@@ -14,8 +14,8 @@ const ProfileEditEl = ({ setEditable }) => {
 
     const [loading, setLoading] = useState(false);
     const [inputValue, setInputValue] = useState({
-        fname: ProfileState.fname,
-        lname: ProfileState.lname
+        firstName: ProfileState.firstName,
+        lastName: ProfileState.lastName
     })
 
     const handleChange = (e) => {
@@ -28,11 +28,11 @@ const ProfileEditEl = ({ setEditable }) => {
         setLoading(true);
         try {
             const result =
-                await useRequestApi('api/user/updateProfile', 'PATCH', { name: inputValue.fname + " " + inputValue.lname });
+                await useRequestApi('api/user/updateProfile', 'PATCH', { name: inputValue.firstName + " " + inputValue.lastName });
             dispatch(
                 setName({
-                    fname: result.user.name.split(" ")[0] || null,
-                    lname: result.user.name.split(" ")[1] || null,
+                    firstName: result.user.firstName || null,
+                    lastName: result.user.firstName || null,
                 })
             )
             setEditable(false);
@@ -56,7 +56,7 @@ const ProfileEditEl = ({ setEditable }) => {
                         type="text"
                         name='fname'
                         placeholder='First Name'
-                        value={inputValue.fname}
+                        value={inputValue.firstName}
                         onChange={handleChange}
                         className={`mb-2 px-3 py-1 text-sm w-full sm:w-[65%] rounded-sm outline outline-1
                         outline-[#878787cc]`}
@@ -70,7 +70,7 @@ const ProfileEditEl = ({ setEditable }) => {
                         type="text"
                         name='lname'
                         placeholder='Last Name'
-                        value={inputValue.lname}
+                        value={inputValue.lastName}
                         onChange={handleChange}
                         className={`mb-2 px-3 py-1 text-sm w-full sm:w-[65%] rounded-sm outline outline-1
                         outline-[#878787cc]`}

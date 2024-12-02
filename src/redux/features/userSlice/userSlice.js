@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     value: {
-        fname: '',
-        lname: '',
+        firstName: '',
+        lastName: '',
         email: '',
         role: null,
     }
@@ -17,13 +17,13 @@ export const userSlice = createSlice({
             state.value = action.payload;
         },
         setName: (state, action) => {
-            state.value.fname = action.payload.fname;
-            state.value.lname = action.payload.lname
+            state.value.firstName = action.payload.fistName;
+            state.value.lastName = action.payload.lastName
         },
         setDefault: (state) => {
-            state.value= {
-                fname: '',
-                lname: '',
+            state.value = {
+                fistName: '',
+                lastName: '',
                 email: '',
                 role: null,
             }

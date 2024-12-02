@@ -20,7 +20,7 @@ const NavbarEl = () => {
   const [loader, setLoader] = useState(false)
 
   const user = useSelector(state => state.user.value)
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleScroll = () => setIsSticky(window.scrollY > 150);
@@ -34,16 +34,16 @@ const NavbarEl = () => {
     setSearchQuery(e.target.value);
   }
 
-  const handleLogOutClick= async() => {
-    try{
+  const handleLogOutClick = async () => {
+    try {
       localStorage.removeItem('token')
       await useRequestApi('api/auth/logout', 'POST');
       setTimeout(() => {
         dispatch(setDefault());
-      },500)
+      }, 500)
       window.location.reload();
-      
-    }catch(error) {
+
+    } catch (error) {
       console.log(error);
     }
   }
@@ -97,9 +97,7 @@ const NavbarEl = () => {
   const handleSearchResultClick = async (id) => {
     setSearchQuery('');
     setSearchResult([]);
-    console.log(id);
-
-    // history.push(`/product/${data._id}`);
+    // console.log(id);
   }
 
   useEffect(() => {
@@ -111,7 +109,7 @@ const NavbarEl = () => {
 
   const navigationLinks = [
     { label: 'Shop', href: '/shop' },
-    { label: 'Book Pandit', href: '/book-pandit' },
+    { label: 'Book Pandit', href: '/account/bookPandit' },
     { label: 'Offers', href: '/offers' },
     { label: <ShoppingCartOutlined className="cart-icon" />, href: 'account/cart' },
   ];
@@ -122,9 +120,9 @@ const NavbarEl = () => {
         {/* Logo */}
         <div>
           <div className='relative'>
-          <Link to="/">
-            <img src="/Logo-nandi.png" alt="brand-logo" className='!w-[90px]' />
-          </Link>
+            <Link to="/">
+              <img src="/Logo-nandi.png" alt="brand-logo" className='!w-[90px]' />
+            </Link>
           </div>
         </div>
 

@@ -15,6 +15,7 @@ const Redirecting = () => {
             try {
                 localStorage.setItem('token', token);
                 navigate('/')
+                window.location.reload();
             } catch (storageError) {
                 console.error('Error storing token:', storageError);
                 navigate('/login');

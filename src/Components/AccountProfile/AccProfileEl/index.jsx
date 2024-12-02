@@ -17,8 +17,9 @@ const AccProfileEl = () => {
   const [isEditable, setIsEditable] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
+  console.log(userState);
+
   const handleDeleteAccount = () => {
-    // Handle delete logic here
     setDeleteModalVisible(false);
   };
 
@@ -59,8 +60,8 @@ const AccProfileEl = () => {
             </div>
 
             {/* Editable Fields */}
-            {renderEditableField('First Name', 'fname')}
-            {renderEditableField('Last Name', 'lname')}
+            {renderEditableField('First Name', 'firstName')}
+            {renderEditableField('Last Name', 'lastName')}
             {renderEditableField('Email', 'email')}
             {(userState.role !== 'user' && userState.role !== null) && renderEditableField('Role', 'role')}
 

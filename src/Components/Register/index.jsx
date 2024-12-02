@@ -36,7 +36,8 @@ const RegisterEl = () => {
         try {
             setIsLoading(true);
             const response = await useRequestApi('api/auth/register', 'POST', {
-                name: `${formData.first_name} ${formData.last_name}`,
+                firstName: formData.first_name,
+                lastName: formData.last_name,
                 email: formData.email,
                 password: formData.password,
             });
@@ -51,7 +52,7 @@ const RegisterEl = () => {
 
     const handleClick = async () => {
         try {
-            window.location.href = import.meta.env.VITE_BASE_URL+'/api/auth/google';
+            window.location.href = import.meta.env.VITE_BASE_URL + '/api/auth/google';
         } catch (error) {
             console.log(error)
         }

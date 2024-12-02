@@ -6,7 +6,7 @@ import AccCartEl from "../../Components/AccountProfile/AccCartEl"
 import AccAddressEl from "../../Components/AccountProfile/AccAddressEl"
 import AccRegisterPanditEl from "../../Components/AccountProfile/AccRegisterPanditEl"
 import AccRegisterSellerEl from "../../Components/AccountProfile/AccRegisterSellerEl"
-
+import BookPandit from "../../Components/AccountProfile/BookPanditPage"
 
 const Accounts = () => {
     const display = (
@@ -21,6 +21,7 @@ const Accounts = () => {
                             <Route path="/address" element={<AccAddressEl />} />
                             <Route path="/panditRegistrations" element={<AccRegisterPanditEl />} />
                             <Route path="/sellerRegistrations" element={<AccRegisterSellerEl />} />
+                            <Route path="/bookPandit" element={<BookPandit />} />
                         </Routes>
                     }
                 </AccountLayoutEl>
