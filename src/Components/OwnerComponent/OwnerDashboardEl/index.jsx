@@ -27,14 +27,6 @@ const OwnerDashBoardEl = () => {
       path:"pandits"
     },
     {
-      title: "Total Number of Pandit Requests",
-      value: 150,
-      icon: <SolutionOutlined />,
-      gradient: "from-green-500 to-green-300",
-      bgColor: "bg-green-50",
-      path:"panditRequest"
-    },
-    {
       title: "Total Number of Sellers",
       value: 500,
       icon: <ShopOutlined />,
@@ -43,12 +35,12 @@ const OwnerDashBoardEl = () => {
       path:"sellers"
     },
     {
-      title: "Total Number of Seller Requests",
+      title: "Total Number of Role Change Requests",
       value: 220,
       icon: <FileAddOutlined />,
       gradient: "from-purple-500 to-purple-300",
       bgColor: "bg-purple-50",
-      path:"sellerRequest"
+      path:"roleChangeRequest"
     },
   ];
 
