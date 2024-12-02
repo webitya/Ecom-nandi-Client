@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import HomePage from "./Pages/HomePage"
 import ShopPage from "./Pages/ShopPage"
-import BookPandit from "./Pages/BookPanditPage"
+// import BookPandit from "./Pages/BookPanditPage"
 import OffersPage from "./Pages/OffersPage"
 import Register from "./Pages/Register"
 import Login from "./Pages/Login"
@@ -40,8 +40,8 @@ const App = () => {
           dispatch(setCartItem(cartResponse));
         }
         const userObj = {
-          fname: userResponse?.user?.name.split(' ')[0] || '',
-          lname: userResponse?.user?.name.split(' ')[1] || '',
+          fistName: userResponse?.user?.firstName,
+          lastName: userResponse?.user?.lastName,
           email: userResponse?.user?.email || '',
           role: userResponse?.user?.role || null,
         };
@@ -64,7 +64,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/shop" element={<ShopPage />} />
-          <Route path="/book-pandit" element={<BookPandit />} />
+          {/* <Route path="/book-pandit" element={<BookPandit />} /> */}
           <Route path="/offers" element={<OffersPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

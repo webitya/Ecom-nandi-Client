@@ -10,8 +10,6 @@ const ProductCardEl = ({ product }) => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const cccc = useSelector((state) => state.cartItems.values)
-    console.log(cccc);
 
     const handleProductClick = (id) => {
         navigate(`/productdetails?s=${id}`)

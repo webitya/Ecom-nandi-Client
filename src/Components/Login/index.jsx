@@ -30,9 +30,11 @@ const LoginEl = () => {
         try {
             setIsLoading(true);
             const response = await useRequestApi('api/auth/login', 'POST', formData);
+            console.log(response);
+
             dispatch(setUser({
-                fname: response.user.name.split(' ')[0] || null,
-                lname: response.user.name.split(' ')[1] || null,
+                firstName: response.user.firstName,
+                lastName: response.user.lastName,
                 email: response.user.email,
                 role: response.user.role,
             }));
