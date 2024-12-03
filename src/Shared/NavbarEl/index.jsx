@@ -42,9 +42,9 @@ const NavbarEl = () => {
         dispatch(setDefault());
       }, 500)
       window.location.reload();
-
     } catch (error) {
-      console.log(error);
+      console.log(error)
+      window.location.reload();
     }
   }
 
