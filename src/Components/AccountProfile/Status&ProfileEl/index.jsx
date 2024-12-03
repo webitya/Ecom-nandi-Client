@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Modal, Button } from "antd";
 import toast from "react-hot-toast";
 import { useRequestApi } from "../../../hooks/useRequestApi";
@@ -131,7 +130,7 @@ const StatusAndProfileEl = ({ state }) => {
                         {/* Modal: Cancel Confirmation */}
                         <Modal
                             title="Cancel Registration"
-                            visible={showCancelModal}
+                            open={showCancelModal}
                             onOk={confirmCancel}
                             onCancel={() => setShowCancelModal(false)}
                             okText="Yes, Cancel"

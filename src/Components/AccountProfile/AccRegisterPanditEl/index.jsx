@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import StatusAndProfileEl from "../Status&ProfileEl";
 import PanditFormEl from "./PanditFormEl/index.";
 

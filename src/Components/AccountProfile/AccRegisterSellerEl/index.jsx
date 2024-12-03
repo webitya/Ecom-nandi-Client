@@ -1,11 +1,12 @@
 
-import React, { useState } from "react";
-import { Upload, Image } from "antd";
+import React, { useState, useEffect } from "react";
+import { Upload, Image, Spin } from "antd";
 import toast from "react-hot-toast";
 import { useUploadCloudinary } from "../../../hooks/useUploadCloudinary";
 import { z } from "zod";
 import UplaodBtnEl from "../UploadBtnEl";
 import StatusAndProfileEl from "../Status&ProfileEl";
+import { useRegisterSeller } from "../../../hooks/useRegisterSeller";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -18,7 +19,7 @@ const getBase64 = (file) =>
 
 const registractionSellerSchema = z.object({
   imageUrl: z.string().min(1, 'Select a shop photo'),
-  shop_name: z.string().min(1, 'Shop name is required').regex(/^[1-9]\d*$/, "Enter Shop name"),
+  shop_name: z.string().min(1, 'Shop name is required'),
   shop_address: z.string('Enter vail value').min(1, 'Enter shop address'),
   shop_contact: z.string()
     .min(10, 'Contact should be 10 digits long')
@@ -27,6 +28,10 @@ const registractionSellerSchema = z.object({
   pin_code: z.string()
     .min(6, 'Pin Code must be 6 digits long')
     .max(6, 'Pin code must be 6 digits long')
+    .regex(/^[1-9]\d*$/, "Enter valid pin code"),
+  AadhaarNum: z.string().min(12, "Aadhaar number should be 12 digit long")
+    .max(12, "Aadhaar number should be 12 digit long")
+    .regex(/^[1-9]\d*$/, "Enter valid Aadhaar Number")
 })
 
 
@@ -37,9 +42,11 @@ const AccRegisterSellerEl = () => {
     shop_name: "",
     shop_contact: "",
     shop_address: "",
-    pin_code: ""
+    pin_code: "",
+    AadhaarNum: ""
   });
 
+  const [btnLoader, setBtnLoader]= useState(false);
   const [schemaError, setSchemaError] = useState({})
   const [fileList, setFileList] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -98,9 +105,23 @@ const AccRegisterSellerEl = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setBtnLoader(true);
     const result = registractionSellerSchema.safeParse(formdata);
     if (result.success) {
       const serverData = { ...formdata };
+      const data = await useRegisterSeller(serverData)
+      if (data) {
+        toast.success(data)
+      }
+      setFormdata({
+        imageUrl: "",
+        shop_name: "",
+        shop_contact: "",
+        shop_address: "",
+        pin_code: "",
+        AadhaarNum: ""
+      })
+
     } else {
       const errorMap = result.error.errors.reduce((acc, curr) => {
         acc[curr.path[0]] = curr.message; // Field name and error message
@@ -108,6 +129,7 @@ const AccRegisterSellerEl = () => {
       }, {});
       setSchemaError(errorMap);
     }
+    setBtnLoader(false)
   };
 
   return (
@@ -182,6 +204,18 @@ const AccRegisterSellerEl = () => {
             {schemaError.pin_code && <p style={{ color: "red" }}>{schemaError.pin_code}</p>}
           </div>
 
+          <div className="flex sm:flex-row sm:items-center sm:gap-4 flex-col items-start gap-1">
+            <span className="font-semibold w-32 block">Aadhaar Number<span className="text-red-600 font-bold">*</span> :</span>
+            <input
+              type="text"
+              name="AadhaarNum"
+              value={formdata.AadhaarNum}
+              onChange={handleChange}
+              className="outline-none border border-gray-300 px-4 py-1 text-sm rounded-md w-full sm:w-fit"
+              placeholder="Enter Aadhaar no."
+            />
+            {schemaError.AadhaarNum && <p style={{ color: "red" }}>{schemaError.AadhaarNum}</p>}
+          </div>
 
           <div className="flex sm:flex-row sm:items-center sm:gap-4 flex-col items-start gap-1">
             <span className="font-semibold w-32 block">Shop Contact<span className="text-red-600 font-bold">*</span> :</span>
@@ -200,8 +234,8 @@ const AccRegisterSellerEl = () => {
             <button type="button" className="px-4 py-1 rounded-md bg-blue-500">
               Draft
             </button>
-            <button type="submit" className="px-4 py-1 rounded-md bg-green-500">
-              Submit
+            <button type="submit" disabled={btnLoader} className="px-4 py-1 rounded-md bg-green-500">
+              {btnLoader ?<Spin size="small"/> : <span>Submit</span> } 
             </button>
           </div>
         </form>
