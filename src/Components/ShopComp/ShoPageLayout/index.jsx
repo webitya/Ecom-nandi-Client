@@ -43,8 +43,11 @@ const ShopPageLayoutEl = () => {
         page: currentPage,
         limit: 10,
       });
+      console.log(response);
+      
 
       const fetchedProducts = response.products || [];
+      console.log(fetchedProducts)
       if (currentPage === 1) {
         setProducts(fetchedProducts);
       } else {
@@ -100,7 +103,7 @@ const ShopPageLayoutEl = () => {
     <div className="container m-auto flex flex-col lg:flex-row min-h-screen bg-gradient-to-br from-gray-100 to-blue-50">
       {/* Sidebar Filters */}
       <div className="hidden lg:block w-72 bg-white border-r shadow-md p-6">
-        <Dropdown overlay={menu} trigger={["click"]}>
+        <Dropdown menu={menu} trigger={["click"]}>
           <Button className="flex items-center justify-between w-full bg-blue-500 text-white px-4 py-2 rounded-md">
             Sort by: {sortOption} <DownOutlined className="ml-2" />
           </Button>

@@ -48,12 +48,13 @@ const NavbarEl = () => {
     }
   }
 
+  //on key word use
   const profileMenu = [
     user.role
       ? { key: 'account', label: <Link to="/account">Account</Link> }
       : null,
     user.role
-      ? { key: 'logout', label: <button on onClick={handleLogOutClick}>Logout</button> }
+      ? { key: 'logout', label: <button  onClick={handleLogOutClick}>Logout</button> }
       : null,
   ].filter(Boolean);
 
