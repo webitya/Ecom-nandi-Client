@@ -25,8 +25,8 @@ const registractionSellerSchema = z.object({
     .max(10, 'Contact should be 10 digits long')
     .regex(/^[1-9]\d*$/, "Enter a valid Contact"),
   pin_code: z.string()
-  .min(6, 'Pin Code must be 6 digits long')
-  .max(6, 'Pin code must be 6 digits long')
+    .min(6, 'Pin Code must be 6 digits long')
+    .max(6, 'Pin code must be 6 digits long')
 })
 
 
@@ -44,7 +44,9 @@ const AccRegisterSellerEl = () => {
   const [fileList, setFileList] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
-  window.scrollTo(0, 0);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   const beforeUpload = async (file) => {
     if (file.size / 1024 / 1024 > 2) {

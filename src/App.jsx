@@ -23,6 +23,7 @@ import ProductDetailsPage from "./Pages/ProductDetails"
 import { setCartItem } from "./redux/features/CartItemSlice/CartItemSlice"
 import { useGetCartItems } from "./hooks/useGetCartItems"
 import CheckoutPage from "./Pages/CheckoutPage"
+import PaymentSuccess from "./Pages/PamentSuccessPage/PamentSuccess"
 
 
 const App = () => {
@@ -79,10 +80,9 @@ const App = () => {
           {/* <Route path="/pandit/*" element={<Pandit />} /> */}
           <Route path="/productDetails" element={<ProductDetailsPage />} />
           <Route path='/seller' element={<NotFound />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="checkout" element={<CheckoutPage />} />
-
-
+          <Route path="/pamentSuccess" element={<PaymentSuccess />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />
       </BrowserRouter>

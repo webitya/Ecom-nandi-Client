@@ -22,7 +22,7 @@ const ProductCardEl = ({ product }) => {
         if (response) {
             toast.success("Product added to cart")
             dispatch(addProductToCart({
-                product: {
+                products: {
                     _id: product?._id,
                     name: product?.name,
                     image: product?.image,

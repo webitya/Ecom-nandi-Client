@@ -13,13 +13,13 @@ const CartSlices = createSlice({
         },
         removeCartItem(state, action) {
             state.values = state.values.filter(
-                (item) => item.product._id !== action.payload
+                (item) => item.products._id !== action.payload
             );
         },
         updateCartItemQuantity(state, action) {
             const { id, quantity } = action.payload;
             const itemIndex = state.values.findIndex(
-                (item) => item.product._id === id
+                (item) => item.products._id === id
             );
             if (itemIndex >= 0) {
                 state.values[itemIndex].quantity = quantity;

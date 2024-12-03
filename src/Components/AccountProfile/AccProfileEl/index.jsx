@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Tooltip, Modal } from 'antd';
 import {
@@ -17,7 +17,9 @@ const AccProfileEl = () => {
   const [isEditable, setIsEditable] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-  console.log(userState);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   const handleDeleteAccount = () => {
     setDeleteModalVisible(false);
