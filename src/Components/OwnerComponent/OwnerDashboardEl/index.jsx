@@ -2,9 +2,11 @@ import React from "react";
 import {
   UserOutlined,
   TeamOutlined,
-  SolutionOutlined,
   ShopOutlined,
   FileAddOutlined,
+  CreditCardFilled,
+  ProductFilled,
+  PlusCircleFilled,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -35,12 +37,36 @@ const OwnerDashBoardEl = () => {
       path:"sellers"
     },
     {
-      title: "Total Number of Role Change Requests",
+      title: "Pending Role Change Requests",
       value: 220,
       icon: <FileAddOutlined />,
       gradient: "from-purple-500 to-purple-300",
       bgColor: "bg-purple-50",
       path:"roleChangeRequest"
+    },
+    {
+      title: "Pending Payments",
+      value: 12,
+      icon: <CreditCardFilled />,
+      gradient: "from-green-500 to-green-300",
+      bgColor: "bg-green-50",
+      path:"pendingPayment"
+    },
+    {
+      title: "Manage Products",
+      value: 34,
+      icon: <ProductFilled />,
+      gradient: "from-teal-500 to-teal-300",
+      bgColor: "bg-teal-50",
+      path:"manageProducts"
+    },
+    {
+      title: "Add Product",
+      value: null,
+      icon: <PlusCircleFilled />,
+      gradient: "from-orange-500 to-orange-300",
+      bgColor: "bg-orange-50",
+      path:"addProduct"
     },
   ];
 

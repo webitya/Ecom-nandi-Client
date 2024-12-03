@@ -21,9 +21,12 @@ const registractionSellerSchema = z.object({
   shop_name: z.string().min(1, 'Shop name is required').regex(/^[1-9]\d*$/, "Enter Shop name"),
   shop_address: z.string('Enter vail value').min(1, 'Enter shop address'),
   shop_contact: z.string()
-    .min(10, 'Contact must be at least 10 digits long')
-    .max(10, 'Contact must be at least 10 digits long')
+    .min(10, 'Contact should be 10 digits long')
+    .max(10, 'Contact should be 10 digits long')
     .regex(/^[1-9]\d*$/, "Enter a valid Contact"),
+  pin_code: z.string()
+  .min(6, 'Pin Code must be 6 digits long')
+  .max(6, 'Pin code must be 6 digits long')
 })
 
 
@@ -34,6 +37,7 @@ const AccRegisterSellerEl = () => {
     shop_name: "",
     shop_contact: "",
     shop_address: "",
+    pin_code: ""
   });
 
   const [schemaError, setSchemaError] = useState({})
@@ -152,16 +156,29 @@ const AccRegisterSellerEl = () => {
 
           <div className="flex sm:flex-row sm:items-center sm:gap-4 flex-col items-start gap-1">
             <span className="font-semibold w-32 block">Shop Address<span className="text-red-600 font-bold">*</span> :</span>
-            <input
-              type="text"
+            <textarea
               name="shop_address"
               value={formdata.shop_address}
               onChange={handleChange}
-              className="outline-none border border-gray-300 px-4 py-1 text-sm rounded-md w-full sm:w-fit"
+              className="outline-none border border-gray-300 px-4 py-1 text-sm rounded-md w-full md:w-[24rem]"
               placeholder="Enter Shop Address"
-            />
+            ></textarea>
             {schemaError.shop_address && <p style={{ color: "red" }}>{schemaError.shop_address}</p>}
           </div>
+
+          <div className="flex sm:flex-row sm:items-center sm:gap-4 flex-col items-start gap-1">
+            <span className="font-semibold w-32 block">Pin code<span className="text-red-600 font-bold">*</span> :</span>
+            <input
+              type="text"
+              name="pin_code"
+              value={formdata.pin_code}
+              onChange={handleChange}
+              className="outline-none border border-gray-300 px-4 py-1 text-sm rounded-md w-full sm:w-fit"
+              placeholder="Enter pin code"
+            />
+            {schemaError.pin_code && <p style={{ color: "red" }}>{schemaError.pin_code}</p>}
+          </div>
+
 
           <div className="flex sm:flex-row sm:items-center sm:gap-4 flex-col items-start gap-1">
             <span className="font-semibold w-32 block">Shop Contact<span className="text-red-600 font-bold">*</span> :</span>
