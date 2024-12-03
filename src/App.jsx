@@ -20,9 +20,9 @@ import Owner from "./Pages/Owner"
 import Seller from "./Pages/Seller"
 import Pandit from "./Pages/Pandit"
 import ProductDetailsPage from "./Pages/ProductDetails"
-import { useRequestApi } from "./hooks/useRequestApi"
 import { setCartItem } from "./redux/features/CartItemSlice/CartItemSlice"
 import { useGetCartItems } from "./hooks/useGetCartItems"
+import CheckoutPage from "./Pages/CheckoutPage"
 
 
 const App = () => {
@@ -36,11 +36,13 @@ const App = () => {
           useGetCurrUser(),
           useGetCartItems()
         ]);
+        console.log(" cartItems appjs ", cartResponse);
+
         if (cartResponse.length) {
           dispatch(setCartItem(cartResponse));
         }
         const userObj = {
-          fistName: userResponse?.user?.firstName,
+          firstName: userResponse?.user?.firstName,
           lastName: userResponse?.user?.lastName,
           email: userResponse?.user?.email || '',
           role: userResponse?.user?.role || null,
@@ -78,6 +80,9 @@ const App = () => {
           <Route path="/productDetails" element={<ProductDetailsPage />} />
           <Route path='/seller' element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="checkout" element={<CheckoutPage />} />
+
+
         </Routes>
         <Toaster />
       </BrowserRouter>

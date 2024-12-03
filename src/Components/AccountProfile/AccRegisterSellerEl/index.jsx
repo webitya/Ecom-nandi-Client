@@ -40,6 +40,7 @@ const AccRegisterSellerEl = () => {
   const [fileList, setFileList] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
+  window.scrollTo(0, 0);
 
   const beforeUpload = async (file) => {
     if (file.size / 1024 / 1024 > 2) {

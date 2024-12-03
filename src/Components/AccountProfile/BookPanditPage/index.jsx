@@ -5,6 +5,8 @@ import BookPanditLayout from "./BookPandit/BookPanditLayout"
 
 
 const BookPandit = () => {
+    window.scrollTo(0, 0);
+
     const display = (
         <>
             <BookPanditLayout />
