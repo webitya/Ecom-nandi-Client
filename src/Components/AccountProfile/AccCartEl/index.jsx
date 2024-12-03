@@ -16,7 +16,11 @@ const AccCartEl = () => {
   const dispatch = useDispatch();
   const cartItem = useSelector((state) => state.cartItems.values);
   const navigate = useNavigate()
-  window.scrollTo(0, 0);
+  // window.scrollTo(0, 0);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   useEffect(() => {
     let amount = 0;
