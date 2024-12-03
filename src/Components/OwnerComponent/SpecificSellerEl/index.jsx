@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import {
     MailOutlined,
     PhoneOutlined,
@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 
 const SpecificSellerEl = () => {
+    const navigate = useNavigate(); 
     const { id } = useParams();
     const seller = {
         name: "John Doe",
@@ -28,6 +29,14 @@ const SpecificSellerEl = () => {
         <>
             <div className="container mx-auto  bg-white shadow-md rounded-lg border overflow-hidden">
                 {/* Seller Header */}
+                <div className="p-4">
+          <button
+            onClick={() => navigate(-1)}
+            className="px-4 py-2 bg-gray-100 text-gray-600 text-sm rounded-md shadow hover:bg-gray-200 transition-colors duration-200"
+          >
+            ← Back
+          </button>
+        </div>
                 <div className="flex bg-gradient-to-r from-blue-600 via-blue-400 to-blue-300 text-white p-10">
                     <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center overflow-hidden shadow-md border-2 border-white">
                         {seller.profilePicture ? (

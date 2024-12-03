@@ -8,20 +8,21 @@ import {
   HeartOutlined,
   HomeOutlined,
   TrophyOutlined,
-  SmileOutlined,
-  BookOutlined,
+  LinuxOutlined,
+  // SmileOutlined,
+  // BookOutlined,
 } from "@ant-design/icons";
 
 const products = [
-  { title: "Grocery", href: "/grocery-supermart-store", gradient: "from-green-400 to-green-600", icon: <ShoppingCartOutlined /> },
-  { title: "Mobiles", href: "/mobile-phones-store", gradient: "from-blue-400 to-blue-600", icon: <MobileOutlined /> },
-  { title: "Fashion", href: "/fashion-store", gradient: "from-purple-400 to-purple-600", icon: <SkinOutlined /> },
-  { title: "Electronics", href: "/electronics-store", gradient: "from-yellow-400 to-yellow-600", icon: <LaptopOutlined /> },
-  { title: "Beauty", href: "/beauty-personal-care", gradient: "from-pink-400 to-pink-600", icon: <HeartOutlined /> },
-  { title: "Home & Furniture", href: "/home-furniture-store", gradient: "from-teal-400 to-teal-600", icon: <HomeOutlined /> },
-  { title: "Sports", href: "/sports-outdoors-store", gradient: "from-orange-400 to-orange-600", icon: <TrophyOutlined /> },
-  { title: "Toys", href: "/toys-games-store", gradient: "from-indigo-400 to-indigo-600", icon: <SmileOutlined /> },
-  { title: "Books", href: "/books-store", gradient: "from-gray-400 to-gray-600", icon: <BookOutlined /> },
+  { title: "Hawan Samagri", href: "", gradient: "from-green-400 to-green-600", icon: <ShoppingCartOutlined /> },
+  { title: "Flowers", href: "", gradient: "from-blue-400 to-blue-600", icon: <LinuxOutlined /> },
+  { title: "Clothes", href: "", gradient: "from-purple-400 to-purple-600", icon: <SkinOutlined /> },
+  { title: "Festival", href: "", gradient: "from-yellow-400 to-yellow-600", icon: <LaptopOutlined /> },
+  { title: "Sweets", href: "", gradient: "from-pink-400 to-pink-600", icon: <HeartOutlined /> },
+  { title: "Book", href: "", gradient: "from-teal-400 to-teal-600", icon: <HomeOutlined /> },
+  { title: "Gifts", href: "", gradient: "from-orange-400 to-orange-600", icon: <TrophyOutlined /> },
+  // { title: "Toys", href: "/toys-games-store", gradient: "from-indigo-400 to-indigo-600", icon: <SmileOutlined /> },
+  // { title: "Books", href: "/books-store", gradient: "from-gray-400 to-gray-600", icon: <BookOutlined /> },
 ];
 
 const TopProductCarEl = () => {

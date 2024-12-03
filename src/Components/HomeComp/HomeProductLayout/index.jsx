@@ -16,7 +16,7 @@ const HomeProductsLayoutEl = () => {
     try {
       const response = await useRequestApi(`api/product/getFilterProduct?page=${page}`, "POST", {
         page,
-        limit: 5,
+        limit: 10,
       });
       dispatch(
         updateProduct({
