@@ -174,7 +174,7 @@ const NavbarEl = () => {
           ))}
 
           <div className="profile-dropdown">
-            {user.role === 'user' ? (
+            {user.role ? (
               <Dropdown
                 menu={{ items: profileMenu }}
                 trigger={['hover']}

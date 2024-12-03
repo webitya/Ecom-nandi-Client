@@ -12,7 +12,8 @@ const RoleChngRequest = () => {
             email: "aniketchaturvedi309@gmail.com",
             role: "pandit",
             isVerified: false,
-            createdAt: "20/11/2024"
+            createdAt: "20/11/2024",
+            phone: "326216723426"
         },
         {
             _id: "673dbe15f3a20771b874fc62",
@@ -20,7 +21,8 @@ const RoleChngRequest = () => {
             email: "rahul.sharma@example.com",
             role: "seller",
             isVerified: true,
-            createdAt: "25/11/2024"
+            createdAt: "25/11/2024",
+            phone: "345566866878"
         },
         {
             _id: "673dbe15f3a20771b874fc63",
@@ -28,7 +30,8 @@ const RoleChngRequest = () => {
             email: "priya.singh@example.com",
             role: "pandit",
             isVerified: false,
-            createdAt: "13/11/2024"
+            createdAt: "13/11/2024",
+            phone: "343525723426"
         },
     ];
 
@@ -125,8 +128,8 @@ const RoleChngRequest = () => {
                 <div className="w-full bg-white shadow-md rounded-lg">
                     {/* Header Row */}
                     <div className="flex text-gray-700 text-sm font-semibold border-b p-4 bg-gray-100 rounded-t-lg">
-                        <div className="flex-[2] ">ID</div>
                         <div className="flex-[2] ">Name</div>
+                        <div className="flex-[2] ">Phone No.</div>
                         <div className="flex-[2] ">Email</div>
                         <div className="flex-1 ">Role</div>
                         <div className="flex-1 ">Requested At</div>
@@ -143,8 +146,8 @@ const RoleChngRequest = () => {
                                 className={`flex py-4 px-4 items-center text-sm
                                     ${index % 2 === 0 ? "bg-gray-50" : "bg-white"} `}
                             >
-                                <div className="flex-[2] text-gray-600 ">{user._id}</div>
                                 <div className="flex-[2] text-gray-800 font-medium">{user.name}</div>
+                                <div className="flex-[2] text-gray-600 ">{user.phone}</div>
                                 <div className="flex-[2] text-gray-600 ">{user.email}</div>
                                 <div className="flex-1 text-gray-700 capitalize ">
                                     <span className={`px-2 py-1 text-xs rounded-full bg-blue-100 
