@@ -42,14 +42,14 @@ const HomeProductsLayoutEl = () => {
 
   useEffect(() => {
     if (products.length === 0) {
-      fetchProducts(1); // Fetch only if no data exists
+      fetchProducts(1);
     }
   }, [products]);
 
   if (loading && products.length === 0) {
     return (
       <div className="flex justify-center items-center h-60">
-        <Spin size="large" tip="Loading products..." />
+        <Spin size="large"></Spin>
       </div>
     );
   }
@@ -70,17 +70,15 @@ const HomeProductsLayoutEl = () => {
         </h1>
       </div>
 
+      <Spin spinning={loading} size="large">
       <div className="grid sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] grid-cols-2 gap-2 md:gap-6 px-0">
         {products &&
           products.map((product) => (
             <ProductCardEl key={product._id} product={product} />
           ))}
       </div>
-      {
-        loading && <div className="flex justify-center items-center h-60">
-          <Spin size="large" tip="Loading products..." />
-        </div>
-      }
+      </Spin>
+
       {hasMore && (
         <div className="flex justify-center mt-6">
           <Button

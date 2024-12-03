@@ -46,7 +46,7 @@ export const AccountSidebar = () => {
                 open={isDrawerOpen}
                 className="p-0"
                 width={250}
-                bodyStyle={{ padding: "0" }}
+                style={{ padding: "0" }}
             >
                 <ul className="mt-4 space-y-2">
                     {drawerArray.map((item, index) => (
