@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import HomePage from "./Pages/HomePage"
 import ShopPage from "./Pages/ShopPage"
-// import BookPandit from "./Pages/BookPanditPage"
 import OffersPage from "./Pages/OffersPage"
 import Register from "./Pages/Register"
 import Login from "./Pages/Login"
@@ -25,6 +24,7 @@ import CheckoutPage from "./Pages/CheckoutPage"
 import UserProtectedRoute from "./Components/ProtectedRoute/userProtectedRoute"
 import OwnerProtectedRoute from "./Components/ProtectedRoute/ownerProtectedRoute"
 import SellerProtectedRoute from "./Components/ProtectedRoute/sellerProtectedRoute"
+import PaymentSuccess from "./Pages/PamentSuccessPage/PamentSuccess"
 
 const App = () => {
   const dispatch = useDispatch();
@@ -97,6 +97,7 @@ const App = () => {
               </SellerProtectedRoute>
           } />
           <Route path='/seller' element={<NotFound />} />
+          <Route path="/pamentSuccess" element={<PaymentSuccess />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />

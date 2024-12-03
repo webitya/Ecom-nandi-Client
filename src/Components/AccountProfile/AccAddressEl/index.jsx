@@ -35,7 +35,9 @@ const AccAddressEl = ({ userId }) => {
     const addresses = useSelector(state => state.address.value)
     const dispatch = useDispatch()
     const [pageLoader, setPageLoader] = useState(false)
-    window.scrollTo(0, 0);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     useEffect(() => {
         const fetchAddresses = async () => {

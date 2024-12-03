@@ -8,9 +8,10 @@ import {
   ProductFilled,
   PlusCircleFilled,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 const OwnerDashBoardEl = () => {
+  const navigate= useNavigate();
   const stats = [
     {
       title: "Total Number of Users",
@@ -73,6 +74,12 @@ const OwnerDashBoardEl = () => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-6">
+      {/* <button
+            onClick={() => navigate(-1)}
+            className="px-4 py-2 bg-gray-100 text-gray-600 text-sm rounded-md shadow hover:bg-gray-200 transition-colors duration-200"
+          >
+            ← Back
+          </button> */}
         <h1 className="text-3xl font-bold">Dashboard</h1>
       </div>
 

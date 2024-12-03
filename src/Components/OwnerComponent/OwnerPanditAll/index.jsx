@@ -71,7 +71,13 @@ const OwnerVerifiedPandits = () => {
 
   return (
     <div className="p-6 bg-[#f2f2f2] container">
-      <h1 className="text-3xl font-bold text-[#2d2f36] mb-6">Verified Pandit</h1>
+      <button
+            onClick={() => navigate(-1)}
+            className="px-4 py-2 bg-gray-100 text-gray-600 text-sm rounded-md shadow hover:bg-gray-200 transition-colors duration-200"
+          >
+            ← Back
+          </button>
+      <h1 className="text-3xl font-bold text-[#2d2f36] mb-6 text-center">Verified Pandit</h1>
 
       {/* Search Input */}
       <div className="relative mb-6 w-[90%] mx-auto">

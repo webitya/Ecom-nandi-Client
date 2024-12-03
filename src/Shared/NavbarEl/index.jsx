@@ -112,7 +112,7 @@ const NavbarEl = () => {
     { label: 'Shop', href: '/shop' },
     { label: 'Book Pandit', href: '/account/bookPandit' },
     { label: 'Offers', href: '/offers' },
-    { label: <ShoppingCartOutlined className="cart-icon" />, href: 'account/cart' },
+    { label: <ShoppingCartOutlined className="cart-icon" />, href: '/account/cart' },
   ];
 
   return (

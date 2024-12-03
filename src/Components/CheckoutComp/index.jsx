@@ -6,6 +6,8 @@ import { Modal, Button, Input, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { WarningModel } from "../../Shared/warningModel";
+import { setCheckoutProducts } from "../../redux/features/CheckoutProductSlice/CheckoutProductSlice";
+import { isAxiosError } from "axios";
 
 const CheckoutCompo = () => {
     const userAddress = useSelector((state) => state.address.value);
@@ -31,7 +33,9 @@ const CheckoutCompo = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [pamentLoading, setPamentLoading] = useState(false)
 
-    window.scrollTo(0, 0);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     useEffect(() => {
         const fetchAddress = async () => {
@@ -160,23 +164,40 @@ const CheckoutCompo = () => {
                 pamentStatus: paymentMethod === 'online' ? 'paid' : 'pending'
             };
 
-            const response = await useRequestApi("api/order/createOrder", 'POST', order
-            );
+            const response = await useRequestApi("api/order/createOrder", 'POST', order);
 
             if (response) {
                 setOrderDetails(response.data);
-                setIsPaymentModalOpen(false)
-                setIsOrderSuccessModalOpen(true);
-                navigate('/account/order')
+                const orderDetailsState = {
+                    orderId: orderDetails._id,
+                    totalAmount: orderDetails.totalAmount,
+                    paymentMethod: orderDetails.paymentMethod,
+                    selectedAddress: orderDetails.selectedAddress,
+                };
+                navigate("/pamentSuccess", { state: { orderDetailsState } });
+                console.log(" response ", response.data);
+                console.log("order detsa", orderDetailsState);
                 console.log("Order Details:", response.data);
-            } else {
-                toast.error("Failed to create order.");
             }
         } catch (error) {
+            if (isAxiosError(error)) {
+                setErrorMessage("Something went wrong please visit to our coustmer support");
+                setIsErrorModalOpen(true);
+            }
             console.error("Error creating order: ", error);
         } finally {
             setPamentLoading(false)
         }
+    };
+    const handleQuantityChange = (productId, quantity) => {
+        console.log(products);
+        const updatedItem = products.map((item) => (
+            item.products._id === productId ? {
+                products: item.products,
+                quantity: quantity
+            } : item
+        ))
+        dispatch(setCheckoutProducts(updatedItem))
     };
 
     if (pamentLoading) {
@@ -188,6 +209,9 @@ const CheckoutCompo = () => {
             </div>
         )
     }
+
+    console.log(products);
+
     return (
         <div>
             <div className="p-6 max-w-4xl mx-auto">
@@ -222,14 +246,14 @@ const CheckoutCompo = () => {
                                     </div>
                                     <div className="flex items-center mt-2">
                                         <button
-                                            onClick={() => handleQuantityChange(item._id, false)}
+                                            onClick={() => handleQuantityChange(item.products._id, item.quantity - 1)}
                                             className="px-3 py-1 bg-gray-200 rounded-md"
                                         >
                                             -
                                         </button>
                                         <span className="mx-2">{item.quantity}</span>
                                         <button
-                                            onClick={() => handleQuantityChange(item._id, true)}
+                                            onClick={() => handleQuantityChange(item.products._id, item.quantity + 1)}
                                             className="px-3 py-1 bg-gray-200 rounded-md"
                                         >
                                             +
@@ -404,7 +428,7 @@ const CheckoutCompo = () => {
                 <p>Payment Method: {paymentType === "online" ? "Online Payment" : "Cash on Delivery"}</p>
             </Modal>
 
-            <Modal
+            {/* <Modal
                 title="Order Placed Successfully!"
                 open={isOrderSuccessModalOpen}
                 onCancel={() => setIsOrderSuccessModalOpen(false)}
@@ -425,7 +449,7 @@ const CheckoutCompo = () => {
                 <p>Total Amount: ₹{orderDetails?.totalAmount}</p>
                 <p>Payment Method: {orderDetails?.paymentMethod}</p>
                 <p>Delivery Address: {orderDetails?.selectedAddress.address}</p>
-            </Modal>
+            </Modal> */}
 
             <Modal
                 title="Error"
