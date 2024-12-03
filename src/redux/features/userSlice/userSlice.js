@@ -17,12 +17,12 @@ export const userSlice = createSlice({
             state.value = action.payload;
         },
         setName: (state, action) => {
-            state.value.firstName = action.payload.fistName;
+            state.value.firstName = action.payload.firstName;
             state.value.lastName = action.payload.lastName
         },
         setDefault: (state) => {
             state.value = {
-                fistName: '',
+                firstName: '',
                 lastName: '',
                 email: '',
                 role: null,

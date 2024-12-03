@@ -5,11 +5,13 @@ import { useAddToCart } from "../../hooks/useAddToCart";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { addProductToCart } from "../../redux/features/CartItemSlice/CartItemSlice";
+import { setCheckoutProducts } from "../../redux/features/CheckoutProductSlice/CheckoutProductSlice";
 
 const ProductCardEl = ({ product }) => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const cart = useSelector(state => state.cartItems.values)
 
     const handleProductClick = (id) => {
         navigate(`/productdetails?s=${id}`)
@@ -34,6 +36,16 @@ const ProductCardEl = ({ product }) => {
         }
     }
 
+    const handleBuyNow = () => {
+        console.log("product -> ", product);
+        console.log("cart -> ", cart);
+        dispatch(setCheckoutProducts([{
+            products: product,
+            quantity: 1
+        }]))
+
+        navigate("/checkout")
+    }
     return (
         <Card
             hoverable
@@ -77,6 +89,7 @@ const ProductCardEl = ({ product }) => {
 
             {/* Buy Now Button */}
             <button
+                onClick={handleBuyNow}
                 className="w-full bg-black text-white font-medium text-xs md:text-sm py-1 md:py-2 rounded-md shadow-md hover:shadow-lg hover:bg-gray-800 transition-all duration-300"
             >
                 <DollarOutlined className="mr-1" />

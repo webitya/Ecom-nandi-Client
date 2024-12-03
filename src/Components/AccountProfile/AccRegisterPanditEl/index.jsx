@@ -4,6 +4,7 @@ import PanditFormEl from "./PanditFormEl/index.";
 
 
 const AccRegisterPanditEl = () => {
+  window.scrollTo(0, 0);
 
   const [state, setState] = useState(false)
   return (
