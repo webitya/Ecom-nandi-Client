@@ -1,39 +1,43 @@
 import { DownCircleFilled, SearchOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const RoleChngRequest = () => {
     const navigate = useNavigate();
+
+    const roleChangeList= useSelector(state => state.role_change.roleChangeList)
+    console.log(roleChangeList)
   
-    const users=[
-        {
-            _id: "673dbe15f3a20771b874fc61",
-            name: "Aniket Chaturvedi",
-            email: "aniketchaturvedi309@gmail.com",
-            role: "pandit",
-            isVerified: false,
-            createdAt: "20/11/2024",
-            phone: "326216723426"
-        },
-        {
-            _id: "673dbe15f3a20771b874fc62",
-            name: "Rahul Sharma",
-            email: "rahul.sharma@example.com",
-            role: "seller",
-            isVerified: true,
-            createdAt: "25/11/2024",
-            phone: "345566866878"
-        },
-        {
-            _id: "673dbe15f3a20771b874fc63",
-            name: "Priya Singh",
-            email: "priya.singh@example.com",
-            role: "pandit",
-            isVerified: false,
-            createdAt: "13/11/2024",
-            phone: "343525723426"
-        },
-    ];
+    // const users=[
+    //     {
+    //         _id: "673dbe15f3a20771b874fc61",
+    //         name: "Aniket Chaturvedi",
+    //         email: "aniketchaturvedi309@gmail.com",
+    //         role: "pandit",
+    //         isVerified: false,
+    //         createdAt: "20/11/2024",
+    //         phone: "326216723426"
+    //     },
+    //     {
+    //         _id: "673dbe15f3a20771b874fc62",
+    //         name: "Rahul Sharma",
+    //         email: "rahul.sharma@example.com",
+    //         role: "seller",
+    //         isVerified: true,
+    //         createdAt: "25/11/2024",
+    //         phone: "345566866878"
+    //     },
+    //     {
+    //         _id: "673dbe15f3a20771b874fc63",
+    //         name: "Priya Singh",
+    //         email: "priya.singh@example.com",
+    //         role: "pandit",
+    //         isVerified: false,
+    //         createdAt: "13/11/2024",
+    //         phone: "343525723426"
+    //     },
+    // ];
 
     const [searchQuery, setSearchQuery] = useState('');
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -50,10 +54,11 @@ const RoleChngRequest = () => {
         setRowsPerPage(Number(value))
     }
 
-    const filteredUsers = users.filter(
-        (user) => user._id.includes(searchQuery) || user.name.toLowerCase().includes(searchQuery.toLowerCase())
-            || user.email.includes(searchQuery.toLowerCase()) || user.role.includes(searchQuery.toLowerCase())
-            || user.createdAt.includes(searchQuery)
+    const filteredUsers = roleChangeList.filter(
+        (user) => user.userId.firstName.toLowerCase().includes(searchQuery.toLowerCase()) 
+            || user.userId.lastName.toLowerCase().includes(searchQuery.toLowerCase())
+            || user.userId.email.includes(searchQuery) 
+            || user.appliedRole.includes(searchQuery.toLowerCase())
     )
 
     const totalPage = Math.ceil(filteredUsers.length / rowsPerPage)
@@ -99,7 +104,7 @@ const RoleChngRequest = () => {
             <div className="relative mb-6 w-[90%] mx-auto">
                 <input
                     type="text"
-                    placeholder="Search by ID, Name, Phone Number & Email."
+                    placeholder="Search by Name, Email & Applied Role."
                     name="listSearch"
                     value={searchQuery}
                     onChange={handleSearchQuery}
@@ -132,7 +137,7 @@ const RoleChngRequest = () => {
                         <div className="flex-[2] ">Phone No.</div>
                         <div className="flex-[2] ">Email</div>
                         <div className="flex-1 ">Role</div>
-                        <div className="flex-1 ">Requested At</div>
+                        <div className="flex-1 ">Aadhar No.</div>
                         <div className="flex-1 ">Status</div>
                     </div>
 
@@ -146,16 +151,22 @@ const RoleChngRequest = () => {
                                 className={`flex py-4 px-4 items-center text-sm
                                     ${index % 2 === 0 ? "bg-gray-50" : "bg-white"} `}
                             >
-                                <div className="flex-[2] text-gray-800 font-medium">{user.name}</div>
-                                <div className="flex-[2] text-gray-600 ">{user.phone}</div>
-                                <div className="flex-[2] text-gray-600 ">{user.email}</div>
+                                <div className="flex-[2] text-gray-800 font-medium">
+                                    {user.userId.firstName+" "+user.userId.lastName}
+                                </div>
+                                <div className="flex-[2] text-gray-600 ">
+                                    {user.contact || user.shop_contact}
+                                </div>
+                                <div className="flex-[2] text-gray-600 ">
+                                    {user.userId.email}
+                                </div>
                                 <div className="flex-1 text-gray-700 capitalize ">
                                     <span className={`px-2 py-1 text-xs rounded-full bg-blue-100 
                                         text-blue-700`}>
-                                        {user.role}
+                                        {user.appliedRole}
                                     </span>
                                 </div>
-                                <div className="flex-1 text-gray-500">{user.createdAt}</div>
+                                <div className="flex-1 text-gray-500">{user.aadharNo || user.AadhaarNum}</div>
                                 <div className="flex-1 text-gray-500 relative">
                                     <button 
                                         className="flex gap-1 items-center rounded-md border border-gray-500 w-fit px-2 py-1"

@@ -59,7 +59,7 @@ const AccRegisterSellerEl = () => {
     if (file.size / 1024 / 1024 > 2) {
       toast.error("Image should be less than 2MB");
       return false;
-    }
+  }
 
     const newFileList = [...fileList, { uid: file.uid, name: file.name, status: "uploading", originFileObj: file }];
     setFileList(newFileList);
