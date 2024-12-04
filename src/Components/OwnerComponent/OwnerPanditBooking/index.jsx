@@ -2,7 +2,7 @@ import { DownCircleFilled, SearchOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const PendingPaymentEl = () => {
+const PanditBooking = () => {
     const navigate= useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -217,4 +217,4 @@ const PendingPaymentEl = () => {
     );
 }
 
-export default PendingPaymentEl;
+export default PanditBooking;

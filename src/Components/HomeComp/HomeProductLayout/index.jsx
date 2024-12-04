@@ -18,15 +18,20 @@ const HomeProductsLayoutEl = () => {
         page,
         limit: 10,
       });
-      dispatch(
-        updateProduct({
-          products: response.products,
-          currentPage: page,
-          hasMore: response.products.length > 0,
-        })
-      );
+      console.log(response.products.length)
+
+      if(response.products.length !== 0){
+        dispatch(
+          updateProduct({
+            products: response.products,
+            currentPage: page,
+            hasMore: response.products.length > 0,
+          })
+        );
+      }
+      
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       setError(err.message || "An error occurred while fetching products.");
     } finally {
       setLoading(false);
@@ -63,7 +68,11 @@ const HomeProductsLayoutEl = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <>
+    {
+      (products.length) 
+        &&
+      <div className="container mx-auto px-4 py-6">
       <div className="flex justify-center">
         <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Shop Products
@@ -93,6 +102,8 @@ const HomeProductsLayoutEl = () => {
       )}
 
     </div>
+    }
+    </>
   );
 };
 

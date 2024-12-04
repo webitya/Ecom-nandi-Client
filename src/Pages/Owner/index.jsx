@@ -6,9 +6,9 @@ import OwnerSellerAll from "../../Components/OwnerComponent/OwnerSellerAll"
 import SpecificPanditEl from "../../Components/OwnerComponent/SpecificPanditEl"
 import SpecificSellerEl from "../../Components/OwnerComponent/SpecificSellerEl"
 import RoleChngRequest from "../../Components/OwnerComponent/RoleChngRequest"
-import PendingPaymentEl from "../../Components/OwnerComponent/OwnerDuePayment"
 import ManageProductsEl from "../../Components/OwnerComponent/ManageProductsEl"
 import AddProductHero from "../../Components/AddProductComp/addProductHeroEl"
+import PanditBooking from "../../Components/OwnerComponent/OwnerPanditBooking"
 
 const Owner = () => {
   return (
@@ -19,7 +19,7 @@ const Owner = () => {
           <Route path="/pandits" element={<OwnerPanditAll />} />
           <Route path="/sellers" element={<OwnerSellerAll />} />
           <Route path="/roleChangeRequest" element= {<RoleChngRequest />} />
-          <Route path="/pendingPayment" element={<PendingPaymentEl />} />
+          <Route path="/panditBooking" element={<PanditBooking />} />
           <Route path="/manageProducts" element={<ManageProductsEl />} />
           <Route path="/addProduct" element={<AddProductHero />} />
           <Route path="/pandits/:id" element={<SpecificPanditEl />} />
