@@ -8,6 +8,7 @@ import checkoutProductReducer from './features/CheckoutProductSlice/CheckoutProd
 import RoleChangeReducers from './features/ownerRedux/roleChangeSlice/roleChangeSlice.js'
 import totalPanditListReducer from './features/ownerRedux/totalPanditSlice/totalPanditSlice.js'
 import totalSellerListReducer from './features/ownerRedux/totalSellerSlice/totalSellerSlice.js'
+import dashboardSReducer from './features/ownerRedux/dashboardSlice/dashboardSlice.js'
 
 const store = configureStore({
     reducer: {
@@ -19,7 +20,8 @@ const store = configureStore({
         checkoutProducts: checkoutProductReducer,
         role_change: RoleChangeReducers,
         pandit_list:totalPanditListReducer,
-        seller_list:totalSellerListReducer
+        seller_list:totalSellerListReducer,
+        dashboard_value: dashboardSReducer,
     }
 })
 

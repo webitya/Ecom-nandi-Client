@@ -1,58 +1,90 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ImageUpload from "../uploadImageEl";
 import { z } from "zod";
+import JoditEditor from 'jodit-react'
+const AddProductHero = () => {
 
-const productSchema = z.object({
-    images: z.array(z.string()).min(1, "At least one image is required"),
-    name: z.string().min(1, "Name is required"),
-    description: z.string().min(1, "Description is required"),
-    quantity: z.string().regex(/^[1-9]\d*$/, "Enter a valid value"),
-    price: z.string().regex(/^[1-9]\d*$/, "Enter a valid positive value"),
-    discountPrice: z.string().regex(/^[1-9]\d*$/, "Enter a valid positive value"),
+    const editor = useRef(null);
 
-    category: z.string().min(1, "Category is required"),
-});
+    const config = {
+        readonly: false,
+        toolbarSticky: true,
+        toolbarButtonSize: "middle",
+        showCharsCounter: true,
+        showWordsCounter: true,
+        showXPathInStatusbar: false,
+        minHeight: 250,
+        buttons: [
+          'bold',
+          'italic',
+          'underline',
+          'strikethrough',
+          '|',
+          'font',
+          'fontsize',
+          'brush',
+          'paragraph',
+          '|',
+          'image',
+          'table',
+          'link',
+          '|',
+          'align',
+          'undo',
+          'redo',
+          '|',
+          'hr',
+          'eraser',
+          'fullsize',
+        ],
+        uploader: {
+          url: 'http://localhost:5000/upload', // Backend image upload URL
+          format: 'json', // Response format
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        },
+        events: {
+          afterUpload: (response) => {
+            console.log('Upload response:', response);
+          }
+        }
+      };
+      
 
-const LOCAL_STORAGE_KEY = "productData";
+    const [content, setContent]= useState('')
 
-export const AddProductHero = () => {
     const [productData, setProductData] = useState({
         images: [],
-        name: '',
-        price: '',
-        description: '',
-        discountPrice: '',
-        quantity: '',
-        category: '',
+        name: "",
+        price: "",
+        description: "",
+        discountPrice: "",
+        quantity: "",
+        category: "",
+        metaTitle: "",
+        metaDescription: "",
     });
     const [errors, setErrors] = useState({});
-    const [fileList, setFileList] = useState([]); // Initialize as empty array
+    const [fileList, setFileList] = useState([]);
 
     useEffect(() => {
-        const savedData = localStorage.getItem('productData');
-        const savedImageData = localStorage.getItem('productImageList');
+        const savedData = localStorage.getItem("productData");
+        const savedImageData = localStorage.getItem("productImageList");
 
-        if (savedData) {
-            setProductData(JSON.parse(savedData));
-        }
-        if (savedImageData) {
-            setFileList(JSON.parse(savedImageData));
-        }
+        if (savedData) setProductData(JSON.parse(savedData));
+        if (savedImageData) setFileList(JSON.parse(savedImageData));
     }, []);
 
     useEffect(() => {
         const urls = fileList.map((file) => file.url || file.preview);
-        setProductData((prev) => ({
-            ...prev,
-            images: urls
-        }));
+        setProductData((prev) => ({ ...prev, images: urls }));
     }, [fileList]);
 
-    // Save productData to localStorage whenever it changes
     useEffect(() => {
-        localStorage.setItem('productData', JSON.stringify(productData));
-        localStorage.setItem('productImageList', JSON.stringify(fileList)); // Save fileList, not productData
-    }, [productData, fileList]); // Watch both productData and fileList
+        localStorage.setItem("productData", JSON.stringify(productData));
+        localStorage.setItem("productImageList", JSON.stringify(fileList));
+    }, [productData, fileList]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -60,149 +92,167 @@ export const AddProductHero = () => {
     };
 
     const handleImageUpload = (newFileList) => {
-        setFileList(newFileList); // Update fileList state
-        setProductData((prevData) => ({
-            ...prevData,
-            images: newFileList.map(file => file.url || file.preview)
-        }));
+        setFileList(newFileList);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         try {
-
-            const validatedData = productSchema.parse({
-                ...productData,
-                // quantity: parseInt(productData.quantity),  // Uncomment if you want to parse quantity as a number
-            });
-
-
+            const validatedData = productSchema.parse(productData);
             setErrors({});
-
-            // Clear saved data from localStorage after successful submission
-            localStorage.removeItem('productData');
-            localStorage.removeItem('productImageList');
-
-            // Here, you can add further functionality after the successful form submission
-            // For example, you could send the data to a backend server or trigger a success toast.
-
+            localStorage.removeItem("productData");
+            localStorage.removeItem("productImageList");
+            console.log("Submitted Data:", validatedData);
         } catch (error) {
             if (error instanceof z.ZodError) {
-                const fieldErrors = error.flatten().fieldErrors;
-                setErrors(fieldErrors); // Set validation errors if any
+                setErrors(error.flatten().fieldErrors);
             }
         }
     };
 
-
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4 text-center">Add New Product</h1>
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit}>
-                {/* Image Upload Component */}
-                <div className="col-span-1 md:col-span-2 flex flex-col items-center">
-                    <label className="text-lg font-medium mb-2">Product Images <span className="text-red-500">*</span></label>
-                    <ImageUpload onUpload={handleImageUpload} setProductData={setProductData} fileList={fileList} setFileList={setFileList} />
-                    {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
-                </div>
+        <div className="bg-gray-100 flex items-center justify-center h-screen">
+            <div className="bg-white shadow-md rounded-lg w-full max-w-6xl p-8">
+                <h1 className="text-3xl font-bold text-center text-gray-700 mb-6">
+                    Add New Product
+                </h1>
+                <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={handleSubmit}>
+                    {/* Image Upload Section */}
+                    <div className="col-span-1 md:col-span-2">
+                        <label className="block text-lg font-medium text-gray-700 mb-2">
+                            Product Images <span className="text-red-500">*</span>
+                        </label>
+                        <ImageUpload
+                            onUpload={handleImageUpload}
+                            setProductData={setProductData}
+                            fileList={fileList}
+                            setFileList={setFileList}
+                        />
+                        {errors.images && (
+                            <p className="text-red-500 text-sm mt-1">{errors.images}</p>
+                        )}
+                    </div>
 
-                {/* Name Input */}
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium mb-1">Name <span className="text-red-500">*</span></label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={productData.name}
-                        onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
-                        placeholder="Enter product name"
-                    />
-                    {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-                </div>
+                    {/* Input Fields */}
+                    {[
+                        { label: "Name", name: "name", placeholder: "Enter product name", type: "text" },
+                        { label: "Price", name: "price", placeholder: "Enter product price", type: "text" },
+                        {
+                            label: "Discount",
+                            name: "discountPrice",
+                            placeholder: "Enter discount price",
+                            type: "text",
+                        },
+                        {
+                            label: "Quantity",
+                            name: "quantity",
+                            placeholder: "Enter available quantity",
+                            type: "number",
+                        },
+                    ].map(({ label, name, placeholder, type }, index) => (
+                        <div className="flex flex-col" key={index}>
+                            <label className="text-lg font-medium text-gray-700 mb-2">
+                                {label} <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                type={type}
+                                name={name}
+                                value={productData[name]}
+                                onChange={handleInputChange}
+                                className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                placeholder={placeholder}
+                            />
+                            {errors[name] && (
+                                <p className="text-red-500 text-sm mt-1">{errors[name]}</p>
+                            )}
+                        </div>
+                    ))}
 
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium mb-1">Price <span className="text-red-500">*</span></label>
-                    <input
-                        type="text"
-                        name="price"
-                        value={productData.price}
-                        onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
-                        placeholder="Enter product price"
-                    />
-                    {errors.price && <p className="text-red-500 text-sm">{errors.price}</p>}
-                </div>
+                    {/* Description */}
+                    <div className="flex flex-col md:col-span-2">
+                        <label className="text-lg font-medium text-gray-700 mb-2">
+                            Description <span className="text-red-500">*</span>
+                        </label>
+                        <JoditEditor
+                            ref={editor}
+                            value={productData.description}
+                            config={config}
+                            tabIndex={1}
+                            onBlur={(newContent) => setProductData((prev) => ({ ...prev, description: newContent}))} 
+                        />
+                        {errors.description && (
+                            <p className="text-red-500 text-sm mt-1">{errors.description}</p>
+                        )}
+                    </div>
 
-                {/* Description Input */}
-                <div className="flex flex-col md:col-span-2">
-                    <label className="text-lg font-medium mb-1">Description <span className="text-red-500">*</span></label>
-                    <textarea
-                        name="description"
-                        value={productData.description}
-                        onChange={handleInputChange}
-                        className="border rounded px-2 py-1 h-24"
-                        placeholder="Enter product description"
-                    />
-                    {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
-                </div>
+                    {/* Category */}
+                    <div className="flex flex-col md:col-span-2">
+                        <label className="text-lg font-medium text-gray-700 mb-2">
+                            Category <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                            name="category"
+                            value={productData.category}
+                            onChange={handleInputChange}
+                            className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        >
+                            <option value="">Select a category</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="furniture">Furniture</option>
+                            <option value="toys">Toys</option>
+                            <option value="other">Other</option>
+                        </select>
+                        {errors.category && (
+                            <p className="text-red-500 text-sm mt-1">{errors.category}</p>
+                        )}
+                    </div>
 
-                {/* Discount Input */}
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium mb-1">Discount</label>
-                    <input
-                        type="string"
-                        name="discount"
-                        value={productData.discountPrice}
-                        onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
-                        placeholder="Enter product discount"
-                    />
-                    {errors.discount && <p className="text-red-500 text-sm">{errors.discount}</p>}
-                </div>
+                    {/* Meta Data Section */}
+                    <div className="flex flex-col">
+                        <label className="text-lg font-medium text-gray-700 mb-2">
+                            Meta Title <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="metaTitle"
+                            value={productData.metaTitle}
+                            onChange={handleInputChange}
+                            className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter meta title"
+                        />
+                        {errors.metaTitle && (
+                            <p className="text-red-500 text-sm mt-1">{errors.metaTitle}</p>
+                        )}
+                    </div>
 
-                {/* Quantity Input */}
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium mb-1">Quantity <span className="text-red-500">*</span></label>
-                    <input
-                        type="number"
-                        name="quantity"
-                        value={productData.quantity}
-                        onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
-                        placeholder="Enter available quantity"
-                    />
-                    {errors.quantity && <p className="text-red-500 text-sm">{errors.quantity}</p>}
-                </div>
+                    <div className="flex flex-col md:col-span-2">
+                        <label className="text-lg font-medium text-gray-700 mb-2">
+                            Meta Description <span className="text-red-500">*</span>
+                        </label>
+                        <textarea
+                            name="metaDescription"
+                            value={productData.metaDescription}
+                            onChange={handleInputChange}
+                            className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter meta description"
+                        />
+                        {errors.metaDescription && (
+                            <p className="text-red-500 text-sm mt-1">{errors.metaDescription}</p>
+                        )}
+                    </div>
 
-                {/* Category Dropdown */}
-                <div className="flex flex-col md:col-span-2">
-                    <label className="text-lg font-medium mb-1">Category <span className="text-red-500">*</span></label>
-                    <select
-                        name="category"
-                        value={productData.category}
-                        onChange={handleInputChange}
-                        className="border rounded px-2 py-1"
-                    >
-                        <option value="">Select a category</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="furniture">Furniture</option>
-                        <option value="toys">Toys</option>
-                        <option value="other">Other</option>
-                    </select>
-                    {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
-                </div>
-
-                {/* Submit Button */}
-                <div className="col-span-1 md:col-span-2 flex justify-center">
-                    <button
-                        type="submit"
-                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition"
-                    >
-                        Add Product
-                    </button>
-                </div>
-            </form>
+                    {/* Submit Button */}
+                    <div className="col-span-1 md:col-span-2 flex justify-center">
+                        <button
+                            type="submit"
+                            className="bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-600 transition"
+                        >
+                            Add Product
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

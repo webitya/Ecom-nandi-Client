@@ -8,62 +8,46 @@ import {
   ProductFilled,
   PlusCircleFilled,
   BookFilled,
+  ShoppingFilled,
+  EyeFilled,
+  SettingFilled,
 } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
-import { useRequestApi } from "../../../hooks/useRequestApi";
-import toast from "react-hot-toast";
-import { Spin } from "antd";
-import { useDispatch } from "react-redux";
-import { setList } from "../../../redux/features/ownerRedux/roleChangeSlice/roleChangeSlice";
-import { setPanditList } from "../../../redux/features/ownerRedux/totalPanditSlice/totalPanditSlice";
-import { setSellerList } from "../../../redux/features/ownerRedux/totalSellerSlice/totalSellerSlice";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import SidebarEl from "../../SidebarEl";
 
-const OwnerDashBoardEl = () => {
-  // const navigate = useNavigate();
+const OwnerDashBoardEl = ({ user, seller, pandit, request }) => {
 
-  const [loader, setLoader] = useState(true);
-
-  const [values, setValues] = useState({
-    totalUser: 0,
-    totalpandit: 0,
-    totalseller: 0,
-    totalPendingRequest: 0,
-  });
-
-  const dispatch = useDispatch();
+  const dashboardValue = useSelector(state => state.dashboard_value.value);
 
   const stats = [
     {
-      title: "Total Number of Users",
-      value: values.totalUser,
+      title: "Total Users",
+      value: dashboardValue.totalUser,
       icon: <UserOutlined />,
       gradient: "from-blue-500 to-blue-300",
       bgColor: "bg-blue-50",
-      path: ""
     },
     {
-      title: "Total Number of Pandits",
-      value: values.totalpandit,
+      title: "Total Pandits",
+      value: dashboardValue.totalpandit,
       icon: <TeamOutlined />,
       gradient: "from-yellow-500 to-yellow-300",
       bgColor: "bg-yellow-50",
-      path: "pandits"
     },
     {
-      title: "Total Number of Sellers",
-      value: values.totalseller,
+      title: "Total Sellers",
+      value: dashboardValue.totalseller,
       icon: <ShopOutlined />,
       gradient: "from-red-500 to-red-300",
       bgColor: "bg-red-50",
-      path: "sellers"
     },
     {
-      title: "Pending Role Change Requests",
-      value: values.totalPendingRequest,
+      title: "Pending Requests for role change",
+      value: dashboardValue.totalPendingRequest,
       icon: <FileAddOutlined />,
       gradient: "from-purple-500 to-purple-300",
       bgColor: "bg-purple-50",
-      path: "roleChangeRequest"
     },
     {
       title: "Pandit Booking",
@@ -71,7 +55,6 @@ const OwnerDashBoardEl = () => {
       icon: <BookFilled />,
       gradient: "from-green-500 to-green-300",
       bgColor: "bg-green-50",
-      path: "panditBooking"
     },
     {
       title: "Manage Products",
@@ -79,117 +62,106 @@ const OwnerDashBoardEl = () => {
       icon: <ProductFilled />,
       gradient: "from-teal-500 to-teal-300",
       bgColor: "bg-teal-50",
-      path: "manageProducts"
-    },
-    {
-      title: "Add Product",
-      value: null,
-      icon: <PlusCircleFilled />,
-      gradient: "from-orange-500 to-orange-300",
-      bgColor: "bg-orange-50",
-      path: "addProduct"
     },
   ];
 
-  const getOwnerData = async (endPoint) => {
-    try {
-      const response = await useRequestApi(endPoint)
-
-      if (response.data) {
-        return { data: response.data }
-      }
-
-    } catch (error) {
-      toast.error(error?.response?.data?.message || 'Server Error!');
-      return { data: [] }
-    }
-  }
-
-  const dispatchAction = (action, payload) => {
-
-    if (!payload.length) {
-      return;
-    }
-
-    dispatch(action(payload))
-
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-
-      const [getAllUser, pendingSellerRequests, pendingPanditRequest, allPandits, allSelllers,] =
-        await Promise.all([
-          getOwnerData('api/user/allUser'),
-          getOwnerData('api/role/getPendingSellerRequest'),
-          getOwnerData('api/role/getPendingPanditRequest'),
-          getOwnerData('api/owner/getAllPandit'),
-          getOwnerData('api/owner/getAllSeller')
-        ]);
-
-      setValues({
-        totalUser: getAllUser.data.length || getAllUser.data,
-        totalpandit: allPandits.data.length,
-        totalseller: allSelllers.data.length,
-        totalPendingRequest: (pendingSellerRequests.data.length + pendingPanditRequest.data.length),
-      })
-
-      dispatchAction(setList,[...pendingPanditRequest.data, ...pendingSellerRequests.data])
-      dispatchAction(setPanditList, [ ...allPandits.data ])
-      dispatchAction(setSellerList, [ ...allSelllers.data ])
-      
-      setLoader(false)
-    };
-
-    fetchData();
-
-  }, []);
+  const walletArray= [
+    {
+      title: "In-House Earning",
+      value: "₹0.00",
+      icon: "📈",
+    },
+    {
+      title: "Commission Earned",
+      value: "₹0.00",
+      icon: "💹",
+    },
+    {
+      title: "Delivery Charge Earned",
+      value: "₹0.00",
+      icon: "🚚",
+    },
+    {
+      title: "Total Tax Collected",
+      value: "₹0.00",
+      icon: "💸",
+    },
+    {
+      title: "Pending Amount",
+      value: "₹0.00",
+      icon: "💵",
+    },
+  ]
 
   return (
-    <>
 
-      {
-        loader
-          ?
-          <div className="w-screen h-[90vh] flex justify-center items-center">
-            <Spin size="larger" />
+    <div className="bg-[#f9f9f9] min-h-screen container flex flex-[5]">
+      {/* Sidebar */}
+
+      <div className="p-6 w-full flex flex-col gap-4">
+
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800">Dashboard</h1>
+        </div>
+
+        <div className="p-6 bg-white rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+            <span className="mr-2 text-2xl">📊</span> Business Analytics
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {stats.map((stat, index) => (
+              <div
+                key={index}
+                className={`p-6 shadow-lg rounded-xl flex items-center transition-transform transform hover:scale-105 hover:shadow-2xl ${stat.bgColor}`}
+              >
+                {/* Icon Section */}
+                <div
+                  className={`text-2xl p-4 rounded-full bg-gradient-to-br ${stat.gradient} text-white flex justify-center items-center`}
+                >
+                  {stat.icon}
+                </div>
+                {/* Text Content */}
+                <div className="ml-6">
+                  <p className="text-md font-medium text-gray-500">{stat.title}</p>
+                  <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
+                </div>
+              </div>
+            ))}
           </div>
-          :
-          <div className="p-6 bg-gray-50 min-h-screen">
-            <div className="flex justify-between items-center mb-6">
-              {/* <button
-            onClick={() => navigate(-1)}
-            className="px-4 py-2 bg-gray-100 text-gray-600 text-sm rounded-md shadow hover:bg-gray-200 transition-colors duration-200"
-          >
-            ← Back
-          </button> */}
-              <h1 className="text-3xl font-bold">Dashboard</h1>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 bg-yellow-200 rounded-full flex items-center justify-center">
+              <span className="text-yellow-600 text-lg">💰</span>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {stats.map((stat, index) => (
-                <Link key={index} to={stat.path}>
-                  <div
-
-                    className={`p-6 shadow-md rounded-lg flex items-center transition-transform transform hover:scale-105 hover:shadow-lg ${stat.bgColor}`}
-                  >
-                    <div
-                      className={`text-4xl p-4 rounded-full bg-gradient-to-r ${stat.gradient} text-white`}
-                    >
-                      {stat.icon}
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm text-gray-600">{stat.title}</p>
-                      <p className="text-2xl font-bold">{stat.value}</p>
-
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <h2 className="text-xl font-semibold text-gray-800">Admin Wallet</h2>
           </div>
-      }
-    </>
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {walletArray.map((stat, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-4 p-4 border rounded-md shadow-sm bg-white hover:shadow-lg transition-shadow"
+              >
+                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 text-2xl">
+                  {stat.icon}
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-gray-800">{stat.value}</p>
+                  <p className="text-sm text-gray-500">{stat.title}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   );
 };
 

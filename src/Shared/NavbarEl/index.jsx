@@ -207,11 +207,7 @@ const NavbarEl = () => {
 
       {/* Mobile Drawer */}
 
-
-
       <CustomDrawer isDrawerOpen={isDrawerOpen} mobileSearchRef={mobileSearchRef} handleSearchResultClick={handleSearchResultClick} toggleDrawer={toggleDrawer} searchResult={searchResult} searchQuery={searchQuery} handleSearchChange={handleSearchChange} />
-
-
 
     </>
   );
