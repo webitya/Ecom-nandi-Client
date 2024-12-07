@@ -12,10 +12,16 @@ const SidebarEl = ({ name, symbol, id, balance, menuItems,tab, setTab }) => {
                         <p className="text-white text-xl font-bold lowercase">{symbol}</p>
                     </div>
                     <p className="font-semibold">{name}</p>
-                    <p className="text-gray-400 text-sm">ID: {id}</p>
-                    <div className="bg-gray-800 text-gray-200 text-sm px-3 py-1 rounded-full mt-2">
+                    
+                    {id && <p className="text-gray-400 text-sm">ID: {id}</p>}
+                    {
+                        balance 
+                        && 
+                        <div className="bg-gray-800 text-gray-200 text-sm px-3 py-1 rounded-full mt-2">
                         Balance: <span className="text-white font-semibold">{balance}</span>
                     </div>
+                    }
+
                 </div>
 
                 {/* Navigation */}
