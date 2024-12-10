@@ -4,7 +4,25 @@ import { z } from "zod";
 import JoditEditor from 'jodit-react'
 const AddProductHero = () => {
 
-    const editor = useRef(null);
+    const productSchema = z.object({
+        images: z.array(z.string()).min(1, "At least one image is required"),
+        name: z.string().min(1,"Name is required"),
+        price: z
+            .string()
+            .regex(/^\d+(\.\d{1,2})?$/, "Price must be a valid number"),
+        description: z.string().min(1,"Description is required"),
+        discountPrice: z
+            .string()
+            .regex(/^\d+(\.\d{1,2})?$/, "Discount price must be a valid number"),
+        quantity: z
+            .string()
+            .regex(/^\d+$/, "Quantity must be a valid number")
+            .transform(Number),
+        category: z.string().min(1,"Category is required"),
+        productSku: z.string().min(6,"Product SKU is required"),
+        metaTitle: z.string().min(1,"Meta Title is required"),
+        metaDescription: z.string().min(1,"Meta Description is required"),
+    });
 
     const config = {
         readonly: false,
@@ -15,56 +33,55 @@ const AddProductHero = () => {
         showXPathInStatusbar: false,
         minHeight: 250,
         buttons: [
-          'bold',
-          'italic',
-          'underline',
-          'strikethrough',
-          '|',
-          'font',
-          'fontsize',
-          'brush',
-          'paragraph',
-          '|',
-          'image',
-          'table',
-          'link',
-          '|',
-          'align',
-          'undo',
-          'redo',
-          '|',
-          'hr',
-          'eraser',
-          'fullsize',
+            'bold',
+            'italic',
+            'underline',
+            'strikethrough',
+            '|',
+            'font',
+            'fontsize',
+            'brush',
+            'paragraph',
+            '|',
+            'image',
+            'table',
+            'link',
+            '|',
+            'align',
+            'undo',
+            'redo',
+            '|',
+            'hr',
+            'eraser',
+            'fullsize',
         ],
         uploader: {
-          url: 'http://localhost:5000/upload', // Backend image upload URL
-          format: 'json', // Response format
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            url: 'http://localhost:5000/upload', // Backend image upload URL
+            format: 'json', // Response format
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
         },
         events: {
-          afterUpload: (response) => {
-            console.log('Upload response:', response);
-          }
+            afterUpload: (response) => {
+                console.log('Upload response:', response);
+            }
         }
-      };
-      
-
-    const [content, setContent]= useState('')
+    };
 
     const [productData, setProductData] = useState({
-        images: [],
+        images: [""],
         name: "",
         price: "",
         description: "",
         discountPrice: "",
         quantity: "",
         category: "",
+        productSku: "",
         metaTitle: "",
         metaDescription: "",
     });
+
     const [errors, setErrors] = useState({});
     const [fileList, setFileList] = useState([]);
 
@@ -111,7 +128,7 @@ const AddProductHero = () => {
     };
 
     return (
-        <div className="bg-gray-100 flex items-center justify-center h-screen">
+        <div className="bg-gray-100 flex items-center justify-center">
             <div className="bg-white shadow-md rounded-lg w-full max-w-6xl p-8">
                 <h1 className="text-3xl font-bold text-center text-gray-700 mb-6">
                     Add New Product
@@ -174,11 +191,12 @@ const AddProductHero = () => {
                             Description <span className="text-red-500">*</span>
                         </label>
                         <JoditEditor
-                            ref={editor}
-                            value={productData.description}
+                            value={productData.description || ""} // Default empty string
                             config={config}
                             tabIndex={1}
-                            onBlur={(newContent) => setProductData((prev) => ({ ...prev, description: newContent}))} 
+                            onBlur={(newContent) =>
+                                setProductData((prev) => ({ ...prev, description: newContent }))
+                            }
                         />
                         {errors.description && (
                             <p className="text-red-500 text-sm mt-1">{errors.description}</p>
@@ -186,7 +204,7 @@ const AddProductHero = () => {
                     </div>
 
                     {/* Category */}
-                    <div className="flex flex-col md:col-span-2">
+                    <div className="flex flex-col">
                         <label className="text-lg font-medium text-gray-700 mb-2">
                             Category <span className="text-red-500">*</span>
                         </label>
@@ -201,10 +219,27 @@ const AddProductHero = () => {
                             <option value="clothing">Clothing</option>
                             <option value="furniture">Furniture</option>
                             <option value="toys">Toys</option>
-                            <option value="other">Other</option>
                         </select>
                         {errors.category && (
                             <p className="text-red-500 text-sm mt-1">{errors.category}</p>
+                        )}
+                    </div>
+
+                    {/* SKU */}
+                    <div className="flex flex-col">
+                        <label className="text-lg font-medium text-gray-700 mb-2">
+                            Product SKU <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="productSku"
+                            value={productData.productSku}
+                            onChange={handleInputChange}
+                            className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter product SKU"
+                        />
+                        {errors.productSku && (
+                            <p className="text-red-500 text-sm mt-1">{errors.productSku}</p>
                         )}
                     </div>
 

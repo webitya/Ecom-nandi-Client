@@ -8,10 +8,11 @@ import {
   DashboardOutlined
 } from "@ant-design/icons";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const OwnerSidebarEl = () => {
   const navigate = useNavigate();
+  const location= useLocation();
 
   const menuItems = [
     { key: "dashboard", value: "Dashboard", Icon: DashboardOutlined, path: "" },
@@ -23,7 +24,8 @@ const OwnerSidebarEl = () => {
     { key: "manage-products", value: "Manage Products", Icon: AppstoreAddOutlined, path: "manageProducts" },
   ];
 
-  const [tab, setTab] = useState("dashboard");
+  const locationPath= location.pathname.split("/")[2] || ''
+  const [tab, setTab] = useState(locationPath);
 
   return (
     <div className="flex flex-col flex-1 bg-[#2d2f36] text-white p-4 h-full overflow-scroll">
@@ -43,13 +45,13 @@ const OwnerSidebarEl = () => {
           {menuItems.map((menu) => (
             <div
               key={menu.key}
-              className={`flex items-center gap-3 px-4 py-2 rounded-md cursor-pointer ${tab === menu.key
+              className={`flex items-center gap-3 px-4 py-2 rounded-md cursor-pointer ${tab === menu.path
                   ? "bg-gradient-to-r from-white to-[#ffffff56] text-[#2d2f36]"
                   : "hover:bg-[#404349]"
                 }`}
               onClick={() => {
-                setTab(menu.key);
-                navigate(menu.path); // Navigate on click
+                setTab(menu.path);
+                navigate(menu.path);
               }}
             >
               <menu.Icon className={tab === menu.key ? "text-blue-500" : ""} />
@@ -59,7 +61,7 @@ const OwnerSidebarEl = () => {
         </nav>
 
         {/* Bottom Profile Section with modern feel */}
-        <div className="flex items-center gap-2 bg-[#404349] rounded-lg px-4 py-2 mt-[2.65rem]">
+         <div className="flex items-center gap-2 bg-[#404349] rounded-lg px-4 py-2 mt-[2.65rem]">
           <UserOutlined className="text-white" />
           <div>
             <p className="text-sm text-white font-medium">Admin</p>
