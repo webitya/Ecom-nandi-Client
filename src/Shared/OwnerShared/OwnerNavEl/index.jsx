@@ -1,5 +1,6 @@
 import { CaretDownFilled, ShoppingCartOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const OwnerNavEl = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -11,10 +12,12 @@ const OwnerNavEl = () => {
   return (
     <nav className="bg-white shadow-md p-4 sticky top-0 left-0 right-0 z-10">
       <div className="flex justify-between items-center">
-        {/* Logo */}
-        <div className="relative">
-          <img src="/Logo-nandi.png" alt="brand-logo" className="w-[90px]" />
-        </div>
+
+        <Link to={'/'}>
+          <div className="relative">
+            <img src="/Logo-nandi.png" alt="brand-logo" className="w-[90px]" />
+          </div>
+        </Link>
 
         <div className="flex items-center space-x-6 text-gray-700">
           <div className="relative cursor-pointer">
@@ -35,10 +38,9 @@ const OwnerNavEl = () => {
           {isDropdownOpen && (
             <div
               className={`absolute top-full right-0 bg-white shadow-lg rounded-md w-64 p-4 text-gray-700
-                transform transition-all duration-300 ease-in-out opacity-100 translate-y-0 ${
-                  isDropdownOpen
-                    ? "opacity-100 translate-y-0" // Visible and in place
-                    : "opacity-0 translate-y-4"   // Hidden and moved up
+                transform transition-all duration-300 ease-in-out opacity-100 translate-y-0 ${isDropdownOpen
+                  ? "opacity-100 translate-y-0" // Visible and in place
+                  : "opacity-0 translate-y-4"   // Hidden and moved up
                 }`}
             >
               {/* User Info Header */}

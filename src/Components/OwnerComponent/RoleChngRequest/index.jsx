@@ -86,7 +86,7 @@ const RoleChngRequest = () => {
         } catch (error) {
             console.log(error)
             toast.error(error?.response?.data?.message || "Server error. Please try again later.")
-        } finally{
+        } finally {
             setLoader((prev) => ({ ...prev, acceptLoader: false }))
         }
 
@@ -112,14 +112,14 @@ const RoleChngRequest = () => {
 
             dispatchActionObject(updateParticularValue, {
                 name: 'totalPendingRequest',
-                value: (pendingPanditRequest.data.length + pendingSellerRequests.length === 0)? 
+                value: (pendingPanditRequest.data.length + pendingSellerRequests.length === 0) ?
                     0 : pendingPanditRequest.data.length + pendingSellerRequests.length
             })
 
         } catch (error) {
             console.log(error)
             toast.error(error?.response?.data?.message || "Server error. Please try again later.")
-        } finally{
+        } finally {
             setLoader((prev) => ({ ...prev, rejectloader: false }))
         }
 
@@ -144,7 +144,7 @@ const RoleChngRequest = () => {
                         <p className="text-2xl font-semibold text-gray-700">
                             No Role Change Request are Pending
                         </p>
-                    </div> 
+                    </div>
                     :
                     <div className="p-6 bg-[#f2f2f2] container mx-auto">
                         <h1 className="text-3xl font-bold text-[#2d2f36] mb-6 text-center">Requests for Role Change</h1>
