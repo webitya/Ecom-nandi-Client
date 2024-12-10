@@ -1,13 +1,20 @@
 import { CaretDownFilled, ShoppingCartOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const OwnerNavEl = () => {
+const OwnerNavEl = ({ setTab }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate= useNavigate();
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev); // Toggle dropdown on click
   };
+
+  const handleNavigationClick= () => {
+    navigate('')
+    setTab('')
+    setIsDropdownOpen(false)
+  }
 
   return (
     <nav className="bg-white shadow-md p-4 sticky top-0 left-0 right-0 z-10">
@@ -56,7 +63,10 @@ const OwnerNavEl = () => {
 
               {/* Dropdown Options */}
               <ul>
-                <li className="p-2 hover:bg-blue-100 rounded-lg cursor-pointer">Dashboard</li>
+                <li 
+                className="p-2 hover:bg-blue-100 rounded-lg cursor-pointer"
+                onClick={handleNavigationClick}
+                >Dashboard</li>
                 <li className="p-2 hover:bg-blue-100 rounded-lg cursor-pointer">Logout</li>
               </ul>
             </div>

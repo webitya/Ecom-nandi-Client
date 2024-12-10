@@ -16,6 +16,7 @@ import { setPanditList } from "../../redux/features/ownerRedux/totalPanditSlice/
 import { setSellerList } from "../../redux/features/ownerRedux/totalSellerSlice/totalSellerSlice"
 import { updateDashboardValue } from "../../redux/features/ownerRedux/dashboardSlice/dashboardSlice"
 import OwnerLayoutEl from "../../Shared/OwnerLayout"
+import BusinessSetup from "../../Components/Business settings"
 
 const Owner = () => {
   const [loader, setLoader] = useState(true);
@@ -79,6 +80,7 @@ const Owner = () => {
               <Route path="/addProduct" element={<AddProductHero />} />
               <Route path="/pandits/:id" element={<SpecificPanditEl />} />
               <Route path="/sellers/:id" element={<SpecificSellerEl />} />
+              <Route path="/bussinessSetup"element={<BusinessSetup />} />
             </Routes>
         }
       </div>
