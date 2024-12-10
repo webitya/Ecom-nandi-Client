@@ -1,14 +1,13 @@
-
-
-import {
-  FacebookOutlined,
-  InstagramOutlined,
-  LinkedinOutlined,
-  TwitterOutlined,
-} from "@ant-design/icons";
+import React from "react";
+import { useSelector } from "react-redux";
+import { FacebookOutlined, InstagramOutlined, LinkedinOutlined, TwitterOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import "./FooterEl.css";
 
 export const FooterEl = () => {
+  // Access the pages slice from the Redux store
+  const pages = useSelector((state) => state.pages.pages || {});
+
   return (
     <>
       <div className="footer_container">
@@ -51,7 +50,18 @@ export const FooterEl = () => {
             </div>
           </div>
 
-          
+          {/* Dynamically render the routes from Redux store */}
+          <div className="footer_dynamic_routes">
+            <h3>Dynamic Pages</h3>
+            <ul>
+              {Object.values(pages).map((page) => (
+                <li key={page.route}>
+                  <Link to={page.route}>{page.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           <div className="footer_social">
             <h3>Connect with us</h3>
             <div className="social_icons">
@@ -62,7 +72,7 @@ export const FooterEl = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="footer_bottom">
           <p>© {new Date().getFullYear()} Urban Company. All Rights Reserved.</p>
         </div>
@@ -70,6 +80,3 @@ export const FooterEl = () => {
     </>
   );
 };
-
-
-
