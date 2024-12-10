@@ -5,14 +5,13 @@ import {
   ShopOutlined,
   FileTextOutlined,
   AppstoreAddOutlined,
-  DashboardOutlined
+  DashboardOutlined,
+  SettingOutlined
 } from "@ant-design/icons";
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const OwnerSidebarEl = () => {
+const OwnerSidebarEl = ({tab, setTab}) => {
   const navigate = useNavigate();
-  const location= useLocation();
 
   const menuItems = [
     { key: "dashboard", value: "Dashboard", Icon: DashboardOutlined, path: "" },
@@ -22,10 +21,8 @@ const OwnerSidebarEl = () => {
     { key: "pandit-booking", value: "Pandit Booking", Icon: AppstoreAddOutlined, path: "panditBooking" },
     { key: "add-products", value: "Add Products", Icon: ShopOutlined, path: "addProduct" },
     { key: "manage-products", value: "Manage Products", Icon: AppstoreAddOutlined, path: "manageProducts" },
+    { key: "bussiness-setup", value: "Bussiness Setup", Icon: SettingOutlined, path: "bussinessSetup" }
   ];
-
-  const locationPath= location.pathname.split("/")[2] || ''
-  const [tab, setTab] = useState(locationPath);
 
   return (
     <div className="flex flex-col flex-1 bg-[#2d2f36] text-white p-4 h-full overflow-scroll">
