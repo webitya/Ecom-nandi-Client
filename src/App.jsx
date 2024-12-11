@@ -31,6 +31,10 @@ import { Spin } from "antd";
 import BlogListEl from "./Shared/BlogListEl";
 import BlogDetailEl from "./Shared/BlogDetail";
 import BlogManager from "./Shared/BlogManager";
+import AboutUs from "./Pages/AboutUs";
+import ContactUs from "./Pages/ContactUs";
+import PrivacyPolicies from "./Pages/PrivacyPolicy";
+import TermsConditions from "./Pages/TermsConditions";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -91,6 +95,10 @@ const App = () => {
             <Route path="/create-blog" element={<BlogManager />} />
             <Route path="/blogs" element={<BlogListEl />} />
             <Route path="/blog/:slug" element={<BlogDetailEl />} />
+            <Route path="about-us" element={<AboutUs/>}/>
+            <Route path="contact-us" element={<ContactUs/>}/>
+            <Route path="privacy-policies" element={<PrivacyPolicies/>}/>
+            <Route path="terms-conditions" element={<TermsConditions/>}/>
             {/* protected route */}
             <Route
               path="/account/*"

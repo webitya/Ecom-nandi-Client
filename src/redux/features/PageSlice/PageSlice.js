@@ -12,6 +12,26 @@ const initialState = {
           content: "<p>Privacy Policy content here...</p>",
           route: "/privacy-policy",
         },
+        aboutUs1: {
+          title: "About Us",
+          content: "<p>About Us content here...</p>",
+          route: "/about-us",
+        },
+        privacyPolicy1: {
+          title: "Privacy Policy",
+          content: "<p>Privacy Policy content here...</p>",
+          route: "/privacy-policy",
+        },
+        aboutUs2: {
+          title: "About Us",
+          content: "<p>About Us content here...</p>",
+          route: "/about-us",
+        },
+        privacyPolicy2: {
+          title: "Privacy Policy",
+          content: "<p>Privacy Policy content here...</p>",
+          route: "/privacy-policy",
+        },
         aditya: {
           title: "Aditya",
           content: `
