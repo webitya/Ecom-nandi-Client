@@ -246,7 +246,7 @@ const AddProductHero = () => {
                     {/* Meta Data Section */}
                     <div className="flex flex-col">
                         <label className="text-lg font-medium text-gray-700 mb-2">
-                            Meta Title <span className="text-red-500">*</span>
+                            Meta Tag <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -254,7 +254,7 @@ const AddProductHero = () => {
                             value={productData.metaTitle}
                             onChange={handleInputChange}
                             className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                            placeholder="Enter meta title"
+                            placeholder="Enter meta tag"
                         />
                         {errors.metaTitle && (
                             <p className="text-red-500 text-sm mt-1">{errors.metaTitle}</p>

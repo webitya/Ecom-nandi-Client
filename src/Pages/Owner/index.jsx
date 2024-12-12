@@ -17,6 +17,7 @@ import { setSellerList } from "../../redux/features/ownerRedux/totalSellerSlice/
 import { updateDashboardValue } from "../../redux/features/ownerRedux/dashboardSlice/dashboardSlice"
 import OwnerLayoutEl from "../../Shared/OwnerLayout"
 import BusinessSetup from "../../Components/Business settings"
+import BannerSetupEl from "../../Components/OwnerComponent/BannerSetupEl"
 
 const Owner = () => {
   const [loader, setLoader] = useState(true);
@@ -66,7 +67,7 @@ const Owner = () => {
         {
           loader
             ?
-            <div className="w-screen h-[88vh] flex justify-center items-center">
+            <div className="w-screen h-[calc(100vh-77px)] flex justify-center items-center">
               <Spin size="larger" />
             </div>
             :
@@ -81,6 +82,8 @@ const Owner = () => {
               <Route path="/pandits/:id" element={<SpecificPanditEl />} />
               <Route path="/sellers/:id" element={<SpecificSellerEl />} />
               <Route path="/bussinessSetup"element={<BusinessSetup />} />
+              <Route path="/manageOrders" element= {<div>sg</div>} />
+              <Route path="/bannerSetup" element= {<BannerSetupEl />} />
             </Routes>
         }
       </div>
