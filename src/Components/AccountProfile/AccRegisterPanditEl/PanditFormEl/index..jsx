@@ -48,7 +48,7 @@ const PanditFormEl = ({ setState }) => {
         experience: "",
         contact: "",
         age: "",
-        aadharNo: '',
+        aadharNo: "",
     });
 
     const [schemaError, setSchemaError] = useState({});

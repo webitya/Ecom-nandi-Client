@@ -43,7 +43,7 @@ const OwnerDashBoardEl = ({ user, seller, pandit, request }) => {
       bgColor: "bg-red-50",
     },
     {
-      title: "Pending Requests for role change",
+      title: "Pending Requests for Role Change",
       value: dashboardValue.totalPendingRequest,
       icon: <FileAddOutlined />,
       gradient: "from-purple-500 to-purple-300",
@@ -57,7 +57,7 @@ const OwnerDashBoardEl = ({ user, seller, pandit, request }) => {
       bgColor: "bg-green-50",
     },
     {
-      title: "Manage Products",
+      title: "Total Products",
       value: 34,
       icon: <ProductFilled />,
       gradient: "from-teal-500 to-teal-300",
@@ -95,7 +95,7 @@ const OwnerDashBoardEl = ({ user, seller, pandit, request }) => {
 
   return (
 
-    <div className="bg-[#f9f9f9] min-h-screen container flex flex-[5]">
+    <div className="bg-[#f9f9f9] container flex flex-[5]">
       {/* Sidebar */}
 
       <div className="p-6 w-full flex flex-col gap-4">
