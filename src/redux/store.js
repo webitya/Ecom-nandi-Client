@@ -38,8 +38,10 @@ import RoleChangeReducers from './features/ownerRedux/roleChangeSlice/roleChange
 import totalPanditListReducer from './features/ownerRedux/totalPanditSlice/totalPanditSlice.js';
 import totalSellerListReducer from './features/ownerRedux/totalSellerSlice/totalSellerSlice.js';
 import dashboardSReducer from './features/ownerRedux/dashboardSlice/dashboardSlice.js';
+
 import pageReducer from './features/PageSlice/PageSlice.js';
 import bannerReducer from './features/bannerSlice/bannerSlice.js';
+import blogReducer from './features/blogsSlice/blogSlice.js';
 
 const store = configureStore({
     reducer: {
@@ -55,7 +57,8 @@ const store = configureStore({
         dashboard_value: dashboardSReducer, // Dashboard metrics
         pages: pageReducer, // Dynamic pages reducer,
         bannerImages: bannerReducer
-    }
+        blogs: blogReducer,
+    },
 });
 
 export default store;
