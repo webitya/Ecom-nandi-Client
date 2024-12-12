@@ -38,8 +38,11 @@ import RoleChangeReducers from './features/ownerRedux/roleChangeSlice/roleChange
 import totalPanditListReducer from './features/ownerRedux/totalPanditSlice/totalPanditSlice.js';
 import totalSellerListReducer from './features/ownerRedux/totalSellerSlice/totalSellerSlice.js';
 import dashboardSReducer from './features/ownerRedux/dashboardSlice/dashboardSlice.js';
-import pageReducer from './features/PageSlice/PageSlice.js'; // Page management reducer
+
+import pageReducer from './features/PageSlice/PageSlice.js';
+import bannerReducer from './features/bannerSlice/bannerSlice.js';
 import blogReducer from './features/blogsSlice/blogSlice.js';
+
 const store = configureStore({
     reducer: {
         user: userReducer, // User data and authentication
@@ -52,10 +55,10 @@ const store = configureStore({
         pandit_list: totalPanditListReducer, // List of pandits
         seller_list: totalSellerListReducer, // List of sellers
         dashboard_value: dashboardSReducer, // Dashboard metrics
-        pages: pageReducer, // Dynamic pages reducer
+        pages: pageReducer, // Dynamic pages reducer,
+        bannerImages: bannerReducer
         blogs: blogReducer,
     },
-    devTools: false, // Disable Redux DevTools
 });
 
 export default store;

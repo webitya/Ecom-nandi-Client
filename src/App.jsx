@@ -1,60 +1,60 @@
 import DynamicPages from "./Shared/DynamicPage";
 import DynamicSinglePage from "./Shared/DynamicSingle";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import HomePage from "./Pages/HomePage";
-import ShopPage from "./Pages/ShopPage";
-import OffersPage from "./Pages/OffersPage";
-import Register from "./Pages/Register";
-import Login from "./Pages/Login";
-import { Toaster } from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import HomePage from "./Pages/HomePage"
+import ShopPage from "./Pages/ShopPage"
+import OffersPage from "./Pages/OffersPage"
+import Register from "./Pages/Register"
+import Login from "./Pages/Login"
+import toast, { Toaster } from "react-hot-toast"
+import { useDispatch, useSelector } from "react-redux"
 
-import Verify from "./Pages/Verify";
-import NotFound from "./Pages/Notfound";
-import Accounts from "./Pages/Accounts";
-import { useEffect, useState } from "react";
-import { useGetCurrUser } from "./hooks/useGetCurrUser";
-import { setUser } from "./redux/features/userSlice/userSlice";
-import Redirecting from "./Pages/Redirect";
+import Verify from "./Pages/Verify"
+import NotFound from "./Pages/Notfound"
+import Accounts from "./Pages/Accounts"
+import { useEffect, useState } from "react"
+import { useGetCurrUser } from "./hooks/useGetCurrUser"
+import { setUser } from "./redux/features/userSlice/userSlice"
+import Redirecting from "./Pages/Redirect"
 
-import Owner from "./Pages/Owner";
-import Seller from "./Pages/Seller";
-import ProductDetailsPage from "./Pages/ProductDetails";
-import { setCartItem } from "./redux/features/CartItemSlice/CartItemSlice";
-import { useGetCartItems } from "./hooks/useGetCartItems";
-import CheckoutPage from "./Pages/CheckoutPage";
-import UserProtectedRoute from "./Components/ProtectedRoute/userProtectedRoute";
-import OwnerProtectedRoute from "./Components/ProtectedRoute/ownerProtectedRoute";
-import SellerProtectedRoute from "./Components/ProtectedRoute/sellerProtectedRoute";
-import PaymentSuccess from "./Pages/PamentSuccessPage/PamentSuccess";
-import { Spin } from "antd";
-import BlogListEl from "./Shared/BlogListEl";
-import BlogDetailEl from "./Shared/BlogDetail";
-import BlogManager from "./Shared/BlogManager";
-import AboutUs from "./Pages/AboutUs";
-import ContactUs from "./Pages/ContactUs";
-import PrivacyPolicies from "./Pages/PrivacyPolicy";
-import TermsConditions from "./Pages/TermsConditions";
+import Owner from "./Pages/Owner"
+import Seller from "./Pages/Seller"
+import ProductDetailsPage from "./Pages/ProductDetails"
+import { setCartItem } from "./redux/features/CartItemSlice/CartItemSlice"
+import { useGetCartItems } from "./hooks/useGetCartItems"
+import CheckoutPage from "./Pages/CheckoutPage"
+import UserProtectedRoute from "./Components/ProtectedRoute/userProtectedRoute"
+import OwnerProtectedRoute from "./Components/ProtectedRoute/ownerProtectedRoute"
+import SellerProtectedRoute from "./Components/ProtectedRoute/sellerProtectedRoute"
+import PaymentSuccess from "./Pages/PamentSuccessPage/PamentSuccess"
+import { Spin } from "antd"
+import { useRequestApi } from "./hooks/useRequestApi";
+import { setBanners } from "./redux/features/bannerSlice/bannerSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.value);
-  console.log("role print-", user);
-  const [loader, setLoader] = useState(true);
+  // const user = useSelector((state) => state.user.value)
+  const [loader, setLoader] = useState(true)
+
   const pages = useSelector((state) => state.pages.pages || {});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [userResponse, cartResponse] = await Promise.all([
+        const [userResponse, cartResponse, responseBanners] = await Promise.all([
           useGetCurrUser(),
           useGetCartItems(),
+          useRequestApi('api/owner/getBanner')
         ]);
-        console.log("userresponse:", userResponse);
 
         if (cartResponse.length) {
           dispatch(setCartItem(cartResponse));
         }
+
+        if(responseBanners.banner.length){
+          dispatch(setBanners(responseBanners.banner))
+        }
+
         const userObj = {
           firstName: userResponse?.user?.firstName,
           lastName: userResponse?.user?.lastName,
@@ -65,6 +65,7 @@ const App = () => {
         if (userResponse) {
           dispatch(setUser(userObj));
         }
+
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -73,6 +74,7 @@ const App = () => {
     };
 
     fetchData();
+
   }, [dispatch]);
 
   return (
