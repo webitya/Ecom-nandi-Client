@@ -1,5 +1,5 @@
 import { LoadingOutlined, ToolOutlined } from "@ant-design/icons";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRequestApi } from "../../../hooks/useRequestApi";
 import toast from "react-hot-toast";
 import { Modal } from "antd";
@@ -7,12 +7,12 @@ import { Modal } from "antd";
 const BannerSetupEl = () => {
 
     const fileInputRef = useRef(null);
+
     const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
-    const [loader, setLoader] = useState({
-        uploadBanner: false,
-        deleteBanner: false
-    });
+
+    const [loader, setLoader] = useState(false);
+    const [deleteLoader, setDeleteLoader]= useState({});
     const [previewUrl, setPreviewUrl] = useState("")
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,7 +42,7 @@ const BannerSetupEl = () => {
 
     const handleSave = async () => {
         try {
-            setLoader((prev) => ({ ...prev, uploadBanner: true }))
+            setLoader(true)
             if (selectedFile) {
                 const formData = new FormData();
 
@@ -61,7 +61,7 @@ const BannerSetupEl = () => {
             console.log(error);
             toast.error(error?.response?.data?.message || "Some server error occured!")
         } finally {
-            setLoader((prev) => ({ ...prev, uploadBanner: false }))
+            setLoader(false)
             handleReset()
         }
 
@@ -75,7 +75,7 @@ const BannerSetupEl = () => {
 
     const handleDelete = async (id) => {
         try {
-            setLoader((prev) => ({ ...prev, deleteBanner: true }))
+            setDeleteLoader((prev) => ({ ...prev, [id]: true }))
             const response = await useRequestApi(`api/owner/deleteBanner?id=${id}`, 'DELETE')
             toast.success(response?.message || "sucesss!")
             const newImages = images.filter((image) => image._id !== id)
@@ -84,7 +84,7 @@ const BannerSetupEl = () => {
             console.log(error);
             toast.error(error?.response?.data?.message || "Some server error occured!")
         } finally {
-            setLoader((prev) => ({ ...prev, deleteBanner: false }))
+            setDeleteLoader((prev) => ({ ...prev, [id]: false }))
         }
     }
 
@@ -102,6 +102,8 @@ const BannerSetupEl = () => {
         getBannerImages()
     }, [])
 
+    console.log(images);
+
     return (
         <div className="p-4 bg-[#f2f2f2]">
 
@@ -118,7 +120,7 @@ const BannerSetupEl = () => {
                     {imagePreview ? (
                         <>
                             {
-                                loader.uploadBanner ?
+                                loader ?
                                     <div
                                         className="flex items-center justify-center w-full h-32 text-blue-500 text-center cursor-pointer"
                                         onClick={handleBrowseClick}
@@ -190,7 +192,7 @@ const BannerSetupEl = () => {
                         </div>
                         :
                         <>
-                            <h4 className="text-xl font-semibold">Uploaded Banner</h4>
+                            <h4 className="text-xl font-semibold mb-3">Uploaded Banner</h4>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                 {images.map((image) => (
@@ -215,10 +217,10 @@ const BannerSetupEl = () => {
                                                 className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                                             >
                                                 {
-                                                    loader.deleteBanner 
-                                                    ?
+                                                    deleteLoader[image._id]
+                                                        ?
                                                         <LoadingOutlined />
-                                                    :
+                                                        :
                                                         <span>Delete</span>
                                                 }
                                             </button>

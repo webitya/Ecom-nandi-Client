@@ -18,6 +18,7 @@ import { updateDashboardValue } from "../../redux/features/ownerRedux/dashboardS
 import OwnerLayoutEl from "../../Shared/OwnerLayout"
 import BusinessSetup from "../../Components/Business settings"
 import BannerSetupEl from "../../Components/OwnerComponent/BannerSetupEl"
+import CategorySetupEl from "../../Components/OwnerComponent/CategorySetupEl"
 
 const Owner = () => {
   const [loader, setLoader] = useState(true);
@@ -84,6 +85,7 @@ const Owner = () => {
               <Route path="/bussinessSetup"element={<BusinessSetup />} />
               <Route path="/manageOrders" element= {<div>sg</div>} />
               <Route path="/bannerSetup" element= {<BannerSetupEl />} />
+              <Route path="/categorySetup" element= {<CategorySetupEl />} />
             </Routes>
         }
       </div>

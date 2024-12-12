@@ -87,6 +87,7 @@ import {
   ShoppingOutlined,
   DownOutlined,
   FileImageOutlined,
+  AppstoreOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -144,6 +145,7 @@ const OwnerSidebarEl = ({ tab, setTab }) => {
       items: [
         { key: "bussiness-setup", value: "Business Setup", Icon: SettingOutlined, path: "bussinessSetup" },
         { key: "banner-setup", value: "Banner Setup", Icon: FileImageOutlined, path: "bannerSetup" },
+        { key: "category-setup", value: "Category Setup", Icon: AppstoreOutlined, path: "categorySetup"},
       ],
     },
   ];

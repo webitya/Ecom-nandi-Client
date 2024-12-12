@@ -6,7 +6,7 @@ import ShopPage from "./Pages/ShopPage"
 import OffersPage from "./Pages/OffersPage"
 import Register from "./Pages/Register"
 import Login from "./Pages/Login"
-import { Toaster } from "react-hot-toast"
+import toast, { Toaster } from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
 
 import Verify from "./Pages/Verify"
@@ -28,26 +28,33 @@ import OwnerProtectedRoute from "./Components/ProtectedRoute/ownerProtectedRoute
 import SellerProtectedRoute from "./Components/ProtectedRoute/sellerProtectedRoute"
 import PaymentSuccess from "./Pages/PamentSuccessPage/PamentSuccess"
 import { Spin } from "antd"
+import { useRequestApi } from "./hooks/useRequestApi";
+import { setBanners } from "./redux/features/bannerSlice/bannerSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.value)
-  console.log("role print-", user)
+  // const user = useSelector((state) => state.user.value)
   const [loader, setLoader] = useState(true)
   const pages = useSelector((state) => state.pages.pages || {});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [userResponse, cartResponse] = await Promise.all([
+        const [userResponse, cartResponse, responseBanners] = await Promise.all([
           useGetCurrUser(),
-          useGetCartItems()
+          useGetCartItems(),
+          useRequestApi('api/owner/getBanner')
         ]);
         console.log("userresponse:", userResponse);
 
         if (cartResponse.length) {
           dispatch(setCartItem(cartResponse));
         }
+
+        if(responseBanners.banner.length){
+          dispatch(setBanners(responseBanners.banner))
+        }
+
         const userObj = {
           firstName: userResponse?.user?.firstName,
           lastName: userResponse?.user?.lastName,
@@ -58,6 +65,7 @@ const App = () => {
         if (userResponse) {
           dispatch(setUser(userObj));
         }
+
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -66,6 +74,7 @@ const App = () => {
     };
 
     fetchData();
+
   }, [dispatch]);
 
   return (
