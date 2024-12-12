@@ -94,13 +94,13 @@ const App = () => {
             <Route path="/verify/:token" element={<Verify />} />
             <Route path="/redirecting" element={<Redirecting />} />
             <Route path="/productDetails" element={<ProductDetailsPage />} />
-            <Route path="/create-blog" element={<BlogManager />} />
+            {/* <Route path="/create-blog" element={<BlogManager />} />
             <Route path="/blogs" element={<BlogListEl />} />
-            <Route path="/blog/:slug" element={<BlogDetailEl />} />
-            <Route path="about-us" element={<AboutUs/>}/>
+            <Route path="/blog/:slug" element={<BlogDetailEl />} /> */}
+            {/* <Route path="about-us" element={<AboutUs/>}/>
             <Route path="contact-us" element={<ContactUs/>}/>
             <Route path="privacy-policies" element={<PrivacyPolicies/>}/>
-            <Route path="terms-conditions" element={<TermsConditions/>}/>
+            <Route path="terms-conditions" element={<TermsConditions/>}/> */}
             {/* protected route */}
             <Route
               path="/account/*"

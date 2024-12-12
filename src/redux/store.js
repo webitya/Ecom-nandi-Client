@@ -56,7 +56,7 @@ const store = configureStore({
         seller_list: totalSellerListReducer, // List of sellers
         dashboard_value: dashboardSReducer, // Dashboard metrics
         pages: pageReducer, // Dynamic pages reducer,
-        bannerImages: bannerReducer
+        bannerImages: bannerReducer,
         blogs: blogReducer,
     },
 });
