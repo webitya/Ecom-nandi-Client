@@ -12,7 +12,7 @@ const BannerSetupEl = () => {
     const [imagePreview, setImagePreview] = useState(null);
 
     const [loader, setLoader] = useState(false);
-    const [deleteLoader, setDeleteLoader]= useState({});
+    const [deleteLoader, setDeleteLoader] = useState({});
     const [previewUrl, setPreviewUrl] = useState("")
 
     const [isModalOpen, setIsModalOpen] = useState(false);

@@ -30,10 +30,18 @@ import PaymentSuccess from "./Pages/PamentSuccessPage/PamentSuccess"
 import { Spin } from "antd"
 import { useRequestApi } from "./hooks/useRequestApi";
 import { setBanners } from "./redux/features/bannerSlice/bannerSlice";
+import { setCategory } from "./redux/features/CategorySlice/categorySlice";
+import BlogManager from "./Shared/BlogManager";
+import BlogListEl from "./Shared/BlogListEl";
+import BlogDetailEl from "./Shared/BlogDetail";
+import TermsConditionsHero from "./CompanyPages/TermsConditions/TermsConditionsHero";
+import PrivacyPoliciesHero from "./CompanyPages/PrivacyPolicy/PrivacyPolicyHero";
+import AboutUsHero from "./CompanyPages/AboutUs/AboutUsHero";
+import ContactUsHero from "./CompanyPages/ContactUs/ContactUsHero";
 
 const App = () => {
   const dispatch = useDispatch();
-  // const user = useSelector((state) => state.user.value)
+
   const [loader, setLoader] = useState(true)
 
   const pages = useSelector((state) => state.pages.pages || {});
@@ -41,10 +49,11 @@ const App = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [userResponse, cartResponse, responseBanners] = await Promise.all([
+        const [userResponse, cartResponse, responseBanners, fetchCategory] = await Promise.all([
           useGetCurrUser(),
           useGetCartItems(),
-          useRequestApi('api/owner/getBanner')
+          useRequestApi('api/owner/getBanner'),
+          useRequestApi('api/owner/getCategories')
         ]);
 
         if (cartResponse.length) {
@@ -53,6 +62,10 @@ const App = () => {
 
         if(responseBanners.banner.length){
           dispatch(setBanners(responseBanners.banner))
+        }
+
+        if(fetchCategory.category.length){
+          dispatch(setCategory(fetchCategory.category))
         }
 
         const userObj = {
@@ -68,6 +81,7 @@ const App = () => {
 
       } catch (error) {
         console.error("Error fetching data:", error);
+        
       } finally {
         setLoader(false);
       }
@@ -94,13 +108,13 @@ const App = () => {
             <Route path="/verify/:token" element={<Verify />} />
             <Route path="/redirecting" element={<Redirecting />} />
             <Route path="/productDetails" element={<ProductDetailsPage />} />
-            {/* <Route path="/create-blog" element={<BlogManager />} />
+            <Route path="/create-blog" element={<BlogManager />} />
             <Route path="/blogs" element={<BlogListEl />} />
-            <Route path="/blog/:slug" element={<BlogDetailEl />} /> */}
-            {/* <Route path="about-us" element={<AboutUs/>}/>
-            <Route path="contact-us" element={<ContactUs/>}/>
-            <Route path="privacy-policies" element={<PrivacyPolicies/>}/>
-            <Route path="terms-conditions" element={<TermsConditions/>}/> */}
+            <Route path="/blog/:slug" element={<BlogDetailEl />} />
+            <Route path="about-us" element={<AboutUsHero/>}/>
+            <Route path="contact-us" element={<ContactUsHero/>}/>
+            <Route path="privacy-policies" element={<PrivacyPoliciesHero/>}/>
+            <Route path="terms-conditions" element={<TermsConditionsHero/>}/>
             {/* protected route */}
             <Route
               path="/account/*"

@@ -95,8 +95,32 @@ import { useState } from "react";
 const OwnerSidebarEl = ({ tab, setTab }) => {
 
   const navigate = useNavigate();
+
+  const getGroupValue = () => {
+    switch (tab) {
+      case '':
+        return 'main';
+      case 'pandits':
+      case 'sellers':
+      case 'roleChangeRequest':
+        return 'users';
+      case 'addProduct':
+      case 'manageProducts':
+        return 'products';
+      case 'panditBooking':
+      case 'manageOrders':
+        return 'orders';
+      case 'bussinessSetup':
+      case 'bannerSetup':
+      case 'categorySetup':
+        return 'settings';
+      default:
+        return null;
+    }
+  };
+
   const [openGroups, setOpenGroups] = useState({
-    "main": true
+    [getGroupValue()]: true,
   });
 
   const toggleGroup = (groupKey) => {
@@ -145,57 +169,60 @@ const OwnerSidebarEl = ({ tab, setTab }) => {
       items: [
         { key: "bussiness-setup", value: "Business Setup", Icon: SettingOutlined, path: "bussinessSetup" },
         { key: "banner-setup", value: "Banner Setup", Icon: FileImageOutlined, path: "bannerSetup" },
-        { key: "category-setup", value: "Category Setup", Icon: AppstoreOutlined, path: "categorySetup"},
+        { key: "category-setup", value: "Category Setup", Icon: AppstoreOutlined, path: "categorySetup" },
       ],
     },
   ];
 
   return (
     <div className="flex flex-col justify-between flex-1 bg-[#2d2f36] text-white p-4 h-[calc(100vh-77px)] overflow-scroll">
-      <div className="flex flex-col items-center mb-6 relative">
-        <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mb-2 shadow-lg">
-          <p className="text-white text-xl font-bold">U</p> {/* Admin initial */}
-        </div>
-        <p className="font-semibold text-xl text-white">Utkarsh Kumar</p>
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#2d2f36] via-[#2d2f36] to-transparent p-2 rounded-b-lg">
-          <p className="text-xs text-gray-400 text-center">admin@example.com</p>
-        </div>
-      </div>
 
-      <nav className="flex flex-col gap-6">
-        {menuGroups.map((group) => (
-          <div key={group.key}>
-            <div
-              className="flex items-center justify-between px-5 py-2 rounded-lg cursor-pointer bg-[#404349] hover:bg-[#50545b]"
-              onClick={() => toggleGroup(group.key)}
-            >
-              <span className="font-semibold text-base">{group.label}</span>
-              <DownOutlined className={`transition-transform ${openGroups[group.key] ? "rotate-180" : "rotate-0"}`} />
-            </div>
-
-            {openGroups[group.key] && (
-              <div className="ml-5 flex flex-col gap-3 mt-3">
-                {group.items.map((menu) => (
-                  <div
-                    key={menu.key}
-                    className={`flex items-center gap-4 px-4 py-3 rounded-md cursor-pointer ${tab === menu.path
-                      ? "bg-gradient-to-r from-white to-[#ffffff56] text-[#2d2f36]"
-                      : "hover:bg-[#404349]"
-                      }`}
-                    onClick={() => {
-                      setTab(menu.path);
-                      navigate(menu.path);
-                    }}
-                  >
-                    <menu.Icon className={tab === menu.key ? "text-blue-500" : ""} />
-                    <span className="text-sm">{menu.value}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+      <div>
+        <div className="flex flex-col items-center mb-6 relative">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mb-2 shadow-lg">
+            <p className="text-white text-xl font-bold">U</p> {/* Admin initial */}
           </div>
-        ))}
-      </nav>
+          <p className="font-semibold text-xl text-white">Utkarsh Kumar</p>
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#2d2f36] via-[#2d2f36] to-transparent p-2 rounded-b-lg">
+            <p className="text-xs text-gray-400 text-center">admin@example.com</p>
+          </div>
+        </div>
+
+        <nav className="flex flex-col gap-6">
+          {menuGroups.map((group) => (
+            <div key={group.key}>
+              <div
+                className="flex items-center justify-between px-5 py-2 rounded-lg cursor-pointer bg-[#404349] hover:bg-[#50545b]"
+                onClick={() => toggleGroup(group.key)}
+              >
+                <span className="font-semibold text-base">{group.label}</span>
+                <DownOutlined className={`transition-transform ${openGroups[group.key] ? "rotate-180" : "rotate-0"}`} />
+              </div>
+
+              {openGroups[group.key] && (
+                <div className="ml-5 flex flex-col gap-3 mt-3">
+                  {group.items.map((menu) => (
+                    <div
+                      key={menu.key}
+                      className={`flex items-center gap-4 px-4 py-3 rounded-md cursor-pointer ${tab === menu.path
+                        ? "bg-gradient-to-r from-white to-[#ffffff56] text-[#2d2f36]"
+                        : "hover:bg-[#404349]"
+                        }`}
+                      onClick={() => {
+                        setTab(menu.path);
+                        navigate(menu.path);
+                      }}
+                    >
+                      <menu.Icon className={tab === menu.key ? "text-blue-500" : ""} />
+                      <span className="text-sm">{menu.value}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
+      </div>
 
       {/* Bottom Profile Section */}
       <div className="flex items-center gap-2 bg-[#404349] rounded-lg px-4 py-3 mt-6">
