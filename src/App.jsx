@@ -38,6 +38,8 @@ import TermsConditionsHero from "./CompanyPages/TermsConditions/TermsConditionsH
 import PrivacyPoliciesHero from "./CompanyPages/PrivacyPolicy/PrivacyPolicyHero";
 import AboutUsHero from "./CompanyPages/AboutUs/AboutUsHero";
 import ContactUsHero from "./CompanyPages/ContactUs/ContactUsHero";
+import { useGetBanner } from "./hooks/useGetBanner";
+import { useGetCategory } from "./hooks/useGetCategory";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -52,15 +54,17 @@ const App = () => {
         const [userResponse, cartResponse, responseBanners, fetchCategory] = await Promise.all([
           useGetCurrUser(),
           useGetCartItems(),
-          useRequestApi('api/owner/getBanner'),
-          useRequestApi('api/owner/getCategories')
+          useGetBanner(),
+          useGetCategory()
         ]);
+
+        console.log(responseBanners);    
 
         if (cartResponse.length) {
           dispatch(setCartItem(cartResponse));
         }
 
-        if(responseBanners.banner.length){
+        if(responseBanners){
           dispatch(setBanners(responseBanners.banner))
         }
 
