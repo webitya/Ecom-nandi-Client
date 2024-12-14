@@ -64,7 +64,7 @@ const Owner = () => {
 
   return (
     <OwnerLayoutEl>
-      <div className="flex-[5] h-[88vh] overflow-scroll">
+      <div className="flex-[5] h-[calc(100vh-77px)] overflow-scroll">
         {
           loader
             ?

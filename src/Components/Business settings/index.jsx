@@ -5,7 +5,7 @@ import Onsubmit from "./Onsubmit";
 const BusinessSetup = () => {
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center flex-col p-4">
+    <div className="container bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center flex-col p-4">
       <MtMode />
       <CompanyInformation />
       <LogoUpdate />
