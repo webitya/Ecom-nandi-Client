@@ -37,15 +37,17 @@ const HomeCarousel2 = () => {
           :
           <>
             <Carousel ref={carouselRef} autoplay>
-              {carouselData.map((item, index) => (
-                <div key={index} className="carousel-item">
-                  <img
-                    src={item.bannerUrl}
-                    alt={item.bannerUrl}
-                    className="carousel-image"
-                  />
-                </div>
-              ))}
+              {carouselData.map((item, index) => 
+                item.bannerType === 'main type' && (
+                  <div key={index} className="carousel-item">
+                    <img
+                      src={item.bannerUrl}
+                      alt={item.bannerUrl}
+                      className="carousel-image"
+                    />
+                  </div>
+                )
+              )}
             </Carousel>
 
             <div className="carousel-controls">

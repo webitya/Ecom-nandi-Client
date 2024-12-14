@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import ImageUpload from "../uploadImageEl";
 import { z } from "zod";
-import JoditEditor from 'jodit-react'
-const AddProductHero = () => {
+import JoditEditor from 'jodit-react';
+import { useSelector } from 'react-redux';
 
+const AddProductHero = () => {
     const productSchema = z.object({
         images: z.array(z.string()).min(1, "At least one image is required"),
-        name: z.string().min(1,"Name is required"),
+        name: z.string().min(1, "Name is required"),
         price: z
             .string()
             .regex(/^\d+(\.\d{1,2})?$/, "Price must be a valid number"),
-        description: z.string().min(1,"Description is required"),
+        description: z.string().min(1, "Description is required"),
         discountPrice: z
             .string()
             .regex(/^\d+(\.\d{1,2})?$/, "Discount price must be a valid number"),
@@ -18,11 +19,17 @@ const AddProductHero = () => {
             .string()
             .regex(/^\d+$/, "Quantity must be a valid number")
             .transform(Number),
-        category: z.string().min(1,"Category is required"),
-        productSku: z.string().min(6,"Product SKU is required"),
-        metaTitle: z.string().min(1,"Meta Title is required"),
-        metaDescription: z.string().min(1,"Meta Description is required"),
+        category: z.string().min(1, "Category is required"),
+        productSku: z.string().min(6, "Product SKU is required"),
+        metaTitle: z.string().min(1, "Meta Title is required"),
+        metaDescription: z.string().min(1, "Meta Description is required"),
+        taxPercentage: z.string().min(1, "Tax percentage is required"),
+        country: z.string().min(1, "Country is required"),
+        pincode: z.string().regex(/^\d{6}$/, "Pincode must be a 6-digit number"),
+        address: z.string().min(1, "Address is required"),
     });
+
+    const categories = useSelector(state => state.categoriesRedux.value);
 
     const config = {
         readonly: false,
@@ -56,8 +63,8 @@ const AddProductHero = () => {
             'fullsize',
         ],
         uploader: {
-            url: 'http://localhost:5000/upload', // Backend image upload URL
-            format: 'json', // Response format
+            url: 'http://localhost:5000/upload',
+            format: 'json',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -80,6 +87,9 @@ const AddProductHero = () => {
         productSku: "",
         metaTitle: "",
         metaDescription: "",
+        taxPercentage: "",
+        pincode: "",
+        address: "",
     });
 
     const [errors, setErrors] = useState({});
@@ -151,22 +161,15 @@ const AddProductHero = () => {
                     </div>
 
                     {/* Input Fields */}
-                    {[
-                        { label: "Name", name: "name", placeholder: "Enter product name", type: "text" },
-                        { label: "Price", name: "price", placeholder: "Enter product price", type: "text" },
-                        {
-                            label: "Discount",
-                            name: "discountPrice",
-                            placeholder: "Enter discount price",
-                            type: "text",
-                        },
-                        {
-                            label: "Quantity",
-                            name: "quantity",
-                            placeholder: "Enter available quantity",
-                            type: "number",
-                        },
-                    ].map(({ label, name, placeholder, type }, index) => (
+                    {[{
+                        label: "Name", name: "name", placeholder: "Enter product name", type: "text"
+                    }, {
+                        label: "Price", name: "price", placeholder: "Enter product price", type: "text"
+                    }, {
+                        label: "Discount", name: "discountPrice", placeholder: "Enter discount price", type: "text"
+                    }, {
+                        label: "Quantity", name: "quantity", placeholder: "Enter available quantity", type: "number"
+                    }].map(({ label, name, placeholder, type }, index) => (
                         <div className="flex flex-col" key={index}>
                             <label className="text-lg font-medium text-gray-700 mb-2">
                                 {label} <span className="text-red-500">*</span>
@@ -191,7 +194,7 @@ const AddProductHero = () => {
                             Description <span className="text-red-500">*</span>
                         </label>
                         <JoditEditor
-                            value={productData.description || ""} // Default empty string
+                            value={productData.description || ""}
                             config={config}
                             tabIndex={1}
                             onBlur={(newContent) =>
@@ -214,18 +217,21 @@ const AddProductHero = () => {
                             onChange={handleInputChange}
                             className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         >
-                            <option value="">Select a category</option>
-                            <option value="electronics">Electronics</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="furniture">Furniture</option>
-                            <option value="toys">Toys</option>
+                            <option value="" disabled>
+                                Select a category
+                            </option>
+                            {
+                                categories.map((category) => (
+                                    <option value={category.title}>{category.title}</option>
+                                ))
+                            }
                         </select>
                         {errors.category && (
                             <p className="text-red-500 text-sm mt-1">{errors.category}</p>
                         )}
                     </div>
 
-                    {/* SKU */}
+                    {/* Product SKU */}
                     <div className="flex flex-col">
                         <label className="text-lg font-medium text-gray-700 mb-2">
                             Product SKU <span className="text-red-500">*</span>
@@ -243,10 +249,68 @@ const AddProductHero = () => {
                         )}
                     </div>
 
-                    {/* Meta Data Section */}
                     <div className="flex flex-col">
                         <label className="text-lg font-medium text-gray-700 mb-2">
-                            Meta Tag <span className="text-red-500">*</span>
+                            Tax Percentage <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                            name="taxPercentage"
+                            value={productData.taxPercentage}
+                            onChange={handleInputChange}
+                            className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        >
+                            <option value="" disabled>Select tax percentage</option>
+                            <option value="0">0%</option>
+                            <option value="5">5%</option>
+                            <option value="12">12%</option>
+                            <option value="18">18%</option>
+                            <option value="28">28%</option>
+                        </select>
+                        {errors.taxPercentage && (
+                            <p className="text-red-500 text-sm mt-1">{errors.taxPercentage}</p>
+                        )}
+                    </div>
+
+                    {/* Pincode */}
+                    <div className="flex flex-col">
+                        <label className="text-lg font-medium text-gray-700 mb-2">
+                            Pincode <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="pincode"
+                            value={productData.pincode}
+                            onChange={handleInputChange}
+                            className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter pincode"
+                        />
+                        {errors.pincode && (
+                            <p className="text-red-500 text-sm mt-1">{errors.pincode}</p>
+                        )}
+                    </div>
+
+                    {/* Address */}
+                    <div className="flex flex-col md:col-span-2">
+                        <label className="text-lg font-medium text-gray-700 mb-2">
+                            Address <span className="text-red-500">*</span>
+                        </label>
+                        <textarea
+                            name="address"
+                            value={productData.address}
+                            onChange={handleInputChange}
+                            className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            placeholder="Enter address"
+                            rows={3}
+                        ></textarea>
+                        {errors.address && (
+                            <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+                        )}
+                    </div>
+
+                    {/* Meta Tag */}
+                    <div className="flex flex-col">
+                        <label className="text-lg font-medium text-gray-700 mb-2">
+                            Meta Title <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -254,14 +318,15 @@ const AddProductHero = () => {
                             value={productData.metaTitle}
                             onChange={handleInputChange}
                             className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                            placeholder="Enter meta tag"
+                            placeholder="Enter meta title"
                         />
                         {errors.metaTitle && (
                             <p className="text-red-500 text-sm mt-1">{errors.metaTitle}</p>
                         )}
                     </div>
 
-                    <div className="flex flex-col md:col-span-2">
+                    {/* Meta Description */}
+                    <div className="flex flex-col">
                         <label className="text-lg font-medium text-gray-700 mb-2">
                             Meta Description <span className="text-red-500">*</span>
                         </label>
@@ -271,19 +336,20 @@ const AddProductHero = () => {
                             onChange={handleInputChange}
                             className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             placeholder="Enter meta description"
-                        />
+                            rows={3}
+                        ></textarea>
                         {errors.metaDescription && (
                             <p className="text-red-500 text-sm mt-1">{errors.metaDescription}</p>
                         )}
                     </div>
 
                     {/* Submit Button */}
-                    <div className="col-span-1 md:col-span-2 flex justify-center">
+                    <div className="col-span-1 md:col-span-2 flex justify-end">
                         <button
                             type="submit"
-                            className="bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-600 transition"
+                            className="bg-blue-500 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         >
-                            Add Product
+                            Submit
                         </button>
                     </div>
                 </form>
