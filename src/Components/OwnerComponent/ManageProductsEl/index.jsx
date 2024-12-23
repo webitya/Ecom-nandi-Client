@@ -38,7 +38,6 @@ const ManageProductsEl = () => {
         setSearchQuery(value);
     }
 
-    console.log("match stick")
     const filteredProducts = Products.filter(
         (product) => product.Sl.includes(searchQuery)
             || product.Product_name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -52,12 +51,9 @@ const ManageProductsEl = () => {
         }
     );
 
-    console.log(restOfTheProducts)
-
     const productForMaping = [
         ...filteredProducts, ...restOfTheProducts
     ]
-    console.log(productForMaping);
 
     return (
         <div className="p-6 bg-[#f2f2f2] container mx-auto">

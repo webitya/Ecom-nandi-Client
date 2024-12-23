@@ -3,6 +3,10 @@ import ImageUpload from "../uploadImageEl";
 import { z } from "zod";
 import JoditEditor from 'jodit-react';
 import { useSelector } from 'react-redux';
+import { useRequestApi } from "../../../hooks/useRequestApi";
+import { Loading3QuartersOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+import toast from "react-hot-toast";
 
 const AddProductHero = () => {
     const productSchema = z.object({
@@ -24,12 +28,12 @@ const AddProductHero = () => {
         metaTitle: z.string().min(1, "Meta Title is required"),
         metaDescription: z.string().min(1, "Meta Description is required"),
         taxPercentage: z.string().min(1, "Tax percentage is required"),
-        country: z.string().min(1, "Country is required"),
         pincode: z.string().regex(/^\d{6}$/, "Pincode must be a 6-digit number"),
         address: z.string().min(1, "Address is required"),
     });
 
     const categories = useSelector(state => state.categoriesRedux.value);
+    const [loader, setLoader] = useState(false)
 
     const config = {
         readonly: false,
@@ -122,18 +126,43 @@ const AddProductHero = () => {
         setFileList(newFileList);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('validate  Data before try-catch');
         try {
+            setLoader(true)
+            console.log('validate  Data inside try-catch');
             const validatedData = productSchema.parse(productData);
+            console.log('validate  Data after parse method');
             setErrors({});
-            localStorage.removeItem("productData");
-            localStorage.removeItem("productImageList");
-            console.log("Submitted Data:", validatedData);
+            const response = await useRequestApi('api/product/addproduct', 'POST', validatedData);
+            toast.success("Product added Successfully")
+            console.log(response);
         } catch (error) {
+            console.log(error);
             if (error instanceof z.ZodError) {
                 setErrors(error.flatten().fieldErrors);
             }
+        } finally {
+            setProductData({
+                images: [""],
+                name: "",
+                price: "",
+                description: "",
+                discountPrice: "",
+                quantity: "",
+                category: "",
+                productSku: "",
+                metaTitle: "",
+                metaDescription: "",
+                taxPercentage: "",
+                pincode: "",
+                address: "",
+            })
+            localStorage.removeItem("productData");
+            localStorage.removeItem("productImageList");
+            setFileList([])
+            setLoader(false)
         }
     };
 
@@ -221,8 +250,8 @@ const AddProductHero = () => {
                                 Select a category
                             </option>
                             {
-                                categories.map((category) => (
-                                    <option value={category.title}>{category.title}</option>
+                                categories.map((category, index) => (
+                                    <option key={index} value={category.title}>{category.title}</option>
                                 ))
                             }
                         </select>
@@ -346,10 +375,11 @@ const AddProductHero = () => {
                     {/* Submit Button */}
                     <div className="col-span-1 md:col-span-2 flex justify-end">
                         <button
+                        disabled={loader}
                             type="submit"
-                            className="bg-blue-500 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                            className="bg-blue-500 w-24 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         >
-                            Submit
+                            {loader ? <LoadingOutlined /> : 'Submit'} 
                         </button>
                     </div>
                 </form>

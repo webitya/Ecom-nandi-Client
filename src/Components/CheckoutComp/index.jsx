@@ -142,12 +142,14 @@ const CheckoutCompo = () => {
                 products: products.map((item) => (
                     {
                         productId: item.products._id,
+                        productSku: item.products.productSku,
                         quantity: item.quantity,
                         discountPrice: item.products.discountPrice,
                         name: item.products.name,
-                        image: item.products.image,
-                        description: item.products.description,
+                        image: item.products.images[0],
                         totalPrice: item.products.discountPrice * item.quantity,
+                        category: item.products.category,
+                        taxPercentage: item.products.taxPercentage
                     }
                 )),
                 totalAmount,
@@ -160,11 +162,11 @@ const CheckoutCompo = () => {
                     contactNo: selectedAddress.contactNo,
                 },
                 paymentMethod,
-                paymentId,
-                pamentStatus: paymentMethod === 'online' ? 'paid' : 'pending'
+                paymentId
             };
 
             const response = await useRequestApi("api/order/createOrder", 'POST', order);
+            console.log(response);
 
             if (response) {
                 setOrderDetails(response.data);
@@ -227,7 +229,7 @@ const CheckoutCompo = () => {
                                 className="flex items-start space-x-4 bg-gray-50 p-3 rounded-md"
                             >
                                 <img
-                                    src={item.products.image[0]}
+                                    src={item.products.images[0]}
                                     alt={item.products.name}
                                     className="w-20 h-20 object-cover rounded-md"
                                 />

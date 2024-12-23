@@ -43,6 +43,7 @@ import pageReducer from './features/PageSlice/PageSlice.js';
 import bannerReducer from './features/bannerSlice/bannerSlice.js';
 import blogReducer from './features/blogsSlice/blogSlice.js';
 import categoryReducer from './features/CategorySlice/categorySlice.js'
+import orderDataReducer from './features/orderDataSlice/orderDataSlices.js'
 
 const store = configureStore({
     reducer: {
@@ -59,7 +60,8 @@ const store = configureStore({
         pages: pageReducer, // Dynamic pages reducer,
         bannerImages: bannerReducer,
         blogs: blogReducer,
-        categoriesRedux: categoryReducer
+        categoriesRedux: categoryReducer,
+        order: orderDataReducer
     },
 });
 

@@ -1,24 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAddToCart } from "../../../hooks/useAddToCart";
+import { useDispatch, useSelector } from "react-redux";
+import { setCheckoutProducts } from "../../../redux/features/CheckoutProductSlice/CheckoutProductSlice";
+import { LoadingOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { addProductToCart } from "../../../redux/features/CartItemSlice/CartItemSlice";
 
 const ShowDetailsEl = ({ product }) => {
-    const { name, price, discountPrice, category, image } = product;
-    const [selectedImage, setSelectedImage] = useState(image[0]);
+    const { name, price, discountPrice, category, images } = product;
+    const [selectedImage, setSelectedImage] = useState(images[0]);
+    const dispatch = useDispatch()
+    const [addTocartLoader, setAddToCartLoader] = useState(false)
+    const cart = useSelector((state) => state.cartItems.values);
+    console.log(cart);
+    console.log(product);
+
+    
+    const [isProductInCart, setIsProductInCart] = useState(null)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const isPresent = cart.find((item) => item.products._id === product?._id)
+        if (isPresent) {
+            setIsProductInCart(true)
+        } else {
+            setIsProductInCart(false)
+        }
+    }, [cart])
 
     const handleBuyNow = async () => {
+        dispatch(setCheckoutProducts([{
+            products: product,
+            quantity: 1
+        }]))
 
+        navigate("/checkout")
     };
 
     const handleAddToCart = async () => {
+        setAddToCartLoader(true)
         const response = await useAddToCart(product._id)
-
+        
         if (response) {
             toast.success("Product added to cart")
             dispatch(addProductToCart({
-                product: {
+                products: {
                     _id: product?._id,
                     name: product?.name,
-                    image: product?.image,
+                    images: product?.images,
                     price: Number(product?.price),
                     category: product?.category,
                     description: product?.description,
@@ -27,7 +57,7 @@ const ShowDetailsEl = ({ product }) => {
                 quantity: 1
             }))
         }
-        // Add your logic for adding the product to the cart
+        setAddToCartLoader(false)
     };
 
     return (
@@ -46,7 +76,7 @@ const ShowDetailsEl = ({ product }) => {
                     </div>
                     {/* Thumbnail Images */}
                     <div className="flex space-x-2 overflow-x-auto">
-                        {image.map((url, index) => (
+                        {images.map((url, index) => (
                             <img
                                 key={index}
                                 src={url}
@@ -114,12 +144,25 @@ const ShowDetailsEl = ({ product }) => {
                         >
                             Buy Now
                         </button>
-                        <button
-                            onClick={handleAddToCart}
-                            className="bg-green-500 text-white px-6 py-2 rounded shadow hover:bg-green-600 transition"
-                        >
-                            Add to Cart
-                        </button>
+                        {
+                            isProductInCart ? (
+                                <button
+                                    onClick={() => navigate('/account/cart')}
+                                    className="bg-green-500 w-36 text-white px-6 py-2 rounded shadow hover:bg-green-600 transition"
+                                >
+                                    Go to cart
+                                </button>
+                            ) : (
+                                <button
+                                    disabled={addTocartLoader}
+                                    onClick={handleAddToCart}
+                                    className="bg-green-500 w-36 text-white px-6 py-2 rounded shadow hover:bg-green-600 transition"
+                                >
+                                    {addTocartLoader ? <LoadingOutlined /> : 'Add to cart'}
+                                </button>
+                            )
+                        }
+
                     </div>
                 </div>
             </div>
