@@ -5,6 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import "./ShopPageLayout.css";
 import { useRequestApi } from "../../../hooks/useRequestApi";
 import ProductCardEl from "../../../Shared/ProductCardEl";
+import { useSelector } from "react-redux";
 
 const ShopPageLayoutEl = () => {
   const [selectedFilters, setSelectedFilters] = useState([]);
@@ -16,12 +17,15 @@ const ShopPageLayoutEl = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  const categories = [
-    { id: 1, name: "Hawan Samagiri" },
-    { id: 2, name: "Flowers" },
-    { id: 3, name: "Fruits" },
-    { id: 4, name: "Gifts" },
-  ];
+  // const categories = [
+  //   { id: 1, name: "Hawan Samagiri" },
+  //   { id: 2, name: "Flowers" },
+  //   { id: 3, name: "Fruits" },
+  //   { id: 4, name: "Gifts" },
+  // ];
+  const categories = useSelector(state => state.categoriesRedux.value);
+  console.log(categories);
+  
 
   const sortOptions = [
     { label: "Relevance", key: "relevance" },
@@ -111,13 +115,13 @@ const ShopPageLayoutEl = () => {
 
         <h2 className="text-xl font-bold text-gray-800 mt-6 mb-4">Categories</h2>
         <div className="flex flex-col gap-2">
-          {categories.map((cat) => (
+          {categories.map((category,index) => (
             <Checkbox
-              key={cat.id}
-              onChange={(e) => handleCheckboxChange(cat.name, e.target.checked)}
-              checked={selectedFilters.includes(cat.name)}
+              key={index}
+              onChange={(e) => handleCheckboxChange(category.title, e.target.checked)}
+              checked={selectedFilters.includes(category.title)}
             >
-              {cat.name}
+              {category.title}
             </Checkbox>
           ))}
         </div>
@@ -165,7 +169,7 @@ const ShopPageLayoutEl = () => {
             </div>
           }
           endMessage={
-            <p className="text-center text-gray-500 mt-4">No more products to load.</p>
+            products.length ? <p className="text-center text-gray-500 mt-4">No more products to load.</p> : ''
           }
           style={{ overflow: "hidden" }}
         >

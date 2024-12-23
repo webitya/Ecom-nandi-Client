@@ -30,9 +30,9 @@ export const AccountSidebar = () => {
 
     return (
         <>
-
-            <div className="sm:hidden ml-[10px] mt-2 mb-2 ">
-                <Button onClick={() => setDrawerOpen(true)} color="primary" variant="solid">
+            {/* Mobile Menu Button */}
+            <div className="md:hidden ml-2 mt-2 mb-2">
+                <Button onClick={() => setDrawerOpen(true)} icon={<MenuOutlined />}>
                     Menu
                 </Button>
             </div>
@@ -44,13 +44,12 @@ export const AccountSidebar = () => {
                 closable={true}
                 onClose={() => setDrawerOpen(false)}
                 open={isDrawerOpen}
-                className="p-0"
                 width={250}
-                style={{ padding: "0" }}
+                className="p-0"
             >
                 <ul className="mt-4 space-y-2">
                     {drawerArray.map((item, index) => (
-                        <Link key={index} to={`/${item.path}`} onClick={() => setDrawerOpen(false)}>
+                        <Link key={index} to={`${item.path}`} onClick={() => setDrawerOpen(false)}>
                             <li
                                 className={`flex items-center gap-3 p-3 rounded-md text-gray-700 hover:bg-blue-100 transition-all ${location.pathname === `/${item.path}`
                                     ? "bg-blue-50 border-l-4 border-blue-600 font-semibold"
@@ -58,25 +57,23 @@ export const AccountSidebar = () => {
                                     }`}
                             >
                                 <span className="text-xl">{item.icon}</span>
-                                <span>{item.name}</span>
+                                <span className="truncate">{item.name}</span>
                             </li>
                         </Link>
                     ))}
                 </ul>
             </Drawer>
 
-            <div className="hidden md:block bg-gray-50 min-h-screen w-[250px] shadow-md border-r border-gray-200">
-                {/* Sidebar Header */}
+            {/* Sidebar for Larger Screens */}
+            <div className="hidden md:block lg:w-[250px] bg-gray-50 min-h-screen shadow-md border-r border-gray-200">
                 <div className="p-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
-                    <h2 className="text-xl font-bold tracking-wide">Menu</h2>
+                    <h2 className="text-xl font-bold">Menu</h2>
                 </div>
-
-                {/* Navigation Menu */}
                 <ul className="mt-6">
                     {drawerArray.map((item, index) => (
                         <Link key={index} to={`${item.path}`}>
                             <li
-                                className={`flex items-center gap-4 px-4 py-3 mx-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-100 transition-all ${location.pathname === `${item.path}`
+                                className={`flex items-center gap-4 px-4 py-3 mx-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-100 transition-all ${location.pathname === `/${item.path}`
                                     ? "bg-blue-50 border-l-4 border-blue-600 text-blue-700 font-semibold"
                                     : ""
                                     }`}
@@ -88,7 +85,6 @@ export const AccountSidebar = () => {
                     ))}
                 </ul>
             </div>
-
         </>
     );
 };

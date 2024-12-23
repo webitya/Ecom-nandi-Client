@@ -6,17 +6,32 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { addProductToCart } from "../../redux/features/CartItemSlice/CartItemSlice";
 import { setCheckoutProducts } from "../../redux/features/CheckoutProductSlice/CheckoutProductSlice";
+import { useEffect, useState } from "react";
 
 const ProductCardEl = ({ product }) => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cartItems.values)
+    const [isProductInCart, setIsProductInCart] = useState(null)
+
+    useEffect(() => {
+        const isPresent = cart.find((item) => item.products._id === product._id)
+        if (isPresent) {
+            setIsProductInCart(true)
+        } else {
+            setIsProductInCart(false)
+        }
+    }, cart)
 
     const handleProductClick = (id) => {
         navigate(`/productdetails?s=${id}`)
     }
     const handleAddToClick = async (id) => {
+        if(isProductInCart){
+            navigate('/account/cart')
+            return
+        }
         const response = await useAddToCart(id)
 
         if (response) {
@@ -25,7 +40,7 @@ const ProductCardEl = ({ product }) => {
                 products: {
                     _id: product?._id,
                     name: product?.name,
-                    image: product?.image,
+                    images: product?.images,
                     price: Number(product?.price),
                     category: product?.category,
                     description: product?.description,
@@ -54,7 +69,7 @@ const ProductCardEl = ({ product }) => {
                 <div className="relative  w-full h-[140px] md:h-[200px] bg-gray-200 overflow-hidden">
                     <img
                         onClick={() => handleProductClick(product._id)}
-                        src={product.image[0]}
+                        src={product.images[0]}
                         alt={product.name}
                         className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
                     />

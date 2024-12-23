@@ -7,6 +7,7 @@ import AccAddressEl from "../../Components/AccountProfile/AccAddressEl"
 import AccRegisterPanditEl from "../../Components/AccountProfile/AccRegisterPanditEl"
 import AccRegisterSellerEl from "../../Components/AccountProfile/AccRegisterSellerEl"
 import BookPandit from "../../Components/AccountProfile/BookPanditPage"
+import AccMyOrdersEl from "../../Components/AccountProfile/AccMyOrdersEl"
 
 const Accounts = () => {
     const display = (
@@ -19,6 +20,7 @@ const Accounts = () => {
                             <Route path="/cart" element={<AccCartEl />} />
                             <Route path="/address" element={<AccAddressEl />} />
                             <Route path="/address" element={<AccAddressEl />} />
+                            <Route path="/orders" element={<AccMyOrdersEl />} />
                             <Route path="/panditRegistrations" element={<AccRegisterPanditEl />} />
                             <Route path="/sellerRegistrations" element={<AccRegisterSellerEl />} />
                             <Route path="/bookPandit" element={<BookPandit />} />

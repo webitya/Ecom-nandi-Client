@@ -19,6 +19,7 @@ import OwnerLayoutEl from "../../Shared/OwnerLayout"
 import BusinessSetup from "../../Components/Business settings"
 import BannerSetupEl from "../../Components/OwnerComponent/BannerSetupEl"
 import CategorySetupEl from "../../Components/OwnerComponent/CategorySetupEl"
+import OwnerOrdersEl from "../../Components/OwnerComponent/OwnerOrdersEl"
 
 const Owner = () => {
   const [loader, setLoader] = useState(true);
@@ -83,7 +84,7 @@ const Owner = () => {
               <Route path="/pandits/:id" element={<SpecificPanditEl />} />
               <Route path="/sellers/:id" element={<SpecificSellerEl />} />
               <Route path="/bussinessSetup"element={<BusinessSetup />} />
-              <Route path="/manageOrders" element= {<div>sg</div>} />
+              <Route path="/manageOrders" element= {<OwnerOrdersEl />} />
               <Route path="/bannerSetup" element= {<BannerSetupEl />} />
               <Route path="/categorySetup" element= {<CategorySetupEl />} />
             </Routes>

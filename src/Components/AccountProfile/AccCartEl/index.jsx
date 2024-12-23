@@ -65,9 +65,10 @@ const AccCartEl = () => {
     console.log(cartItem);
     dispatch(setCheckoutProducts(cartItem))
     navigate("/checkout")
-
   }
 
+  console.log(cartItem);
+  
   return (
     <div className="md:px-12 w-full px-6 md:py-6 py-3">
       <h2 className="md:text-3xl text-xl font-bold mb-6 text-gray-800">Your Cart</h2>
@@ -82,7 +83,7 @@ const AccCartEl = () => {
               >
                 <div className="flex gap-2.5 items-center">
                   <img
-                    src={items?.products?.image?.[0]}
+                    src={items?.products?.images?.[0]}
                     alt="product image"
                     className="sm:h-28 sm:w-28 h-20 w-20 object-cover rounded"
                   />
