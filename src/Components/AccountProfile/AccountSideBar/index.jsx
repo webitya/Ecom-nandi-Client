@@ -21,11 +21,9 @@ export const AccountSidebar = () => {
         { path: "address", name: "Manage Address", icon: <SolutionOutlined /> },
         { path: "orders", name: "My Orders", icon: <ShoppingCartOutlined /> },
         { path: "cart", name: "Shopping Cart", icon: <ShoppingCartOutlined /> },
-        { path: "notifications", name: "Notifications", icon: <BellOutlined /> },
         { path: "bookPandit", name: "Book your Pandit", icon: <ShopOutlined /> },
         { path: "panditRegistrations", name: "Pandit Registration", icon: <BookOutlined /> },
         { path: "sellerRegistrations", name: "Seller Registration", icon: <ShopOutlined /> },
-        { path: "support", name: "Support & Help", icon: <QuestionCircleOutlined /> },
     ];
 
     return (

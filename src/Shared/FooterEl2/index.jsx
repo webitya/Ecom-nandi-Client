@@ -41,8 +41,8 @@ export const FooterEl2 = () => {
             <div key={index}>
               <h3 className="text-lg font-semibold mb-4">Dynamic Navigation</h3>
               <ul className="space-y-2">
-                {column.map((page) => (
-                  <li key={page.route}>
+                {column.map((page,index) => (
+                  <li key={index}>
                     <Link to={page.route} className="hover:underline">{page.title}</Link>
                   </li>
                 ))}

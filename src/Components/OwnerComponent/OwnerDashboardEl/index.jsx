@@ -1,64 +1,63 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import {
   UserOutlined,
   TeamOutlined,
   ShopOutlined,
   FileAddOutlined,
-  CreditCardFilled,
+  // CreditCardFilled,
   ProductFilled,
-  PlusCircleFilled,
+  // PlusCircleFilled,
   BookFilled,
-  ShoppingFilled,
-  EyeFilled,
-  SettingFilled,
+  // ShoppingFilled,
+  // EyeFilled,
+  // SettingFilled,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import SidebarEl from "../../SidebarEl";
 
-const OwnerDashBoardEl = ({ user, seller, pandit, request }) => {
+const OwnerDashBoardEl = () => {
 
   const dashboardValue = useSelector(state => state.dashboard_value.value);
+  console.log(dashboardValue);
 
   const stats = [
     {
       title: "Total Users",
-      value: dashboardValue.totalUser,
+      value: dashboardValue.totalUser || 0,
       icon: <UserOutlined />,
       gradient: "from-blue-500 to-blue-300",
       bgColor: "bg-blue-50",
     },
     {
       title: "Total Pandits",
-      value: dashboardValue.totalpandit,
+      value: dashboardValue.totalpandit || 0,
       icon: <TeamOutlined />,
       gradient: "from-yellow-500 to-yellow-300",
       bgColor: "bg-yellow-50",
     },
     {
       title: "Total Sellers",
-      value: dashboardValue.totalseller,
+      value: dashboardValue.totalseller || 0,
       icon: <ShopOutlined />,
       gradient: "from-red-500 to-red-300",
       bgColor: "bg-red-50",
     },
     {
       title: "Pending Requests for Role Change",
-      value: dashboardValue.totalPendingRequest,
+      value: dashboardValue.totalPendingRequest || 0,
       icon: <FileAddOutlined />,
       gradient: "from-purple-500 to-purple-300",
       bgColor: "bg-purple-50",
     },
     {
       title: "Pandit Booking",
-      value: 4,
+      value: dashboardValue.totalPanditBooking || 0,
       icon: <BookFilled />,
       gradient: "from-green-500 to-green-300",
       bgColor: "bg-green-50",
     },
     {
       title: "Total Products",
-      value: 34,
+      value: dashboardValue.totalProducts || 0,
       icon: <ProductFilled />,
       gradient: "from-teal-500 to-teal-300",
       bgColor: "bg-teal-50",

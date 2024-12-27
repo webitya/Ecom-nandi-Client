@@ -20,29 +20,31 @@ import BusinessSetup from "../../Components/Business settings"
 import BannerSetupEl from "../../Components/OwnerComponent/BannerSetupEl"
 import CategorySetupEl from "../../Components/OwnerComponent/CategorySetupEl"
 import OwnerOrdersEl from "../../Components/OwnerComponent/OwnerOrdersEl"
+import { setProductList } from "../../redux/features/ownerRedux/totalProductSlice/totalProductSlice"
 
 const Owner = () => {
   const [loader, setLoader] = useState(true);
-
-  const [values, setValues] = useState({
-    totalUser: 0,
-    totalpandit: 0,
-    totalseller: 0,
-    totalPendingRequest: 0,
-  });
 
   const { getData, dispatchActionPayload, dispatchActionObject } = useData();
 
   useEffect(() => {
     const fetchData = async () => {
 
-      const [getAllUser, pendingSellerRequests, pendingPanditRequest, allPandits, allSelllers,] =
+      const [
+        getAllUser, 
+        pendingSellerRequests, 
+        pendingPanditRequest, 
+        allPandits, 
+        allSelllers, 
+        allProducts
+      ] =
         await Promise.all([
           getData('api/user/allUser'),
           getData('api/role/getPendingSellerRequest'),
           getData('api/role/getPendingPanditRequest'),
           getData('api/owner/getAllPandit'),
-          getData('api/owner/getAllSeller')
+          getData('api/owner/getAllSeller'),
+          getData('api/product/getAllProducts')
         ]);
 
       dispatchActionObject(updateDashboardValue, {
@@ -50,11 +52,14 @@ const Owner = () => {
         totalpandit: allPandits.data.length,
         totalseller: allSelllers.data.length,
         totalPendingRequest: (pendingSellerRequests.data.length + pendingPanditRequest.data.length),
+        totalProducts: allProducts.data.length,
+        totalPanditBooking: 0
       })
 
       dispatchActionPayload(setList, [...pendingPanditRequest.data, ...pendingSellerRequests.data])
       dispatchActionPayload(setPanditList, [...allPandits.data])
       dispatchActionPayload(setSellerList, [...allSelllers.data])
+      dispatchActionObject(setProductList, [...allProducts.data])
 
       setLoader(false)
     };
@@ -74,7 +79,7 @@ const Owner = () => {
             </div>
             :
             <Routes>
-              <Route path="/" element={<OwnerDashBoardEl user={values.totalUser} seller={values.totalseller} pandit={values.totalpandit} request={values.totalPendingRequest} />} />
+              <Route path="/" element={<OwnerDashBoardEl />} />
               <Route path="/pandits" element={<OwnerPanditAll />} />
               <Route path="/sellers" element={<OwnerSellerAll />} />
               <Route path="/roleChangeRequest" element={<RoleChngRequest />} />
@@ -93,4 +98,4 @@ const Owner = () => {
     </OwnerLayoutEl>
   )
 }
-export default Owner
+export default Owner;

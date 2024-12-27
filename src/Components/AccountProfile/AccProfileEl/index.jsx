@@ -69,7 +69,7 @@ const AccProfileEl = () => {
 
             {/* Navigation Buttons */}
             <div className="sm:mt-8 sm:flex sm:flex-wrap gap-4">
-              <Link href="/cart">
+              <Link to="/account/cart">
                 <Button
                   type="primary"
                   icon={<CreditCardOutlined />}
@@ -78,7 +78,7 @@ const AccProfileEl = () => {
                   Go to Cart
                 </Button>
               </Link>
-              <Link href="/address">
+              <Link to="/account/address">
                 <Button
                   type="default"
                   icon={<EnvironmentOutlined />}
@@ -87,9 +87,8 @@ const AccProfileEl = () => {
                   Address Manager
                 </Button>
               </Link>
-              <Link href="/">
+              <Link to="/">
                 <Button
-                  type="link"
                   icon={<HomeOutlined />}
                   className="text-gray-600 hover:text-red-500 hidden sm:block"
                 >

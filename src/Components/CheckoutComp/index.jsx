@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { WarningModel } from "../../Shared/warningModel";
 import { setCheckoutProducts } from "../../redux/features/CheckoutProductSlice/CheckoutProductSlice";
+import { useSetOrder } from "../../redux/features/orderDataSlice/orderDataSlices";
 import { isAxiosError } from "axios";
 
 const CheckoutCompo = () => {
@@ -106,7 +107,27 @@ const CheckoutCompo = () => {
         setErrorMessage("");
     };
 
+    const navigateToOrders = async () => {
+        setPamentLoading(true)
+        try {
+            const response = await useRequestApi('api/order/getOrderByUserid')
+            dispatch(useSetOrder(response.data));
+            navigate('/account/orders');
+        } catch (error) {
+            console.log(error);
+        }finally{
+            setPamentLoading(false)
+        }
+    }
+
+    const initiateCodOrder = () => {
+        createOrder(null, "cod");
+        setIsPaymentModalOpen(false);
+        navigateToOrders();
+    }
+
     const initiateRazorpayPayment = async () => {
+
         const options = {
             key: "rzp_test_fOsTScdkbhACcC",
             amount: totalAmount * 100,
@@ -116,6 +137,7 @@ const CheckoutCompo = () => {
             image: "https://example.com/logo.png",
             handler: async function (response) {
                 await createOrder(response.razorpay_payment_id, "online");
+                navigateToOrders();
             },
             prefill: {
                 name: "John Doe",
@@ -420,8 +442,11 @@ const CheckoutCompo = () => {
                     <Button
                         key="confirm"
                         type="primary"
-                        onClick={paymentType === "online" ? initiateRazorpayPayment : () => { createOrder(null, "cod"); setIsPaymentModalOpen(false) }}
+                        onClick={paymentType === "online" ? initiateRazorpayPayment : initiateCodOrder}
                     >
+                        {
+
+                        }
                         {paymentType === 'online' ? 'Confirm Pament' : 'Confirm Order'}
                     </Button>,
                 ]}

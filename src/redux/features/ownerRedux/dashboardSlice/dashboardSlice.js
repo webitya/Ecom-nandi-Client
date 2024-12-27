@@ -6,6 +6,8 @@ const initialState = {
         totalpandit: 0,
         totalseller: 0,
         totalPendingRequest: 0,
+        totalProducts: 0,
+        totalPanditBooking: 0,
     }
 }
 

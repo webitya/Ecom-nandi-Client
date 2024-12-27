@@ -38,7 +38,8 @@ import RoleChangeReducers from './features/ownerRedux/roleChangeSlice/roleChange
 import totalPanditListReducer from './features/ownerRedux/totalPanditSlice/totalPanditSlice.js';
 import totalSellerListReducer from './features/ownerRedux/totalSellerSlice/totalSellerSlice.js';
 import dashboardSReducer from './features/ownerRedux/dashboardSlice/dashboardSlice.js';
-
+import totalProductReducer from './features/ownerRedux/totalProductSlice/totalProductSlice.js';
+import addProductReducer from './features/AddProductSlice/addProductSlice.js';
 import pageReducer from './features/PageSlice/PageSlice.js';
 import bannerReducer from './features/bannerSlice/bannerSlice.js';
 import blogReducer from './features/blogsSlice/blogSlice.js';
@@ -61,7 +62,9 @@ const store = configureStore({
         bannerImages: bannerReducer,
         blogs: blogReducer,
         categoriesRedux: categoryReducer,
-        order: orderDataReducer
+        order: orderDataReducer,
+        product_list: totalProductReducer,
+        addProduct: addProductReducer,
     },
 });
 

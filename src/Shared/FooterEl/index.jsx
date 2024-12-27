@@ -54,8 +54,8 @@ export const FooterEl = () => {
           <div className="footer_dynamic_routes">
             <h3>Dynamic Pages</h3>
             <ul>
-              {Object.values(pages).map((page) => (
-                <li key={page.route}>
+              {Object.values(pages).map((page,index) => (
+                <li key={index}>
                   <Link to={page.route}>{page.title}</Link>
                 </li>
               ))}

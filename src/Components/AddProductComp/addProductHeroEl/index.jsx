@@ -2,13 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import ImageUpload from "../uploadImageEl";
 import { z } from "zod";
 import JoditEditor from 'jodit-react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRequestApi } from "../../../hooks/useRequestApi";
-import { Loading3QuartersOutlined, LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import toast from "react-hot-toast";
+import { resetAddProduct } from "../../../redux/features/AddProductSlice/addProductSlice";
+import { useNavigate } from "react-router-dom";
 
 const AddProductHero = () => {
+
     const productSchema = z.object({
         images: z.array(z.string()).min(1, "At least one image is required"),
         name: z.string().min(1, "Name is required"),
@@ -31,9 +34,6 @@ const AddProductHero = () => {
         pincode: z.string().regex(/^\d{6}$/, "Pincode must be a 6-digit number"),
         address: z.string().min(1, "Address is required"),
     });
-
-    const categories = useSelector(state => state.categoriesRedux.value);
-    const [loader, setLoader] = useState(false)
 
     const config = {
         readonly: false,
@@ -80,42 +80,55 @@ const AddProductHero = () => {
         }
     };
 
-    const [productData, setProductData] = useState({
-        images: [""],
-        name: "",
-        price: "",
-        description: "",
-        discountPrice: "",
-        quantity: "",
-        category: "",
-        productSku: "",
-        metaTitle: "",
-        metaDescription: "",
-        taxPercentage: "",
-        pincode: "",
-        address: "",
-    });
+    const addProductsValue = useSelector(state => state.addProduct.value);
 
+    const categories = useSelector(state => state.categoriesRedux.value);
+
+    const dispatch= useDispatch();
+
+    const navigate= useNavigate();
+
+    const initialProductData = () => {
+        return addProductsValue || {
+            images: [""],
+            name: "",
+            price: "",
+            description: "",
+            discountPrice: "",
+            quantity: "",
+            category: "",
+            productSku: "",
+            metaTitle: "",
+            metaDescription: "",
+            taxPercentage: "",
+            pincode: "",
+            address: "",
+        };
+    };
+
+    const initialFileList = () => {
+        if (addProductsValue?.images?.length > 0 && addProductsValue?.images[0] !== "") {
+            return addProductsValue.images.map((url, index) => ({
+                uid: index.toString(),
+                name: `Image-${index + 1}`,
+                status: "done",
+                url,
+            }));
+        }
+        return [];
+    };
+
+    const [productData, setProductData] = useState(initialProductData());
+    const [fileList, setFileList] = useState(initialFileList);
     const [errors, setErrors] = useState({});
-    const [fileList, setFileList] = useState([]);
-
-    useEffect(() => {
-        const savedData = localStorage.getItem("productData");
-        const savedImageData = localStorage.getItem("productImageList");
-
-        if (savedData) setProductData(JSON.parse(savedData));
-        if (savedImageData) setFileList(JSON.parse(savedImageData));
-    }, []);
+    const [loader, setLoader] = useState(false);
 
     useEffect(() => {
         const urls = fileList.map((file) => file.url || file.preview);
-        setProductData((prev) => ({ ...prev, images: urls }));
+        if (urls.length) {
+            setProductData((prev) => ({ ...prev, images: urls }));
+        }
     }, [fileList]);
-
-    useEffect(() => {
-        localStorage.setItem("productData", JSON.stringify(productData));
-        localStorage.setItem("productImageList", JSON.stringify(fileList));
-    }, [productData, fileList]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -128,16 +141,12 @@ const AddProductHero = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('validate  Data before try-catch');
         try {
-            setLoader(true)
-            console.log('validate  Data inside try-catch');
+            setLoader(true);
             const validatedData = productSchema.parse(productData);
-            console.log('validate  Data after parse method');
             setErrors({});
-            const response = await useRequestApi('api/product/addproduct', 'POST', validatedData);
-            toast.success("Product added Successfully")
-            console.log(response);
+            await useRequestApi("api/product/addproduct", "POST", validatedData);
+            toast.success("Product added Successfully");
         } catch (error) {
             console.log(error);
             if (error instanceof z.ZodError) {
@@ -158,13 +167,18 @@ const AddProductHero = () => {
                 taxPercentage: "",
                 pincode: "",
                 address: "",
-            })
+            });
             localStorage.removeItem("productData");
             localStorage.removeItem("productImageList");
-            setFileList([])
-            setLoader(false)
+            setFileList([]);
+            setLoader(false);
         }
     };
+
+    const handleCancelClick = () => {
+        dispatch(resetAddProduct())
+        navigate('/owner/manageProducts')
+    }
 
     return (
         <div className="bg-gray-100 flex items-center justify-center">
@@ -373,13 +387,32 @@ const AddProductHero = () => {
                     </div>
 
                     {/* Submit Button */}
-                    <div className="col-span-1 md:col-span-2 flex justify-end">
+                    <div className="col-span-1 md:col-span-2 flex justify-end gap-2">
+                        {
+                            addProductsValue
+                                ?
+                                <button
+                                    type="button"
+                                    className="bg-red-500 w-24 text-white py-2 px-6 rounded-lg shadow-md hover:bg-red-600 focus:ring-2 focus:ring-red-400 focus:outline-none"
+                                    onClick={handleCancelClick}
+                                >
+                                    Cancel
+                                </button>
+                                :
+                                null
+                        }
+
                         <button
-                        disabled={loader}
+                            disabled={loader}
                             type="submit"
                             className="bg-blue-500 w-24 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         >
-                            {loader ? <LoadingOutlined /> : 'Submit'} 
+                            {
+                                addProductsValue ? 
+                                (loader ? <LoadingOutlined /> : 'Update') :
+                                (loader ? <LoadingOutlined /> : 'Submit')    
+                            }
+                            
                         </button>
                     </div>
                 </form>
