@@ -34,7 +34,7 @@ export const Product2El = ({ product }) => {
                     </span>
                 </p>
                 <button className="mt-3 px-4 py-2 text-xs md:text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-transform duration-300">
-                    Buy Now
+                    Featured Products
                 </button>
             </div>
         </div>

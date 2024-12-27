@@ -202,187 +202,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSetOrder } from "../../../redux/features/orderDataSlice/orderDataSlices";
 
 const AccMyOrdersEl = () => {
-    // const orders = [
-    //     {
-    //         selectedAddress: {
-    //             fullName: "Utkarsh",
-    //             address: "wasdfads",
-    //             city: "wsdafas",
-    //             state: "sdfasdfd",
-    //             zipCode: "67667435",
-    //             contactNo: "5543564634654364",
-    //         },
-    //         _id: "6766841e1782c388f919f224",
-    //         userId: "674f4a823bd77fe4d88b7e6a",
-    //         products: [
-    //             {
-    //                 productId: "676673747eb8abe7984e9c08",
-    //                 quantity: 2,
-    //                 discountPrice: 264,
-    //                 name: "Birthday Gifts",
-    //                 totalPrice: 528,
-    //                 category: "Gift",
-    //                 image: "https://res.cloudinary.com/dowylsrxx/image/upload/v1734764903/fleli4ntrbmm4eptahnj.jpg",
-    //                 _id: "6766841e1782c388f919f225",
-    //             },
-    //             {
-    //                 productId: "676673747eb8abe7984e9c08",
-    //                 quantity: 2,
-    //                 discountPrice: 264,
-    //                 name: "Birthday Gifts",
-    //                 totalPrice: 528,
-    //                 category: "Gift",
-    //                 image: "https://res.cloudinary.com/dowylsrxx/image/upload/v1734764903/fleli4ntrbmm4eptahnj.jpg",
-    //                 _id: "6766841e1782c388f919f225",
-    //             },
-    //             {
-    //                 productId: "676673747eb8abe7984e9c08",
-    //                 quantity: 2,
-    //                 discountPrice: 264,
-    //                 name: "Birthday Gifts",
-    //                 totalPrice: 528,
-    //                 category: "Gift",
-    //                 image: "https://res.cloudinary.com/dowylsrxx/image/upload/v1734764903/fleli4ntrbmm4eptahnj.jpg",
-    //                 _id: "6766841e1782c388f919f225",
-    //             },
-    //         ],
-    //         totalAmount: 528,
-    //         paymentMethod: "cod",
-    //         paymentId: null,
-    //         status: "pending",
-    //         orderDate: "2024-12-21T09:02:22.043Z",
-    //         createdAt: "2024-12-21T09:02:22.044Z",
-    //         updatedAt: "2024-12-21T09:02:22.044Z",
-    //         __v: 0,
-    //     },
-    //     {
-    //         selectedAddress: {
-    //             fullName: "Utkarsh",
-    //             address: "wasdfads",
-    //             city: "wsdafas",
-    //             state: "sdfasdfd",
-    //             zipCode: "67667435",
-    //             contactNo: "5543564634654364",
-    //         },
-    //         _id: "6766841e1782c388f919f224",
-    //         userId: "674f4a823bd77fe4d88b7e6a",
-    //         products: [
-    //             {
-    //                 productId: "676673747eb8abe7984e9c08",
-    //                 quantity: 2,
-    //                 discountPrice: 264,
-    //                 name: "Birthday Gifts",
-    //                 totalPrice: 528,
-    //                 category: "Gift",
-    //                 image: "https://res.cloudinary.com/dowylsrxx/image/upload/v1734764903/fleli4ntrbmm4eptahnj.jpg",
-    //                 _id: "6766841e1782c388f919f225",
-    //             },
-    //         ],
-    //         totalAmount: 528,
-    //         paymentMethod: "cod",
-    //         paymentId: null,
-    //         status: "cancelled",
-    //         orderDate: "2024-12-21T09:02:22.043Z",
-    //         createdAt: "2024-12-21T09:02:22.044Z",
-    //         updatedAt: "2024-12-21T09:02:22.044Z",
-    //         __v: 0,
-    //     },
-    //     {
-    //         selectedAddress: {
-    //             fullName: "Utkarsh",
-    //             address: "wasdfads",
-    //             city: "wsdafas",
-    //             state: "sdfasdfd",
-    //             zipCode: "67667435",
-    //             contactNo: "5543564634654364",
-    //         },
-    //         _id: "6766841e1782c388f919f224",
-    //         userId: "674f4a823bd77fe4d88b7e6a",
-    //         products: [
-    //             {
-    //                 productId: "676673747eb8abe7984e9c08",
-    //                 quantity: 2,
-    //                 discountPrice: 264,
-    //                 name: "Birthday Gifts That can be Used for Multiple Occasions",
-    //                 totalPrice: 528,
-    //                 category: "Gift",
-    //                 image: "https://res.cloudinary.com/dowylsrxx/image/upload/v1734764903/fleli4ntrbmm4eptahnj.jpg",
-    //                 _id: "6766841e1782c388f919f225",
-    //             },
-    //         ],
-    //         totalAmount: 528,
-    //         paymentMethod: "cod",
-    //         paymentId: null,
-    //         status: "pending",
-    //         orderDate: "2024-12-21T09:02:22.043Z",
-    //         createdAt: "2024-12-21T09:02:22.044Z",
-    //         updatedAt: "2024-12-21T09:02:22.044Z",
-    //         __v: 0,
-    //     },
-    //     {
-    //         selectedAddress: {
-    //             fullName: "Utkarsh",
-    //             address: "wasdfads",
-    //             city: "wsdafas",
-    //             state: "sdfasdfd",
-    //             zipCode: "67667435",
-    //             contactNo: "5543564634654364",
-    //         },
-    //         _id: "6766841e1782c388f919f224",
-    //         userId: "674f4a823bd77fe4d88b7e6a",
-    //         products: [
-    //             {
-    //                 productId: "676673747eb8abe7984e9c08",
-    //                 quantity: 2,
-    //                 discountPrice: 264,
-    //                 name: "Birthday Gifts That can be Used for Multiple Occasions",
-    //                 totalPrice: 528,
-    //                 category: "Gift",
-    //                 image: "https://res.cloudinary.com/dowylsrxx/image/upload/v1734764903/fleli4ntrbmm4eptahnj.jpg",
-    //                 _id: "6766841e1782c388f919f225",
-    //             },
-    //         ],
-    //         totalAmount: 528,
-    //         paymentMethod: "cod",
-    //         paymentId: null,
-    //         status: "delivered",
-    //         orderDate: "2024-12-21T09:02:22.043Z",
-    //         createdAt: "2024-12-21T09:02:22.044Z",
-    //         updatedAt: "2024-12-21T09:02:22.044Z",
-    //         __v: 0,
-    //     },
-    //     // Add more orders as needed
-    // ];
-
 
     const orders = useSelector(state => state.order.value)    
-    console.log(orders.length);
     
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true)
-            try {
-                const response = await useRequestApi('api/order/getOrderByUserid')
-                dispatch(useSetOrder(response.data))
-                console.log(response);
+    const fetchData = async () => {
+        setLoading(true)
+        try {
+            const response = await useRequestApi('api/order/getOrderByUserid')
+            dispatch(useSetOrder(response.data))
+            console.log(response);
 
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false)
-            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false)
         }
+    }
 
+    useEffect(() => {
         if (!orders.length) {
             fetchData();
         }
     }, [])
 
-
-    // console.log(orders[0].products)
 
     if (loading) {
         return (

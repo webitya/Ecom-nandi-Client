@@ -20,7 +20,7 @@ const HomePage = () => {
         {/* <HomeCarousel/> */}
 
         <FeaturedProduct />
-        <NewProduct />
+        {/* <NewProduct /> */}
         <HomeProductsLayoutEl />
         {/* <LoadMore /> */}
         <CalendarBanner />
