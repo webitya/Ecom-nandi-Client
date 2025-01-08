@@ -7,9 +7,9 @@ import LayoutEl from "../LayoutEl";
 
 const DynamicPages = () => {
     const dispatch = useDispatch();
-    const pages = useSelector((state) => state.pages.pages || {}); // Adjusted to match the store configuration
+    const pages = useSelector((state) => state.pages.pages || {});
 
-    const editorRef = useRef(null); // Ref for JoditEditor
+    const editorRef = useRef(null);
     const [title, setTitle] = useState("");
     const [route, setRoute] = useState("");
 
@@ -30,7 +30,21 @@ const DynamicPages = () => {
             return;
         }
 
-        const pageKey = trimmedTitle.toLowerCase().replace(/\s+/g, "-");
+        const pageKey = trimmedTitle
+            .toLowerCase()
+            .split(/\s+/)
+            .map((word, index) =>
+                index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)
+            )
+            .join("");
+
+        console.log({
+            pageKey,
+            title: trimmedTitle,
+            content: trimmedContent,
+            route: trimmedRoute,
+        });
+
         dispatch(
             addPage({
                 pageKey,
@@ -44,7 +58,7 @@ const DynamicPages = () => {
         setTitle("");
         setRoute("");
         if (editorRef.current) {
-            editorRef.current.value = ""; // Reset editor content
+            editorRef.current.value = "";
         }
     };
 

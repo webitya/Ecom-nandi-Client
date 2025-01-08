@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom'
 import Input from "../InputField";
 import { useState } from "react";
 import { Spin } from "antd";
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useRequestApi } from '../../hooks/useRequestApi';
 import toast from 'react-hot-toast';
 
 const RegisterEl = () => {
-    const [checkMail, setCheckMail] = useState(null);
+    // const [checkMail, setCheckMail] = useState(null);
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -16,7 +16,7 @@ const RegisterEl = () => {
         password: ''
     });
     const [isLoading, setIsLoading] = useState(false);
-    const navigation = useNavigate();
+    // const navigation = useNavigate();
     const [isOpen, setIsopen] = useState(false)
 
     const handleInputChange = (name, value) => {
@@ -98,13 +98,6 @@ const RegisterEl = () => {
                         onClick={handleClick}
                     >
                         Google
-                    </button>
-
-                    <button
-                        className="p-1 rounded-md active:scale-95 border shadow-sm font-semibold"
-                        type="button"
-                    >
-                        Facebook
                     </button>
                     <p className="text-sm self-center">
                         Already have an account?
