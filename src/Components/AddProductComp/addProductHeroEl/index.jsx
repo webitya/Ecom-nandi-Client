@@ -149,6 +149,7 @@ const AddProductHero = () => {
             toast.success("Product added Successfully");
         } catch (error) {
             console.log(error);
+            toast.error(error.response.data.message || 'Internal server error occured');
             if (error instanceof z.ZodError) {
                 setErrors(error.flatten().fieldErrors);
             }

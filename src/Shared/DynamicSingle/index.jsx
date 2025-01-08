@@ -8,7 +8,12 @@ const DynamicSinglePage = () => {
     const location = useLocation();
     const pages = useSelector((state) => state.pages.pages || {});
 
+    console.log(pages);
+
     const page = Object.values(pages).find((p) => p.route === location.pathname);
+
+    console.log(page);
+    
 
     useEffect(() => {
         if (page) {
@@ -16,6 +21,10 @@ const DynamicSinglePage = () => {
         } else {
             document.title = "Page Not Found";
         }
+
+        return () => {
+            document.title = "Ecom-nandi";
+        };
     }, [page]);
 
     if (!page) {

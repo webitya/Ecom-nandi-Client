@@ -2,38 +2,17 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     pages: {
-        aboutUs: {
-          title: "About Us",
-          content: "<p>About Us content here...</p>",
-          route: "/about-us",
+        carrerWithUs: {
+            title: "Carrer with us",
+            content: "<p>Carrer with us content here...</p>",
+            route: "/carrer-with-us",
         },
         privacyPolicy: {
-          title: "Privacy Policy",
-          content: "<p>Privacy Policy content here...</p>",
-          route: "/privacy-policy",
+            title: "Privacy Policy",
+            content: "<p>Privacy Policy content here...</p>",
+            route: "/privacy-policy",
         },
-        aboutUs1: {
-          title: "About Us",
-          content: "<p>About Us content here...</p>",
-          route: "/about-us",
-        },
-        privacyPolicy1: {
-          title: "Privacy Policy",
-          content: "<p>Privacy Policy content here...</p>",
-          route: "/privacy-policy",
-        },
-        aboutUs2: {
-          title: "About Us",
-          content: "<p>About Us content here...</p>",
-          route: "/about-us",
-        },
-        privacyPolicy2: {
-          title: "Privacy Policy",
-          content: "<p>Privacy Policy content here...</p>",
-          route: "/privacy-policy",
-        }
-      },
-      
+    },
 };
 
 const pageSlice = createSlice({

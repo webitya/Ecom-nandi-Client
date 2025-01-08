@@ -86,7 +86,6 @@ const LoginEl = () => {
 
                 <div className="flex flex-col gap-2">
                     <button type="button" className="p-1 rounded-md active:scale-95 border shadow-sm font-semibold" onClick={handleClick}>Google</button>
-                    <button className="p-1 rounded-md active:scale-95 border shadow-sm font-semibold" type="button">Facebook</button>
 
                     <p className="text-sm flex justify-between">
                         <Link
