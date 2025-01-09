@@ -1,8 +1,11 @@
-import { DeleteOutlined, DownCircleFilled, EditOutlined, EyeFilled, EyeOutlined, SearchOutlined } from "@ant-design/icons";
+import { DeleteOutlined, DownCircleFilled, EditOutlined, EyeFilled, EyeOutlined, LoadingOutlined, SearchOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setAddProduct } from "../../../redux/features/AddProductSlice/addProductSlice";
+import { useRequestApi } from "../../../hooks/useRequestApi";
+import { setProductList } from "../../../redux/features/ownerRedux/totalProductSlice/totalProductSlice";
+import toast from "react-hot-toast";
 
 const ManageProductsEl = () => {
     const navigate = useNavigate();
@@ -11,6 +14,7 @@ const ManageProductsEl = () => {
     const Products = useSelector(state => state.product_list.value.productLists);
 
     const [searchQuery, setSearchQuery] = useState('');
+    const [deleteLoader, setDeleteLoader] = useState({});
 
     const handleSearchQuery = (e) => {
         const { value } = e.target
@@ -22,7 +26,7 @@ const ManageProductsEl = () => {
             || product.name.toLowerCase().includes(searchQuery.toLowerCase())
             || product.category.toLowerCase().includes(searchQuery.toLowerCase())
             || product.price.includes(searchQuery)
-    )
+    );
 
     const restOfTheProducts = Products.filter(
         (product) => {
@@ -38,7 +42,7 @@ const ManageProductsEl = () => {
         console.log(id);
         Products.find((product) => {
             if (product._id === id) {
-                
+
                 dispatch(setAddProduct({
                     images: product.images,
                     name: product.name,
@@ -63,8 +67,20 @@ const ManageProductsEl = () => {
         console.log(id);
     }
 
-    const handleDeleteClick = (id) => {
-        console.log(id);
+    const handleDeleteClick = async (id) => {
+        setDeleteLoader( (prev) => ({ ...prev, [id]:true }) );
+        try {
+            const _id = id;
+            const response= await useRequestApi(`api/product/deleteproduct?productId=${_id}`, 'DELETE');
+            toast.success('Product deleted Successfully');
+            const updatedproducts= Products.filter( (product) => product._id !== response.product._id );
+            dispatch(setProductList(updatedproducts));
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message || 'Internal server error occured')
+        } finally{
+            setDeleteLoader((prev) => ({ ...prev, [id]:false }));
+        }
     }
 
     return (
@@ -134,7 +150,12 @@ const ManageProductsEl = () => {
                                         onClick={() => handleDeleteClick(product._id)}
                                         className="px-2 py-1 border border-red-500 text-red-700 rounded-md cursor-pointer hover:bg-red-500 hover:text-white"
                                     >
-                                        <DeleteOutlined />
+                                        {
+                                            deleteLoader[product._id] ?
+                                                <LoadingOutlined /> :
+                                                <DeleteOutlined />
+                                        }
+
                                     </span>
                                 </div>
                             </div>
